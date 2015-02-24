@@ -5,15 +5,10 @@
 
 > Note that even though the container stops right after a command completes, the changes are not forgotten.
 
-## Delete all containers, images
+## References
 
-~~~~.sh
-#!/bin/bash
-# Delete all containers
-docker rm $(docker ps -a -q)
-# Delete all images
-docker rmi $(docker images -q)
-~~~~
+* GUI apps with Docker: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
+* X2Go: http://wiki.x2go.org/doku.php/doc:newtox2go
 
 ## Docker Commands
 
@@ -25,3 +20,14 @@ Command | Note
 `docker ps -l` | List containers.
 `docker push` | Push container up to repository.
 `docker run -i -t <container> /bin/bash` | Run an interactive shell.
+
+### Delete all containers, images
+
+~~~~.sh
+#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+~~~~
+
