@@ -1,0 +1,17 @@
+FROM ubuntu:14.04
+
+RUN apt-get update && apt-get install -y wget
+RUN wget wget http://www.unidata.ucar.edu/downloads/netcdf/ftp/idv5.sh
+
+# Replace 1000 with your user / group id
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/idvuser && \
+    echo "idvuser:x:${uid}:${gid}:IDVUser,,,:/home/idvuser:/bin/bash" >> /etc/passwd && \
+    echo "idvuser:x:${uid}:" >> /etc/group && \
+    echo "idvuser ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/idvuser && \
+    chmod 0440 /etc/sudoers.d/idvuser && \
+    chown ${uid}:${gid} -R /home/idvuser
+
+USER idvuser
+ENV HOME /home/idvuser
+#CMD /usr/bin/firefox
