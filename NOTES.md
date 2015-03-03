@@ -21,6 +21,10 @@ From the comments in the link above, Ubuntu 14.10 and other more recent VMs requ
 
 Getting this to work on OSX is a bit different.  See https://github.com/docker/docker/issues/8710#issuecomment-71113263 for making this work with `socat`.
 
+### Optimizing Docker Images
+
+* http://www.centurylinklabs.com/optimizing-docker-images/
+
 ## Docker Commands
 
 Command | Note
