@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y wget
-RUN wget wget http://www.unidata.ucar.edu/downloads/netcdf/ftp/idv5.sh
+RUN apt-get update && apt-get install -y wget openjdk-7-jre
+RUN wget http://www.unidata.ucar.edu/downloads/netcdf/ftp/idv5.sh
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -12,6 +12,9 @@ RUN export uid=1000 gid=1000 && \
     chmod 0440 /etc/sudoers.d/idvuser && \
     chown ${uid}:${gid} -R /home/idvuser
 
+
+
 USER idvuser
 ENV HOME /home/idvuser
+run whoami
 #CMD /usr/bin/firefox
