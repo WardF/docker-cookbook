@@ -5,7 +5,7 @@
 #####
 apt-get update
 apt-get -y upgrade
-apt-get install -y git curl
+apt-get install -y git curl emacs
 
 #####
 # Install docker.io, using instructions from:
@@ -22,14 +22,12 @@ sudo service docker restart
 ##
 # Set up a readme
 ##
-TFILE=DOCKER_NOTES.md
-echo "# Docker Notes:" > $TFILE
-echo "docker run -i -t ubuntu /bin/bash" >> $TFILE
-echo "" >> $TFILE
-echo "# Delete all containers:" >> $TFILE
-echo " docker rm $(docker ps -a -q)" >> $TFILE
-echo "# Delete all images:" >> $TFILE
-echo " docker rmi $(docker images -q)" >> $TFILE
+TFILE=/home/vagrant/DOCKER_NOTES.md
+SFILE=/vagrant/NOTES.md
+
+if [ -f $SFILE ]; then
+    cp $SFILE $TFILE
+fi
 
 #####
 # Cleanup
