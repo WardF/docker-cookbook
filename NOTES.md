@@ -21,6 +21,10 @@ From the comments in the link above, Ubuntu 14.10 and other more recent VMs requ
 
 Getting this to work on OSX is a bit different.  See https://github.com/docker/docker/issues/8710#issuecomment-71113263 for making this work with `socat`.
 
+## 32 vs. 64 bit
+
+It appears that you can prefix commands with `linux32` to run in a 32-bit environment.
+
 ### Optimizing Docker Images
 
 * http://www.centurylinklabs.com/optimizing-docker-images/
