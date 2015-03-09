@@ -14,29 +14,22 @@ RUN x11vnc -storepasswd 1234 ~/.vnc/passwd
 
 RUN mkdir ~/.fluxbox/
 RUN bash -c 'echo "xterm &" >> ~/.fluxbox/startup'
-RUN bash -c 'echo "/root/IDV5/runIDV &" >> ~/.fluxbox/startup'
-RUN echo "/usr/bin/fluxbox -log ~/.fluxbox/log" >> ~/.fluxbox/startup
+RUN echo "/usr/bin/fluxbox -log ~/.fluxbox/log &" >> ~/.fluxbox/startup
+RUN bash -c 'echo "/root/IDV5/runIDV && shutdown -h now" >> ~/.fluxbox/startup'
+
 
 ###
 # Create a .xinitrc file.
+#
+# The environmental variable APORT = 5901 by default but can be
+# overridden when invoking 'docker run', e.g.
+#   $ docker run -e APORT=4435
 ###
-RUN echo "/usr/bin/x11vnc -usepw -display :1 -autoport 5901 -forever &" >> /root/.xinitrc
+RUN echo '/usr/bin/x11vnc -usepw -display :1 -autoport $APORT -forever &' >> /root/.xinitrc
 RUN echo "/usr/bin/startfluxbox" >> /root/.xinitrc
 
-###
-# Shell script which runs xinit (to take advantage of .xinitrc file),
-# connects x11vnc to it.
-###
-
-#RUN echo "#!/bin/bash" > /root/startup.sh
-#RUN echo "nohup xinit -- /usr/bin/Xvfb :1 -screen 0 1024x768x24 &" >> /root/startup.sh
-#RUN echo "sleep 5" >> /root/startup.sh
-#RUN echo "x11vnc -usepw -display :1 -autoport 5901 -forever" >> /root/startup.sh
-
-#RUN chmod 755 /root/startup.sh
-
-
 ENV HOME /root
+ENV APORT 5901
 WORKDIR /root
 USER root
 EXPOSE 5901
