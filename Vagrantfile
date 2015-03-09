@@ -20,10 +20,7 @@ Vagrant.configure(2) do |config|
     v.vm.provision :shell, :path => "bootstrap_vm.sh"
     v.vm.hostname = "docker-dev"
     v.vm.box = "unicorn64"
-    #v.vm.network "forwarded_port", guest: 5900, host: 5901
-    for i in 5900..5999
-      v.vm.network "forwarded_port", guest: i, host: i, auto_correct: true, protocol: 'tcp'
-    end
+    v.vm.network "forwarded_port", guest: 5901, host: 5901
   end
 
 end
