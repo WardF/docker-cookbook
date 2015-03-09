@@ -16,9 +16,9 @@ Vagrant.configure(2) do |config|
     v.cpus = 2
   end
 
-  config.vm.define "u64", primary: true do |v|
+  config.vm.define "docker-IDV", primary: true do |v|
     v.vm.provision :shell, :path => "bootstrap_vm.sh"
-    v.vm.hostname = "unicorn64"
+    v.vm.hostname = "docker-dev"
     v.vm.box = "unicorn64"
     v.vm.network "forwarded_port", guest: 5900, host: 5901
   end
