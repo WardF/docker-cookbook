@@ -13,6 +13,13 @@
 * GUI apps with Docker: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 * X2Go: http://wiki.x2go.org/doku.php/doc:newtox2go
 
+
+### Fluxbox Reference
+
+Fluxbox is a lightweight Windows manager used with `x11vnc`, `xvfb`.
+
+* https://wiki.archlinux.org/index.php/Fluxbox
+
 ### GUI Apps with Docker
 
 From the comments in the link above, Ubuntu 14.10 and other more recent VMs require different command line options.  Here's the example given that worked for me, inside a VM on OSX!
