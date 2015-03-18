@@ -1,6 +1,6 @@
-# dockerfile-vnc README
+# dockerfile-kcachegrind README
 
-This directory contains the `Dockerfile` used to build a docker container which will run a VNC session in an `x11vnc` virtual framebuffer.
+This directory contains the `Dockerfile` used to build a docker container which will run a VNC session in an `x11vnc` virtual framebuffer.  It will also run kcachegrind.
 
 ## Building the Docker Image
 
