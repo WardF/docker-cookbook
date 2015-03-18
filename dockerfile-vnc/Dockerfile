@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano
+RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano emacs git midori
 
 ###
 # Configure vnc, xvfb.
@@ -12,7 +12,7 @@ RUN x11vnc -storepasswd 1234 ~/.vnc/passwd
 
 RUN mkdir ~/.fluxbox/
 RUN bash -c 'echo "xterm &" >> ~/.fluxbox/startup'
-RUN echo "/usr/bin/fluxbox -log ~/.fluxbox/log &" >> ~/.fluxbox/startup
+RUN echo "/usr/bin/fluxbox -log ~/.fluxbox/log " >> ~/.fluxbox/startup
 
 
 ###

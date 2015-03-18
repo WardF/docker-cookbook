@@ -11,4 +11,4 @@ fi
 
 set -x
 
-docker run -p 5900 $1
+docker run -p 5901:5901 $1
