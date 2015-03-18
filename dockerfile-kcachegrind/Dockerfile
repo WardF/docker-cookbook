@@ -9,16 +9,7 @@ FROM ubuntu:14.04
 # Install various packages.
 ###
 
-RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano emacs git wget kcachegrind
-
-###
-# Install google-chrome-stable as a separate command.
-###
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-
-RUN apt-get update
-RUN apt-get install -y google-chrome-stable
+RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit kcachegrind
 
 ###
 # Configure vnc, xvfb.
