@@ -1,6 +1,9 @@
 FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano
+RUN apt-get update  
+RUN apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano
+
+
 
 ADD IDV5.tar.bz2 /root
 

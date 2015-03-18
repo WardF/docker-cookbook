@@ -9,7 +9,9 @@ FROM ubuntu:14.04
 # Install various packages.
 ###
 
-RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano emacs git wget
+RUN apt-get update
+RUN apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano 
+RUN apt-get install -y emacs git wget
 
 ###
 # Install google-chrome-stable as a separate command.

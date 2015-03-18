@@ -1,15 +1,12 @@
 FROM ubuntu:14.04
 
-
-###
-# Install chrome from the command line.
-###
-
 ###
 # Install various packages.
 ###
 
-RUN apt-get update && apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit kcachegrind
+RUN apt-get update 
+RUN apt-get install -y x11-utils x11-common x11vnc xvfb fluxbox man xinit nano
+RUN apt-get install -y kcachegrind
 
 ###
 # Configure vnc, xvfb.
