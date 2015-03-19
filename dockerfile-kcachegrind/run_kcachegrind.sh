@@ -10,4 +10,4 @@ if [ $# -lt 1 ]; then
 fi
 
 set -x
-docker run -p 5901:5901 -v $(pwd):/home/vncuser/callgrind_files $1
+docker run -p 5901:5901 -v $(pwd):/home/dockuser/callgrind_files $1
