@@ -44,7 +44,7 @@ RUN x11vnc -storepasswd 1234 ~/.vnc/passwd
 # overridden when invoking 'docker run', e.g.
 #   $ docker run -e APORT=4435
 ###
-RUN echo '/usr/bin/x11vnc -usepw -display :1 -autoport $APORT -forever -ncache 10 &' >> ~/.xinitrc
+RUN echo '/usr/bin/x11vnc -usepw -display :1 -autoport $APORT -forever &' >> ~/.xinitrc
 RUN echo "/usr/bin/startfluxbox" >> ~/.xinitrc
 
 ###
