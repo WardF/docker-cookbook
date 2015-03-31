@@ -45,7 +45,7 @@ RUN mkdir -p /root/.local/share
 # if that is easier.
 ###
 
-ADD run_dia.sh /root
+COPY run_dia.sh /root/
 
 ##
 # Run dia on launch.
