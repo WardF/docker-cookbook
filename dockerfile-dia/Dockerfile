@@ -16,6 +16,14 @@ RUN apt-get -y upgrade
 # Install some basics.
 ###
 
+RUN apt-get install -y man nano
+RUN apt-get install -y x11-utils x11-common
+RUN apt-get install -y dia
+
+###
+# Create a usage document
+###
+
 RUN echo 'USAGE on OSX' > ~/USAGE.md
 RUN echo '' >> ~/USAGE.md
 RUN echo 'First, start socat:' >> ~/USAGE.md
@@ -29,10 +37,17 @@ RUN echo '' >> ~/USAGE.md
 RUN echo 'NOTE: If using on OSX or Windows via boot2docker, $(pwd) must be a subdirectory of $HOME!' >> ~/USAGE.md
 RUN echo '' >> ~/USAGE.md
 
-RUN apt-get install -y man nano
-RUN apt-get install -y x11-utils x11-common
-RUN apt-get install -y dia
-
 RUN mkdir -p /root/.local/share
 
+###
+# Copy over the utility run script so that we can
+# mount a shared volume and copy it out to working dir,
+# if that is easier.
+###
+
+ADD run_dia.sh /root
+
+##
+# Run dia on launch.
+##
 CMD /usr/bin/dia
