@@ -10,5 +10,17 @@ if [ $# -lt 1 ]; then
 fi
 
 set -x
-#docker run -p 5901:5901 -v $(pwd):/home/dockuser/diagrams $1
-docker run --rm -e DISPLAY=192.168.59.103:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/dockuser/.Xauthority --net=host -v $(pwd):/home/dockuser/diagrams test-dia
+
+##
+# The following is used on OSX.
+# It may or may not work on Linux or Windows.
+# Will update as need be.
+#
+# Note, also, that when using `boot2docker`, the volume mount
+# will not work unless $(pwd) is a subdirectory of $HOME.
+#
+# Finally, on OSX, we must also be using socat. See NOTES.md
+# for more information.
+##
+MYIP=$(curl ipecho.net/plain)
+docker run --rm -e DISPLAY=$MYIP:0 --net=host -v $(pwd):/root/diagrams $1
