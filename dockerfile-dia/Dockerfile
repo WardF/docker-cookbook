@@ -16,6 +16,19 @@ RUN apt-get -y upgrade
 # Install some basics.
 ###
 
+RUN echo 'USAGE on OSX' > ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+RUN echo 'First, start socat:' >> ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+RUN echo '    socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"' >> ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+RUN echo 'Launching image on OSX via boot2docker:' >> ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+RUN echo '    docker run --rm -e DISPLAY=$(HOST IP):0 -v $(pwd):/root/diagrams <image name>' >> ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+RUN echo 'NOTE: If using on OSX or Windows via boot2docker, $(pwd) must be a subdirectory of $HOME!' >> ~/USAGE.md
+RUN echo '' >> ~/USAGE.md
+
 RUN apt-get install -y man nano
 RUN apt-get install -y x11-utils x11-common
 RUN apt-get install -y dia
