@@ -3,14 +3,14 @@
 # so that we can take advantage of the
 # shared layers that docker provides.
 #####
-
-FROM ubuntu:utopic
+FROM besn0847/ubuntu32
+#FROM ubuntu:utopic
 USER root
 ENV HOME /root
 WORKDIR /root
 
 RUN apt-get update
-RUN apt-get -y upgrade
+#RUN apt-get -y upgrade
 
 ###
 # Install some basics.
