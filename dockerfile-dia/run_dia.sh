@@ -2,14 +2,22 @@
 #
 # Convienence script to launch a docker container version of dia with all of the appropriate arguments.
 
-if [ $# -lt 1 ]; then
+OSTYPE="osx"
+
+if [ $# -lt 2 ]; then
     docker images
     echo ""
-    echo "You must specify a docker image."
+    echo "You must specify an OS and a docker image."
+    echo "example: $0 linux wardf/dia"
+    echo "OS Options:"
+    echo -e "\tlinux"
+    echo -e "\tosx"
     exit 1
 fi
 
 set -x
+
+
 
 ##
 # The following is used on OSX.
@@ -22,5 +30,12 @@ set -x
 # Finally, on OSX, we must also be using socat. See NOTES.md
 # for more information.
 ##
-MYIP=$(curl ipecho.net/plain)
-docker run --rm -e DISPLAY=$MYIP:0 --net=host -v $(pwd):/root/diagrams $1
+
+if [ "X$1" == "Xosx" ]; then
+    MYIP=$(curl ipecho.net/plain)
+    docker run --rm -e DISPLAY=$MYIP:0 --net=host -v $(pwd):/root/diagrams $2
+fi
+
+if [ "X$1" == "Xlinux" ]; then
+    docker run --rm -e DISPLAY --net=host -v $(pwd):/root/diagrams -v $HOME/.Xauthority:/root/.Xauthority $2
+fi
