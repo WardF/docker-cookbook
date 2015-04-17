@@ -27,3 +27,6 @@ mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fort
 ###
 # Build & test netcdf-cxx4.
 ###
+
+cd /root
+mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 && make Experimental
