@@ -1,6 +1,9 @@
-When run, this will run tests for:
+When this docker container is run, it will check out the following packages from the Unidata github site:
 
 * netcdf-c
 * netcdf-fortran
 * netcdf-cxx4
+
+Each package will be built and tested.  This way, we can see if any changes in `netcdf-c` break anything which depends on it (`netcdf-fortran` and `netcdf-cxx4`).
+
 
