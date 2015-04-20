@@ -14,19 +14,26 @@ git clone http://www.github.com/Unidata/netcdf-cxx4
 
 cd /root
 
-mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON && make Experimental
-make install
+mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON && make Experimental && make install
+
 
 ###
 # Build & test netcdf-fortran
 ###
 
-cd /root
-mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran && make Experimental
+if [ -f /usr/lib/libnetcdf.settings ]; then
+
+    cd /root
+    mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran && make Experimental
+fi
 
 ###
 # Build & test netcdf-cxx4.
 ###
 
-cd /root
-mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 && make Experimental
+if [ -f /usr/lib/libnetcdf.settings ]; then
+
+    cd /root
+    mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 && make Experimental
+
+fi

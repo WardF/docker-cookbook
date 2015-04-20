@@ -22,13 +22,12 @@ RUN apt-get install -y libtool automake autoconf
 RUN apt-get install -y m4
 RUN apt-get install -y bison
 RUN apt-get install -y flex
-RUN apt-get install -y libhdf5-dev
 RUN apt-get install -y libcurl4-openssl-dev
 RUN apt-get install -y zlib1g-dev
 RUN apt-get install -y git
 RUN apt-get install -y wget
 RUN apt-get install -y curl
-
+RUN apt-get install -y libjpeg-dev
 
 ###
 # Manually install hdf4 so that we can run
@@ -38,6 +37,23 @@ RUN apt-get install -y curl
 RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
 RUN tar -jxf hdf-4.2.11.tar.bz2
 RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+RUN rm -rf hdf-4.2.11
+
+
+###
+# Manually install hdf5 so that we can run
+# those tests as well.
+###
+
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.14/src/hdf5-1.8.14.tar.bz2
+RUN tar -jxf hdf5-1.8.14.tar.bz2
+RUN cd hdf5-1.8.14 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
+RUN rm -rf hdf5-1.8.14
+
+###
+# Clean up
+###
+RUN rm /root/*.bz2
 
 ###
 # Copy over the utility run script, usage doc, so that we can
