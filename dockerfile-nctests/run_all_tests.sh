@@ -21,7 +21,7 @@ mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTAL
 # Build & test netcdf-fortran
 ###
 
-if [ -f /usr/lib/libnetcdf.settings ]; then
+if [ -e /usr/lib/libnetcdf.settings ]; then
 
     cd /root
     mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran && make Experimental
@@ -31,7 +31,7 @@ fi
 # Build & test netcdf-cxx4.
 ###
 
-if [ -f /usr/lib/libnetcdf.settings ]; then
+if [ -e /usr/lib/libnetcdf.settings ]; then
 
     cd /root
     mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 && make Experimental
