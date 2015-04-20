@@ -28,6 +28,7 @@ RUN apt-get install -y git
 RUN apt-get install -y wget
 RUN apt-get install -y curl
 RUN apt-get install -y libjpeg-dev
+RUN apt-get install -y cmake
 
 ###
 # Manually install hdf4 so that we can run
@@ -62,7 +63,6 @@ RUN rm /root/*.bz2
 ###
 
 COPY run_all_tests.sh /root/
-RUN apt-get install -y cmake
 ##
 # Run dia on launch.
 ##
