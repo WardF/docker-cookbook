@@ -10,7 +10,7 @@ ENV HOME /root
 WORKDIR /root
 
 RUN apt-get update
-
+RUN apt-get -y upgrade
 ###
 # Install some basics.
 ###
@@ -28,6 +28,17 @@ RUN apt-get install -y zlib1g-dev
 RUN apt-get install -y git
 RUN apt-get install -y wget
 RUN apt-get install -y curl
+
+
+###
+# Manually install hdf4 so that we can run
+# those tests as well.
+###
+
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
+RUN tar -jxf hdf-4.2.11.tar.bz2
+RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+
 ###
 # Copy over the utility run script, usage doc, so that we can
 # mount a shared volume and copy it out to working dir,

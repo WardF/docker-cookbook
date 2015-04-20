@@ -14,7 +14,7 @@ git clone http://www.github.com/Unidata/netcdf-cxx4
 
 cd /root
 
-mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr && make Experimental
+mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON && make Experimental
 make install
 
 ###
