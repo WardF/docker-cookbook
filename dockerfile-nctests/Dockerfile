@@ -63,7 +63,13 @@ RUN rm /root/*.bz2
 ###
 
 COPY run_all_tests.sh /root/
+
 ##
-# Run dia on launch.
+# Set up a couple environmental variables.
 ##
-CMD sh /root/run_all_tests.sh
+ENV CBRANCH master
+
+##
+# Run ctest on launch.
+##
+CMD /root/run_all_tests.sh
