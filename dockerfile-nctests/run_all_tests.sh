@@ -23,7 +23,7 @@ git checkout $CBRANCH
 
 cd /root
 
-mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON && make Experimental
+mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON && make Experimental
 
 make install
 
