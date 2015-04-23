@@ -68,7 +68,8 @@ COPY run_all_tests.sh /root/
 # Set up a couple environmental variables.
 ##
 ENV CBRANCH master
-
+ENV FBRANCH master
+ENV CXXBRANCH master
 ##
 # Run ctest on launch.
 ##
