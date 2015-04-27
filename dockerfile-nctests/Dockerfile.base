@@ -4,19 +4,17 @@
 # shared layers that docker provides.
 #####
 #FROM besn0847/ubuntu32
-FROM ggrandes/ubuntu32
-#FROM ubuntu:utopic
+FROM ubuntu:utopic
 USER root
 ENV HOME /root
 WORKDIR /root
 
 RUN apt-get update
-
+RUN apt-get -y upgrade
 ###
 # Install some basics.
 ###
 
-RUN apt-get install -y ubuntu-dev-tools
 RUN apt-get install -y g++
 RUN apt-get install -y gfortran
 RUN apt-get install -y libtool automake autoconf
@@ -69,8 +67,9 @@ COPY run_all_tests.sh /root/
 # Set up a couple environmental variables.
 ##
 ENV CBRANCH master
-
+ENV FBRANCH master
+ENV CXXBRANCH master
 ##
 # Run ctest on launch.
 ##
-CMD sh /root/run_all_tests.sh
+CMD /root/run_all_tests.sh
