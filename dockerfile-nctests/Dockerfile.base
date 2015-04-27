@@ -3,11 +3,30 @@
 # so that we can take advantage of the
 # shared layers that docker provides.
 #####
-#FROM besn0847/ubuntu32
 FROM ubuntu:utopic
 USER root
 ENV HOME /root
 WORKDIR /root
+
+##
+# Set up a couple environmental variables.
+##
+ENV CBRANCH master
+ENV FBRANCH master
+ENV CXXBRANCH master
+
+###
+# Copy over the utility run script, usage doc, so that we can
+# mount a shared volume and copy it out to working dir,
+# if that is easier.
+###
+
+COPY run_serial_tests.sh /root/
+COPY run_par_tests.sh /root/
+
+###
+# Install common packages.
+###
 
 RUN apt-get update
 RUN apt-get -y upgrade
@@ -39,37 +58,18 @@ RUN tar -jxf hdf-4.2.11.tar.bz2
 RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
 RUN rm -rf hdf-4.2.11
 
-
 ###
-# Manually install hdf5 so that we can run
-# those tests as well.
+# Pre-fetch tarballs that we'll need.
 ###
 
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.14/src/hdf5-1.8.14.tar.bz2
+RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/parallel-netcdf-1.6.0.tar.bz2
+
+###
+# Uncompress tarballs.
+###
+
+RUN tar -jxf hdf-4.2.11.tar.bz2
 RUN tar -jxf hdf5-1.8.14.tar.bz2
-RUN cd hdf5-1.8.14 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
-RUN rm -rf hdf5-1.8.14
-
-###
-# Clean up
-###
-RUN rm /root/*.bz2
-
-###
-# Copy over the utility run script, usage doc, so that we can
-# mount a shared volume and copy it out to working dir,
-# if that is easier.
-###
-
-COPY run_all_tests.sh /root/
-
-##
-# Set up a couple environmental variables.
-##
-ENV CBRANCH master
-ENV FBRANCH master
-ENV CXXBRANCH master
-##
-# Run ctest on launch.
-##
-CMD /root/run_all_tests.sh
+RUN tar -jxf parallel-netcdf-1.6.0.tar.bz2
