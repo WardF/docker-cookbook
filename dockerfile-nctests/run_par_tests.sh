@@ -35,7 +35,10 @@ cd /root
 
 cd /root
 
-mkdir build-netcdf-c && cd build-netcdf-c && cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CBRANCH" && make Experimental
+mkdir build-netcdf-c
+cd build-netcdf-c
+cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CBRANCH"
+make Experimental
 
 make install
 
@@ -45,7 +48,10 @@ make install
 ###
 
 cd /root
-mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$FBRANCH" && make Experimental
+mkdir build-netcdf-fortran
+cd build-netcdf-fortran
+cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$FBRANCH"
+make Experimental
 
 
 ###
@@ -53,4 +59,7 @@ mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fort
 ###
 
 cd /root
-mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CXXBRANCH" && make Experimental
+mkdir build-netcdf-cxx4
+cd build-netcdf-cxx4
+cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CXXBRANCH"
+make Experimental
