@@ -45,7 +45,7 @@ make install
 ###
 
 cd /root
-mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran && make Experimental
+mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$FBRANCH" && make Experimental
 
 
 ###
@@ -53,4 +53,4 @@ mkdir build-netcdf-fortran && cd build-netcdf-fortran && cmake /root/netcdf-fort
 ###
 
 cd /root
-mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 && make Experimental
+mkdir build-netcdf-cxx4 && cd build-netcdf-cxx4 && cmake /root/netcdf-cxx4 -DBUILD_NAME_PREFIX="docker" -DBUILD_NAME_SUFFIX="$CXXBRANCH" && make Experimental
