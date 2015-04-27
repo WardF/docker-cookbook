@@ -37,7 +37,7 @@ cd /root
 
 mkdir build-netcdf-c
 cd build-netcdf-c
-cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CBRANCH"
+cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker-parallel" -DBUILDNAME_SUFFIX="$CBRANCH" -DCMAKE_C_COMPILER=$(which mpicc) -DENABLE_PNETCDF=ON -DENABLE_PARALLEL_TESTS=ON
 make Experimental
 
 make install
@@ -50,7 +50,7 @@ make install
 cd /root
 mkdir build-netcdf-fortran
 cd build-netcdf-fortran
-cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$FBRANCH"
+cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker-parallel" -DBUILDNAME_SUFFIX="$FBRANCH" -DTEST_PARALLEL=ON -DCMAKE_C_COMPILER=$(which mpicc) -DCMAKE_Fortran_COMPILER=$(which mpif90)
 make Experimental
 
 
@@ -61,5 +61,5 @@ make Experimental
 cd /root
 mkdir build-netcdf-cxx4
 cd build-netcdf-cxx4
-cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker" -DBUILDNAME_SUFFIX="$CXXBRANCH"
+cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker-parallel" -DBUILDNAME_SUFFIX="$CXXBRANCH" -DCMAKE_CXX_COMPILER=$(which mpic++)
 make Experimental
