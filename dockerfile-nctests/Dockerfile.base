@@ -8,8 +8,12 @@ USER root
 ENV HOME /root
 WORKDIR /root
 
-##
+###
 # Set up a couple environmental variables.
+###
+
+##
+# Let the user specify the branches.
 ##
 ENV CBRANCH master
 ENV FBRANCH master
