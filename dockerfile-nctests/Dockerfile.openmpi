@@ -29,7 +29,7 @@ RUN rm -rf hdf-4.2.11
 # those tests as well.
 ###
 
-RUN cd hdf5-1.8.14 && CC=`which mpicc` ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/usr && make install -j 2
+RUN cd hdf5-1.8.14 && CC=`which mpicc` ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/usr --with-szlib && make install -j 2
 RUN rm -rf hdf5-1.8.14
 
 
