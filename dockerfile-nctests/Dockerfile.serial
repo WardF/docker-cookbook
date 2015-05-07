@@ -18,6 +18,12 @@ RUN rm -rf hdf-4.2.11
 RUN cd hdf5-1.8.14 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr --with-szlib && make install -j 2
 RUN rm -rf hdf5-1.8.14
 
+###
+# Copy over the dockerfile.
+###
+
+COPY Dockerfile.serial /root/
+
 ##
 # Run test script on launch.
 ##

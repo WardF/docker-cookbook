@@ -26,6 +26,12 @@ RUN rm -rf hdf5-1.8.14
 RUN cd parallel-netcdf-1.6.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 2 -k install
 RUN rm -rf parallel-netcdf-1.6.0
 
+###
+# Copy over the dockerfile.
+###
+
+COPY Dockerfile.mpich /root/
+
 ##
 # Run test scripts on launch.
 ##
