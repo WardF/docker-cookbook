@@ -27,7 +27,7 @@ set -x
 # Note, also, that when using `boot2docker`, the volume mount
 # will not work unless $(pwd) is a subdirectory of $HOME.
 #
-# Finally, on OSX, we must also be using socat. See NOTES.md
+# Finally, on OSX, we must also be using socat. See USAGE.md
 # for more information.
 ##
 
