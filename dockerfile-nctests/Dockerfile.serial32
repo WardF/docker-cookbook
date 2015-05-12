@@ -1,0 +1,24 @@
+FROM wardf/nctests:base32
+
+###
+# Manually install hdf4 so that we can run
+# those tests as well.
+###
+
+
+RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+RUN rm -rf hdf-4.2.11
+
+
+###
+# Manually install hdf5 so that we can run
+# those tests as well.
+###
+
+RUN cd hdf5-1.8.14 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
+RUN rm -rf hdf5-1.8.14
+
+##
+# Run test script on launch.
+##
+CMD /root/run_serial_tests.sh

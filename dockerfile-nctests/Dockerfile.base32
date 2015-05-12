@@ -3,7 +3,7 @@
 # so that we can take advantage of the
 # shared layers that docker provides.
 #####
-FROM ubuntu:utopic
+FROM ggrandes/ubuntu32:14.04
 USER root
 ENV HOME /root
 WORKDIR /root
@@ -19,7 +19,7 @@ ENV CBRANCH master
 ENV FBRANCH master
 ENV CXXBRANCH master
 
-ENV BITNESS 64
+ENV BITNESS 32
 
 ###
 # Copy over the utility run script, usage doc, so that we can
