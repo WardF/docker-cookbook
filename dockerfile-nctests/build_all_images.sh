@@ -2,16 +2,28 @@
 
 dohelp ()
 {
-    echo "Usage: $0 [-i]"
-    echo -e "\t -i     Build 32 bit images."
+    echo ""
+    echo "Usage: $0 [-i|-x]"
+    echo -e "\t -i     Build 32-bit images."
+    echo -e "\t -x     Build 64-bit images."
+    echo ""
 }
 
 DO32=""
+DO64=""
 
-while getopts "i" o; do
+if [ $# -lt 1 ]; then
+    dohelp
+    exit 0
+fi
+
+while getopts "ix" o; do
     case "${o}" in
         i)
             DO32="TRUE"
+            ;;
+        x)
+            DO64="TRUE"
             ;;
         *)
             dohelp
@@ -26,7 +38,10 @@ if [ "x$DO32" == "xTRUE" ]; then
     docker build -t wardf/nctests:serial32 -f Dockerfile.serial32 .
     docker build -t wardf/nctests:openmpi32 -f Dockerfile.openmpi32 .
     docker build -t wardf/nctests:mpich32 -f Dockerfile.mpich32 .
-else
+
+fi
+
+if [ "x$DO64" == "xTRUE" ]; then
     echo "Building 64-bit images."
 
     docker build -t wardf/nctests:base -f Dockerfile.base .
