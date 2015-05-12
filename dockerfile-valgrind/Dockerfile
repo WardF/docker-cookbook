@@ -20,6 +20,7 @@ RUN apt-get install -q -y bison
 RUN apt-get install -q -y autoconf
 RUN apt-get install -q -y automake
 RUN apt-get install -q -y libtool
+RUN apt-get install -q -y kcachegrind
 
 WORKDIR /workdir
 
