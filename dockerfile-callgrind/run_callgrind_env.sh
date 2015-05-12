@@ -4,7 +4,7 @@ if [ $# -lt 2 ]; then
     docker images
     echo ""
     echo "You must specify an OS and a docker image."
-    echo "example: $0 linux wardf/valgrind"
+    echo "example: $0 linux wardf/callgrind"
     echo "OS Options:"
     echo -e "\tlinux"
     echo -e "\tosx"
