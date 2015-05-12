@@ -16,11 +16,9 @@ You can specify an alternative branch for `netcdf-c` than `master` using the fol
 
 The following environmental variables can be used to control the behavior at runtime.
 
-Variable | Behavior | Default Value
-----|----|----
-CBRANCH | Git branch for `netcdf-c` | `master`
-FBRANCH | Git branch for `netcdf-fortran` | `master`
-CXXBRANCH | Git branch for `netcdf-cxx4` | `master`
-COPTS | CMake options for `netcdf-c` | *Empty*
-FOPTS | CMake options for `netcdf-fortran` | *Empty*
-CXXOPTS | CMake options for `netcdf-cxx4` | *Empty*
+* `CBRANCH` - Git branch for `netcdf-c`
+* `FBRANCH` - Git branch for `netcdf-fortran`
+* `CXXBRANCH` - Git branch for `netcdf-cxx4`
+* `COPTS` - CMake options for `netcdf-c`
+* `FOPTS` - CMake options for `netcdf-fortran`
+* `CXXOPTS` - CMake options for `netcdf-cxx4`
