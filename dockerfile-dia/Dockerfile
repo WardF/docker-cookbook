@@ -27,6 +27,7 @@ RUN apt-get install -y dia
 ###
 
 COPY run_dia.sh /root/
+COPY run_socat.sh /root/
 COPY USAGE.md /root/
 
 ##
