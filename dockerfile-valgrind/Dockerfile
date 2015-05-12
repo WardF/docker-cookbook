@@ -4,7 +4,7 @@
 # shared layers that docker provides.
 #####
 
-FROM ubuntu:utopic
+FROM wardf/nctests:serial
 
 ###
 # Install some basics.
