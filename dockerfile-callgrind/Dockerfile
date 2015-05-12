@@ -13,7 +13,7 @@ FROM wardf/nctests:base
 RUN apt-get update
 RUN apt-get install -q -y valgrind
 RUN apt-get install -q -y kcachegrind
-
+RUN apt-get install -q -y x11-utils x11-common
 WORKDIR /workdir
 
 COPY run_socat.sh /root/
