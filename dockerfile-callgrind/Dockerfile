@@ -24,6 +24,11 @@ RUN apt-get install -q -y kcachegrind
 
 WORKDIR /workdir
 
+COPY run_socat.sh /root/
+COPY run_callgrind_env.sh /root/
+COPY README.md /root/
+COPY Dockerfile /root/
+
 CMD /bin/bash
 
 #CMD ["xinit", "--", "/usr/bin/Xvfb", ":1", "-screen", "0", "1024x768x24"]
