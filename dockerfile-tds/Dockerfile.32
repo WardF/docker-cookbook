@@ -18,6 +18,7 @@ RUN apt-get update
 RUN apt-get install -y default-jdk
 RUN apt-get install -y wget
 RUN apt-get install -y links
+RUN apt-get install -y telnet
 
 ###
 # Pre-download files so that we don't have to repeat
@@ -52,6 +53,9 @@ COPY tomcat /etc/init.d/
 RUN chmod 755 /etc/init.d/tomcat
 RUN update-rc.d tomcat defaults
 
+# Start Tomcat so that it can install thredds.
+RUN /etc/init.d/tomcat start
+
 # Set up the tomcat user
 RUN useradd tomcat
 RUN chown -R tomcat /usr/local/apache-tomcat-8.0.22
@@ -62,8 +66,10 @@ RUN chown -R tomcat /usr/local/apache-tomcat-8.0.22
 
 RUN chown tomcat thredds.war
 RUN mv thredds.war /usr/local/apache-tomcat-8.0.22/webapps
+RUN sleep 10
 
 ###
 # Final Items
 ###
+COPY Dockerfile.32 /root/
 EXPOSE 8080
