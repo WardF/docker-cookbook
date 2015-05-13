@@ -4,7 +4,7 @@
 # from the host to the docker image.
 #####
 
-FROM ubuntu:14.04
+FROM ggrandes/ubuntu32:14.04
 USER root
 ENV HOME /root
 WORKDIR /root
