@@ -20,6 +20,8 @@ RUN apt-get install -y wget
 RUN apt-get install -y links
 RUN apt-get install -y telnet
 RUN apt-get install -y apache2
+RUN apt-get install -y emacs
+RUN apt-get install -y nano
 
 ###
 # Kick off apache2 so that it is running when we start
@@ -74,7 +76,12 @@ RUN /etc/init.d/tomcat start
 
 RUN chown tomcat thredds.war
 RUN mv thredds.war /usr/local/apache-tomcat-8.0.22/webapps
-RUN sleep 10
+
+RUN mkdir -p /usr/local/apache-tomcat-8.0.22/content
+COPY thredds.tar.bz2 /usr/local/apache-tomcat-8.0.22/content/
+RUN cd /usr/local/apache-tomcat-8.0.22/content && tar -jxf thredds.tar.bz2
+
+
 
 ###
 # Final Items
