@@ -7,7 +7,7 @@ RUN apt-get install -y mpich libmpich-dev
 # those tests as well.
 ###
 
-RUN cd hdf-4.2.11 && CC=`which mpicc` ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+RUN cd hdf-4.2.11 && CC=`which mpicc` ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4
 RUN rm -rf hdf-4.2.11
 
 ###
@@ -15,15 +15,15 @@ RUN rm -rf hdf-4.2.11
 # those tests as well.
 ###
 
-RUN cd hdf5-1.8.14 && CC=`which mpicc` ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/usr --with-szlib  && make install -j 2
-RUN rm -rf hdf5-1.8.14
+RUN cd hdf5-1.8.15 && CFLAGS="-Wno-format-security" CC=`which mpicc` ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/usr --with-szlib  && make install -j 4
+RUN rm -rf hdf5-1.8.15
 
 ###
 # Manually install pnetcdf so that we can
 # run pnetcdf tests.
 ###
 
-RUN cd parallel-netcdf-1.6.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 2 -k install
+RUN cd parallel-netcdf-1.6.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install
 RUN rm -rf parallel-netcdf-1.6.0
 
 ###
