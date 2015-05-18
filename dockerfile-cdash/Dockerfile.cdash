@@ -1,0 +1,81 @@
+#####
+# Dockerfile for creating a
+# CDash dashboard instance.
+#####
+FROM ubuntu:14.04
+USER root
+ENV HOME /root
+WORKDIR /root
+
+###
+# Set up environmental variables
+###
+
+ENV DEBIAN_FRONTEND noninteractive
+
+###
+# Install some packages.
+###
+
+RUN apt-get update
+RUN apt-get -y upgrade
+
+RUN apt-get install -y -qq apache2
+RUN apt-get install -y -qq mysql-server
+RUN apt-get install -y -qq php5
+RUN apt-get install -y -qq php5-mysql
+RUN apt-get install -y -qq php5-xsl
+RUN apt-get install -y -qq php5-curl
+RUN apt-get install -y -qq php5-gd
+RUN apt-get install -y -qq unzip
+RUN apt-get install -y -qq git
+RUN apt-get install -y -qq htop
+RUN apt-get install -y -qq nano
+
+###
+# Copy over some files we'll use.
+###
+COPY default_cdash_database.sql.gz /root/
+
+###
+# Check out CDash from github,
+# perform necessary setup.
+###
+
+WORKDIR /var/www/html
+RUN git clone https://github.com/Kitware/CDash.git CDash
+
+##
+# modify a key to eliminate an error from mysqld.
+##
+
+RUN /etc/init.d/mysql start
+
+RUN /etc/init.d/mysql start && mysql -u root -e "create user 'cdash'@'%'"
+RUN /etc/init.d/mysql start && mysql -u root -e "grant all on *.* to 'cdash'@'%'"
+RUN /etc/init.d/mysql start && mysql -u root -e "create database cdash"
+
+RUN /etc/init.d/mysql start && gunzip < /root/default_cdash_database.sql.gz | mysql -u root cdash
+
+WORKDIR /root
+
+####
+# Copy over files that might change a lot; we'll
+# do this at the end of the dockerfile so that
+# when they change, we don't have to re-do a lot of
+# actions
+####
+
+COPY mysql_export.sh /root/
+COPY Dockerfile.cdash /root/
+COPY README.md /root/
+COPY run_cdash.sh /root/
+COPY bootstrap_services.sh /root/
+
+####
+# Take care of some networking stuff.
+####
+
+EXPOSE 80
+
+CMD /root/bootstrap_services.sh
