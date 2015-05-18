@@ -33,29 +33,19 @@ RUN apt-get install -y -qq htop
 RUN apt-get install -y -qq nano
 
 ###
-# Copy over some files we'll use.
-###
-COPY default_cdash_database.sql.gz /root/
-
-###
 # Check out CDash from github,
 # perform necessary setup.
 ###
 
 WORKDIR /var/www/html
 RUN git clone https://github.com/Kitware/CDash.git CDash
-
-##
-# modify a key to eliminate an error from mysqld.
-##
+RUN chmod -R 777 /var/www/html/CDash
 
 RUN /etc/init.d/mysql start
 
 RUN /etc/init.d/mysql start && mysql -u root -e "create user 'cdash'@'%'"
 RUN /etc/init.d/mysql start && mysql -u root -e "grant all on *.* to 'cdash'@'%'"
 RUN /etc/init.d/mysql start && mysql -u root -e "create database cdash"
-
-RUN /etc/init.d/mysql start && gunzip < /root/default_cdash_database.sql.gz | mysql -u root cdash
 
 WORKDIR /root
 
@@ -66,8 +56,7 @@ WORKDIR /root
 # actions
 ####
 
-COPY mysql_export.sh /root/
-COPY Dockerfile.cdash /root/
+COPY Dockerfile.cdash_base /root/
 COPY README.md /root/
 COPY run_cdash.sh /root/
 COPY bootstrap_services.sh /root/
@@ -76,6 +65,9 @@ COPY bootstrap_services.sh /root/
 # Take care of some networking stuff.
 ####
 
-EXPOSE 80
+###
+# Set up timezone
+###
+RUN echo America/Denver > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
 
-CMD /root/bootstrap_services.sh
+EXPOSE 80
