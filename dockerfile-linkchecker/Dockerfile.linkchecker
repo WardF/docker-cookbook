@@ -32,7 +32,7 @@ COPY run_socat.sh /root/
 COPY USAGE.md /root/
 
 RUN mkdir -p /root/.linkchecker
-COPY linkcheckerrc /root/.linkchecker
+COPY linkcheckerrc /root/.linkchecker/
 
 ##
 # Run dia on launch.
