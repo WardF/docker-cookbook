@@ -33,9 +33,9 @@ set -x
 
 if [ "X$1" == "Xosx" ]; then
     MYIP=$(curl ipecho.net/plain)
-    docker run --rm -e DISPLAY=$MYIP:0 --net=host -v $(pwd):/root/diagrams $2
+    docker run --rm -e DISPLAY=$MYIP:0 --net=host -v $(pwd):/root/working $2
 fi
 
 if [ "X$1" == "Xlinux" ]; then
-    docker run --rm -e DISPLAY --net=host -v $(pwd):/root/diagrams -v $HOME/.Xauthority:/root/.Xauthority $2
+    docker run --rm -e DISPLAY --net=host -v $(pwd):/root/working -v $HOME/.Xauthority:/root/.Xauthority $2
 fi
