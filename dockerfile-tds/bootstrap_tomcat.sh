@@ -2,6 +2,9 @@
 #
 # Used to kick off apache2, tomcat
 # at boot when the docker container starts.
+
+trap "echo TRAPed signal" HUP INT QUIT KILL TERM
+
 set -x
 apache2ctl start
 sleep 3
@@ -10,4 +13,10 @@ sleep 3
 sleep 10
 
 # For now, just sleep really long to avoid exiting. Fix later.
-sleep 10000
+echo ""
+
+echo "[Hit ENTER key to exit] or run 'docker stop <container>'"
+
+read
+
+echo "Stopping."
