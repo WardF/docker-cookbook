@@ -17,17 +17,6 @@ RUN apt-get update
 
 RUN apt-get install -y default-jdk
 RUN apt-get install -y wget
-RUN apt-get install -y links
-RUN apt-get install -y telnet
-RUN apt-get install -y apache2
-RUN apt-get install -y emacs
-RUN apt-get install -y nano
-
-###
-# Kick off apache2 so that it is running when we start
-# tomcat up.
-###
-RUN apache2ctl start
 
 ###
 # Pre-download files so that we don't have to repeat
@@ -41,7 +30,6 @@ RUN wget ftp://ftp.unidata.ucar.edu/pub/thredds/4.3/current/thredds.war
 ###
 # Download/install tomcat
 ###
-
 
 RUN mv apache-tomcat-8.0.22.tar.gz /usr/local
 RUN cd /usr/local && tar -zxf apache-tomcat-8.0.22.tar.gz
@@ -61,7 +49,6 @@ COPY tomcat-users.xml /usr/local/apache-tomcat-8.0.22/conf/
 RUN useradd tomcat
 RUN chown -R tomcat /usr/local/apache-tomcat-8.0.22
 
-
 # Tomcat init script.
 COPY tomcat /etc/init.d/
 RUN chmod 755 /etc/init.d/tomcat
@@ -80,8 +67,6 @@ RUN mv thredds.war /usr/local/apache-tomcat-8.0.22/webapps
 RUN mkdir -p /usr/local/apache-tomcat-8.0.22/content
 COPY thredds.tar.bz2 /usr/local/apache-tomcat-8.0.22/content/
 RUN cd /usr/local/apache-tomcat-8.0.22/content && tar -jxf thredds.tar.bz2
-
-
 
 ###
 # Final Items
