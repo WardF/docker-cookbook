@@ -2,30 +2,49 @@
 
 ###
 # Check out all the projects.
-###
-git clone http://www.github.com/Unidata/netcdf-c
-git clone http://www.github.com/Unidata/netcdf-fortran
-git clone http://www.github.com/Unidata/netcdf-cxx4
-
-###
+#
+# If the project file has been mapped to a directory
+# on the root of the docker image filesystem, use
+# that instead.  If this is the case, we assume that
+# it is already on the branch we want.  The branch
+# environmental variable will need to be specified still,
+# if we want it to show up in the build name on the
+# appropriate dashboard.
+#
 # Check out the branch
 # specified by "CBRANCH", "FBRANCH", "CXXBRANCH"
 ###
 
-cd netcdf-c
-git fetch
-git checkout $CBRANCH
-cd /root
+if [ -d "/netcdf-c" ]; then
+    git clone /netcdf-c /root/netcdf-c
+else
+    git clone http://www.github.com/Unidata/netcdf-c
+    cd netcdf-c
+    git fetch
+    git checkout $CBRANCH
+    cd /root
+fi
 
-cd netcdf-fortran
-git fetch
-git checkout $FBRANCH
-cd /root
+if [ -d "/netcdf-fortran" ]; then
+    git clone /netcdf-fortran /root/netcdf-fortran
+else
+    git clone http://www.github.com/Unidata/netcdf-fortran
+    cd netcdf-fortran
+    git fetch
+    git checkout $FBRANCH
+    cd /root
+fi
 
-cd netcdf-cxx4
-git fetch
-git checkout $CXXBRANCH
-cd /root
+
+if [ -d "/netcdf-cxx4" ]; then
+    git clone /netcdf-cxx4 /root/netcdf-cxx4
+else
+    git clone http://www.github.com/Unidata/netcdf-cxx4
+    cd netcdf-cxx4
+    git fetch
+    git checkout $CXXBRANCH
+    cd /root
+fi
 
 
 ###
