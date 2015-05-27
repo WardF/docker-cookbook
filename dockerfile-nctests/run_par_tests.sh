@@ -31,17 +31,17 @@ else
 fi
 
 if [ "x$RUNF" == "xTRUE" ]; then
-if [ -d "/netcdf-fortran" ]; then
-    echo "Using local netcdf-fortran repository"
-    git clone /netcdf-fortran /root/netcdf-fortran
-else
-    echo "Using remote netcdf-fortran repository"
-    git clone http://www.github.com/Unidata/netcdf-fortran
-    cd netcdf-fortran
-    git fetch
-    git checkout $FBRANCH
-    cd /root
-fi
+    if [ -d "/netcdf-fortran" ]; then
+        echo "Using local netcdf-fortran repository"
+        git clone /netcdf-fortran /root/netcdf-fortran
+    else
+        echo "Using remote netcdf-fortran repository"
+        git clone http://www.github.com/Unidata/netcdf-fortran
+        cd netcdf-fortran
+        git fetch
+        git checkout $FBRANCH
+        cd /root
+    fi
 else
     echo "Skipping Fortran"
 fi
@@ -49,17 +49,17 @@ fi
 
 if [ "x$RUNCXX" == "xTRUE" ]; then
 
-if [ -d "/netcdf-cxx4" ]; then
-    echo "Using local netcdf-cxx4 repository"
-    git clone /netcdf-cxx4 /root/netcdf-cxx4
-else
-    echo "Using remote netcdf-cxx4 repository"
-    git clone http://www.github.com/Unidata/netcdf-cxx4
-    cd netcdf-cxx4
-    git fetch
-    git checkout $CXXBRANCH
-    cd /root
-fi
+    if [ -d "/netcdf-cxx4" ]; then
+        echo "Using local netcdf-cxx4 repository"
+        git clone /netcdf-cxx4 /root/netcdf-cxx4
+    else
+        echo "Using remote netcdf-cxx4 repository"
+        git clone http://www.github.com/Unidata/netcdf-cxx4
+        cd netcdf-cxx4
+        git fetch
+        git checkout $CXXBRANCH
+        cd /root
+    fi
 
 else
     echo "Skipping CXX"
@@ -76,6 +76,9 @@ mkdir build-netcdf-c
 cd build-netcdf-c
 cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$CBRANCH" -DCMAKE_C_COMPILER=$(which mpicc) -DENABLE_PNETCDF=ON -DENABLE_PARALLEL_TESTS=ON $COPTS
 make Experimental
+
+if [ "x$USEDASH" == "xTRUE" ]; then
+    make Experimental
 else
     make -j 4 && make test
 fi
@@ -94,11 +97,13 @@ make install
 # Look into it more closely, later down the road.
 
 if [ "x$RUNF" == "xTRUE" ]; then
-cd /root
-mkdir build-netcdf-fortran
-cd build-netcdf-fortran
-cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$FBRANCH" -DTEST_PARALLEL=OFF -DCMAKE_Fortran_COMPILER=$(which mpif90) $FOPTS
-make Experimental
+    cd /root
+    mkdir build-netcdf-fortran
+    cd build-netcdf-fortran
+    cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$FBRANCH" -DTEST_PARALLEL=OFF -DCMAKE_Fortran_COMPILER=$(which mpif90) $FOPTS
+
+    if [ "x$USEDASH" == "xTRUE" ]; then
+        make Experimental
 
     else
         make -j 4 && make test
@@ -110,13 +115,14 @@ fi
 ###
 if [ "x$RUNCXX" == "xTRUE" ]; then
 
-cd /root
-mkdir build-netcdf-cxx4
-cd build-netcdf-cxx4
-cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$CXXBRANCH" -DCMAKE_CXX_COMPILER=$(which mpic++) $CXXOPTS
-make Experimental
+    cd /root
+    mkdir build-netcdf-cxx4
+    cd build-netcdf-cxx4
+    cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$CXXBRANCH" -DCMAKE_CXX_COMPILER=$(which mpic++) $CXXOPTS
+
+    if [ "x$USEDASH" == "xTRUE" ]; then
+        make Experimental
     else
         make -j 4 && make test
     fi
-
 fi
