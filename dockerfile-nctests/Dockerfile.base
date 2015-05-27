@@ -22,15 +22,6 @@ ENV CXXBRANCH master
 ENV BITNESS 64
 
 ###
-# Copy over the utility run script, usage doc, so that we can
-# mount a shared volume and copy it out to working dir,
-# if that is easier.
-###
-
-COPY run_serial_tests.sh /root/
-COPY run_par_tests.sh /root/
-
-###
 # Install common packages.
 ###
 

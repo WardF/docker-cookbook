@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+
+trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 ###
 # Check out all the projects.
 #
@@ -16,8 +19,10 @@
 ###
 
 if [ -d "/netcdf-c" ]; then
+    echo "Using local netcdf-c repository"
     git clone /netcdf-c /root/netcdf-c
 else
+    echo "Using remote netcdf-c repository"
     git clone http://www.github.com/Unidata/netcdf-c
     cd netcdf-c
     git fetch
@@ -26,8 +31,10 @@ else
 fi
 
 if [ -d "/netcdf-fortran" ]; then
+    echo "Using local netcdf-fortran repository"
     git clone /netcdf-fortran /root/netcdf-fortran
 else
+    echo "Using remote netcdf-fortran repository"
     git clone http://www.github.com/Unidata/netcdf-fortran
     cd netcdf-fortran
     git fetch
@@ -36,8 +43,10 @@ else
 fi
 
 if [ -d "/netcdf-cxx4" ]; then
+    echo "Using local netcdf-cxx4 repository"
     git clone /netcdf-cxx4 /root/netcdf-cxx4
 else
+    echo "Using remote netcdf-cxx4 repository"
     git clone http://www.github.com/Unidata/netcdf-cxx4
     cd netcdf-cxx4
     git fetch

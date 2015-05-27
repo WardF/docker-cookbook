@@ -23,6 +23,7 @@ RUN rm -rf hdf5-1.8.15
 ###
 
 COPY Dockerfile.serial /root/
+COPY run_serial_tests.sh /root/
 
 ##
 # Run test script on launch.

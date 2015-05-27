@@ -17,6 +17,12 @@ RUN rm -rf hdf-4.2.11
 
 RUN cd hdf5-1.8.15 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4
 RUN rm -rf hdf5-1.8.15
+###
+# Copy over the dockerfile.
+###
+
+COPY Dockerfile.serial32 /root/
+COPY run_serial_tests.sh /root/
 
 ##
 # Run test script on launch.
