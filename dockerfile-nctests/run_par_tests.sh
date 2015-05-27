@@ -30,6 +30,7 @@ else
     cd /root
 fi
 
+if [ "x$RUNF" == "xTRUE" ]; then
 if [ -d "/netcdf-fortran" ]; then
     echo "Using local netcdf-fortran repository"
     git clone /netcdf-fortran /root/netcdf-fortran
@@ -41,6 +42,12 @@ else
     git checkout $FBRANCH
     cd /root
 fi
+else
+    echo "Skipping Fortran"
+fi
+
+
+if [ "x$RUNCXX" == "xTRUE" ]; then
 
 if [ -d "/netcdf-cxx4" ]; then
     echo "Using local netcdf-cxx4 repository"
@@ -54,6 +61,9 @@ else
     cd /root
 fi
 
+else
+    echo "Skipping CXX"
+fi
 
 ###
 # Build & test netcdf-c, then install it so it
@@ -66,6 +76,9 @@ mkdir build-netcdf-c
 cd build-netcdf-c
 cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$CBRANCH" -DCMAKE_C_COMPILER=$(which mpicc) -DENABLE_PNETCDF=ON -DENABLE_PARALLEL_TESTS=ON $COPTS
 make Experimental
+else
+    make -j 4 && make test
+fi
 
 make install
 
@@ -80,19 +93,30 @@ make install
 # Upon further investigation, this may be an HDF5 error.
 # Look into it more closely, later down the road.
 
+if [ "x$RUNF" == "xTRUE" ]; then
 cd /root
 mkdir build-netcdf-fortran
 cd build-netcdf-fortran
 cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$FBRANCH" -DTEST_PARALLEL=OFF -DCMAKE_Fortran_COMPILER=$(which mpif90) $FOPTS
 make Experimental
 
+    else
+        make -j 4 && make test
+    fi
+fi
 
 ###
 # Build & test netcdf-cxx4.
 ###
+if [ "x$RUNCXX" == "xTRUE" ]; then
 
 cd /root
 mkdir build-netcdf-cxx4
 cd build-netcdf-cxx4
 cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker$BITNESS-parallel" -DBUILDNAME_SUFFIX="$CXXBRANCH" -DCMAKE_CXX_COMPILER=$(which mpic++) $CXXOPTS
 make Experimental
+    else
+        make -j 4 && make test
+    fi
+
+fi

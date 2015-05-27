@@ -22,6 +22,9 @@ ENV CXXBRANCH master
 ENV BITNESS 32
 
 
+ENV RUNF TRUE
+ENV RUNCXX TRUE
+ENV USEDASH TRUE
 
 ###
 # Install common packages.

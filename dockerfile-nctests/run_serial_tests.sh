@@ -31,31 +31,40 @@ else
     cd /root
 fi
 
-if [ -d "/netcdf-fortran" ]; then
-    echo "Using local netcdf-fortran repository"
-    git clone /netcdf-fortran /root/netcdf-fortran
+if [ "x$RUNF" == "xTRUE" ]; then
+
+    if [ -d "/netcdf-fortran" ]; then
+        echo "Using local netcdf-fortran repository"
+        git clone /netcdf-fortran /root/netcdf-fortran
+    else
+        echo "Using remote netcdf-fortran repository"
+        git clone http://www.github.com/Unidata/netcdf-fortran
+        cd netcdf-fortran
+        git fetch
+        git checkout $FBRANCH
+        cd /root
+    fi
 else
-    echo "Using remote netcdf-fortran repository"
-    git clone http://www.github.com/Unidata/netcdf-fortran
-    cd netcdf-fortran
-    git fetch
-    git checkout $FBRANCH
-    cd /root
+    echo "Skipping Fortran"
 fi
 
 
-if [ -d "/netcdf-cxx4" ]; then
-    echo "Using local netcdf-cxx4 repository"
-    git clone /netcdf-cxx4 /root/netcdf-cxx4
-else
-    echo "Using remote netcdf-cxx4 repository"
-    git clone http://www.github.com/Unidata/netcdf-cxx4
-    cd netcdf-cxx4
-    git fetch
-    git checkout $CXXBRANCH
-    cd /root
-fi
+if [ "x$RUNCXX" == "xTRUE" ]; then
 
+    if [ -d "/netcdf-cxx4" ]; then
+        echo "Using local netcdf-cxx4 repository"
+        git clone /netcdf-cxx4 /root/netcdf-cxx4
+    else
+        echo "Using remote netcdf-cxx4 repository"
+        git clone http://www.github.com/Unidata/netcdf-cxx4
+        cd netcdf-cxx4
+        git fetch
+        git checkout $CXXBRANCH
+        cd /root
+    fi
+else
+    echo "Skipping CXX"
+fi
 
 ###
 # Build & test netcdf-c, then install it so it
@@ -67,7 +76,12 @@ cd /root
 mkdir build-netcdf-c
 cd build-netcdf-c
 cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker$BITNESS" -DBUILDNAME_SUFFIX="$CBRANCH" $COPTS
-make Experimental
+
+if [ "x$USEDASH" == "xTRUE" ]; then
+    make Experimental
+else
+    make -j 4 && make test
+fi
 
 make install
 
@@ -76,19 +90,32 @@ make install
 # Build & test netcdf-fortran
 ###
 
-cd /root
-mkdir build-netcdf-fortran
-cd build-netcdf-fortran
-cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker$BITNESS" -DBUILDNAME_SUFFIX="$FBRANCH" $FOPTS
-make Experimental
-
+if [ "x$RUNF" == "xTRUE" ]; then
+    cd /root
+    mkdir build-netcdf-fortran
+    cd build-netcdf-fortran
+    cmake /root/netcdf-fortran -DBUILDNAME_PREFIX="docker$BITNESS" -DBUILDNAME_SUFFIX="$FBRANCH" $FOPTS
+    if [ "x$USEDASH" == "xTRUE" ]; then
+        make Experimental
+    else
+        make -j 4 && make test
+    fi
+fi
 
 ###
 # Build & test netcdf-cxx4.
 ###
 
-cd /root
-mkdir build-netcdf-cxx4
-cd build-netcdf-cxx4
-cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker$BITNESS" -DBUILDNAME_SUFFIX="$CXXBRANCH" $CXXOPTS
-make Experimental
+if [ "x$RUNCXX" == "xTRUE" ]; then
+
+    cd /root
+    mkdir build-netcdf-cxx4
+    cd build-netcdf-cxx4
+    cmake /root/netcdf-cxx4 -DBUILDNAME_PREFIX="docker$BITNESS" -DBUILDNAME_SUFFIX="$CXXBRANCH" $CXXOPTS
+    if [ "x$USEDASH" == "xTRUE" ]; then
+        make Experimental
+    else
+        make -j 4 && make test
+    fi
+
+fi

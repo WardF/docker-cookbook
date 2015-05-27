@@ -32,3 +32,6 @@ The following environmental variables can be used to control the behavior at run
 * `COPTS` - CMake options for `netcdf-c`
 * `FOPTS` - CMake options for `netcdf-fortran`
 * `CXXOPTS` - CMake options for `netcdf-cxx4`
+* `RUNF` - Set to `OFF`, `FALSE`, anything but `TRUE`, to disable running fortran tests.
+* `RUNCXX` - Set to `OFF`, `FALSE`, anything but `TRUE`, to disable running netcdf-cxx4 tests.
+* `USEDASH` - Set to any non-`TRUE` value to disable using the remote dashboard.
