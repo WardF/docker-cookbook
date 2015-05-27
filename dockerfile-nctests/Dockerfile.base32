@@ -54,10 +54,10 @@ RUN apt-get install -y cmake
 # Pre-fetch tarballs that we'll need.
 ###
 
-RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
-RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.15/src/hdf5-1.8.15.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/lib-external/szip/2.1/src/szip-2.1.tar.gz
 RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/parallel-netcdf-1.6.0.tar.bz2
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.15/src/hdf5-1.8.15.tar.bz2
 
 ###
 # Uncompress tarballs.
@@ -75,9 +75,3 @@ RUN tar -jxf parallel-netcdf-1.6.0.tar.bz2
 RUN cd szip-2.1 && ./configure --prefix=/usr && make install -j 4
 RUN rm -rf szip-2.1
 
-###
-# Copy over the dockerfile.
-###
-
-COPY Dockerfile.base /root/
-COPY README.md /root/

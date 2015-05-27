@@ -19,9 +19,10 @@ RUN cd hdf5-1.8.15 && ./configure --disable-static --enable-shared --disable-for
 RUN rm -rf hdf5-1.8.15
 
 ###
-# Copy over the dockerfile.
+# Copy over the dockerfile, scripts and README.
 ###
 
+COPY README.md /root/
 COPY Dockerfile.serial /root/
 COPY run_serial_tests.sh /root/
 
