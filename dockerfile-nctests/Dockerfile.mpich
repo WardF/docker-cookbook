@@ -33,6 +33,9 @@ RUN rm -rf parallel-netcdf-1.6.0
 COPY README.md /root/
 COPY Dockerfile.serial /root/
 COPY run_par_tests.sh /root/
+
+ENV PARTYPE -mpich
+
 ##
 # Run test scripts on launch.
 ##
