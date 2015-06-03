@@ -42,22 +42,44 @@ done
 
 if [ "x$DO32" == "xTRUE" ]; then
     echo "Building 32-bit images."
-
+    echo "Building Base Image"
     docker build -t $IPREF:base32 -f Dockerfile.base32 .
-    docker build -t $IPREF:serial32 -f Dockerfile.serial32 .
-    docker build -t $IPREF:openmpi32 -f Dockerfile.openmpi32 .
-    docker build -t $IPREF:mpich32 -f Dockerfile.mpich32 .
 
+    echo "Starting Serial32 Image"
+    docker build -t $IPREF:serial32 -f Dockerfile.serial32 . &> serial32.log&
+    xterm -T serial32 -bg black -fg white -geometry 140x20+10+10 -e tail -f serial32.log&
+    sleep 1
+
+    echo "Starting OpenMPI32 Image"
+    docker build -t $IPREF:openmpi32 -f Dockerfile.openmpi32 . &> openmpi32.log&
+    xterm -T openmpi32 -bg black -fg white -geometry 140x20+10+10 -e tail -f openmpi32.log&
+    sleep 1
+
+    echo "Starting MPICH32 Image"
+    docker build -t $IPREF:mpich32 -f Dockerfile.mpich32 . &> mpich32.log&
+    xterm -T mpich32 -bg black -fg white -geometry 140x20+10+10 -e tail -f mpich32.log&
+    sleep 1
 fi
 
 if [ "x$DO64" == "xTRUE" ]; then
     echo "Building 64-bit images."
-
+    echo "Building Base Image"
     docker build -t $IPREF:base -f Dockerfile.base .
-    docker build -t $IPREF -f Dockerfile.serial .
-    docker build -t $IPREF:serial -f Dockerfile.serial .
-    docker build -t $IPREF:openmpi -f Dockerfile.openmpi .
-    docker build -t $IPREF:mpich -f Dockerfile.mpich .
+
+    echo "Starting Serial Image"
+    docker build -t $IPREF:serial -f Dockerfile.serial . &> serial.log&
+    xterm -T serial -bg black -fg white -geometry 140x20+10+10 -e tail -f serial.log&
+    sleep 1
+
+    echo "Starting OpenMPI Image"
+    docker build -t $IPREF:openmpi -f Dockerfile.openmpi . &> openmpi.log&
+    xterm -T openmpi -bg black -fg white -geometry 140x20+10+10 -e tail -f openmpi.log&
+    sleep 1
+
+    echo "Starting MPICH Image"
+    docker build -t $IPREF:mpich -f Dockerfile.mpich . &> mpich.log&
+    xterm -T mpich -bg black -fg white -geometry 140x20+10+10 -e tail -f mpich.log&
+    sleep 1
 
 fi
 
