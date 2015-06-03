@@ -39,7 +39,7 @@ if [ "x$DO32" == "xTRUE" ]; then
     docker push wardf/nctests:mpich32
 fi
 
-if [ "x$DO32" == "xTRUE" ]; then
+if [ "x$DO64" == "xTRUE" ]; then
     echo "Pushing 64-bit images."
     docker push wardf/nctests:base
     docker push wardf/nctests
