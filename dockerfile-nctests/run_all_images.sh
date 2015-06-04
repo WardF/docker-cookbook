@@ -63,21 +63,21 @@ done
 
 if [ "x$DO32" == "xTRUE" ]; then
     runtest serial32 wardf/nctests:serial32 $BRANCH
-    sleep 1
+    sleep 3
 
     runtest openmpi32 wardf/nctests:openmpi32 $BRANCH
-    sleep 1
+    sleep 3
 
     runtest mpich32 wardf/nctests:mpich32 $BRANCH
-    sleep 1
+    sleep 3
 fi
 
 if [ "x$DO64" == "xTRUE" ]; then
     runtest serial wardf/nctests:serial $BRANCH
-    sleep 1
+    sleep 3
 
     runtest openmpi wardf/nctests:openmpi $BRANCH
-    sleep 1
+    sleep 3
 
     runtest mpich wardf/nctests:mpich $BRANCH
 fi
