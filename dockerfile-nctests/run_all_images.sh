@@ -17,7 +17,7 @@ runtest() {
     DIMAGE=$2
     CBRANCH=$3
 
-    xterm -T "$WINTITLE [$CBRANCH]" -bg black -fg white -geometry 140x20+10+10 -e time docker run --rm -it -e CBRANCH=$CBRANCH $DIMAGE
+    xterm -T "$WINTITLE [$CBRANCH]" -bg black -fg white -geometry 140x20+10+10 -e time docker run --rm -it -e CBRANCH=$CBRANCH $DIMAGE &
     return 0
 }
 
