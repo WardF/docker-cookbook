@@ -81,3 +81,5 @@ if [ "x$DO64" == "xTRUE" ]; then
 
     runtest mpich wardf/nctests:mpich $BRANCH
 fi
+
+xterm -T "Docker Stats" -bg black -fg white -geometry 140x20+10+10 -e docker stats $(docker ps -q) &
