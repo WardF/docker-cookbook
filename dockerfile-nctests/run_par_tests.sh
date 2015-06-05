@@ -75,7 +75,6 @@ cd /root
 mkdir build-netcdf-c
 cd build-netcdf-c
 cmake /root/netcdf-c -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_HDF4=ON -DENABLE_EXTRA_TESTS=ON -DENABLE_MMAP=ON -DBUILDNAME_PREFIX="docker$BITNESS-parallel$PARTYPE" -DBUILDNAME_SUFFIX="$CBRANCH" -DCMAKE_C_COMPILER=$(which mpicc) -DENABLE_PNETCDF=ON -DENABLE_PARALLEL_TESTS=ON $COPTS
-make Experimental
 
 if [ "x$USEDASH" == "xTRUE" ]; then
     make Experimental
