@@ -3,75 +3,46 @@
 # so that we can take advantage of the
 # shared layers that docker provides.
 #####
-FROM ubuntu:utopic
-USER root
-ENV HOME /root
-WORKDIR /root
 
 ###
-# Set up a couple environmental variables.
+# wardf/nctests:base already captures a lot of
+# what we want to do.  So build on top of that.
 ###
 
-##
-# Let the user specify the branches.
-##
-ENV CBRANCH master
-ENV FBRANCH master
-ENV CXXBRANCH master
-
-ENV BITNESS 64
-
-ENV RUNF TRUE
-ENV RUNCXX TRUE
-ENV USEDASH TRUE
+FROM wardf/nctests:base
 
 ###
-# Install common packages.
+# Install doxygen, graphviz.
 ###
 
-RUN apt-get update
-RUN apt-get -y upgrade
-###
-# Install some basics.
-###
-
-RUN apt-get install -y g++
-RUN apt-get install -y gfortran
-RUN apt-get install -y libtool automake autoconf
-RUN apt-get install -y m4
-RUN apt-get install -y bison
-RUN apt-get install -y flex
-RUN apt-get install -y libcurl4-openssl-dev
-RUN apt-get install -y zlib1g-dev
-RUN apt-get install -y git
-RUN apt-get install -y wget
-RUN apt-get install -y curl
-RUN apt-get install -y libjpeg-dev
-RUN apt-get install -y cmake
+RUN apt-get install -y -qq doxygen
+RUN apt-get install -y -qq graphviz
 
 ###
-# Pre-fetch tarballs that we'll need.
+# Manually install hdf4 so that we can run
+# those tests as well.
 ###
 
-RUN wget http://www.hdfgroup.org/ftp/lib-external/szip/2.1/src/szip-2.1.tar.gz
-RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/parallel-netcdf-1.6.0.tar.bz2
-RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-4.2.11.tar.bz2
-RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.15/src/hdf5-1.8.15.tar.bz2
-
+RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4
+RUN rm -rf hdf-4.2.11
 
 ###
-# Uncompress tarballs.
+# Manually install hdf5 so that we can run
+# those tests as well.
 ###
 
-RUN tar -jxf hdf-4.2.11.tar.bz2
-RUN tar -jxf hdf5-1.8.15.tar.bz2
-RUN tar -zxf szip-2.1.tar.gz
-RUN tar -jxf parallel-netcdf-1.6.0.tar.bz2
+RUN cd hdf5-1.8.15 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr --with-szlib && make install -j 4
+RUN rm -rf hdf5-1.8.15
 
 ###
-# Build szip, since we will use it for
-# all of our projects.
+# Copy over the dockerfile, scripts and README.
 ###
 
-RUN cd szip-2.1 && ./configure --prefix=/usr && make install -j 4
-RUN rm -rf szip-2.1
+COPY README.md /root/
+COPY Dockerfile.ncdox /root/
+COPY run_doxygen.sh /root/
+
+###
+# Run script on launch.
+###
+CMD /root/run_doxygen.sh
