@@ -13,7 +13,7 @@ By default, this generates the **USER** documentation.  If you want the develope
 
 Generating **developer** documentation instead of **user** documenation:
 
-    $ docker run --rm --it -v $(pwd):/output -e DEVDOX=ON wardf/ncdox
+    $ docker run --rm -it -v $(pwd):/output -e DEVDOX=ON wardf/ncdox
 
 Generating documentation for the `master` branch:
 
