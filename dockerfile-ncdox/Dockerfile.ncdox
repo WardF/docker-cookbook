@@ -7,9 +7,14 @@
 ###
 # wardf/nctests:base already captures a lot of
 # what we want to do.  So build on top of that.
+#
+# It turns out wardf/nctests:serial already captures
+# even more, and if we specify a different CMD,
+# that will override the one from wardf/nctests:serial.
 ###
 
-FROM wardf/nctests:base
+FROM wardf/nctests:serial
+ENV DEVDOX OFF
 
 ###
 # Install doxygen, graphviz.
@@ -17,22 +22,6 @@ FROM wardf/nctests:base
 
 RUN apt-get install -y -qq doxygen
 RUN apt-get install -y -qq graphviz
-
-###
-# Manually install hdf4 so that we can run
-# those tests as well.
-###
-
-RUN cd hdf-4.2.11 && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4
-RUN rm -rf hdf-4.2.11
-
-###
-# Manually install hdf5 so that we can run
-# those tests as well.
-###
-
-RUN cd hdf5-1.8.15 && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr --with-szlib && make install -j 4
-RUN rm -rf hdf5-1.8.15
 
 ###
 # Copy over the dockerfile, scripts and README.

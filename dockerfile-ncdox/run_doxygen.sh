@@ -21,6 +21,8 @@ if [ ! -d "/output" ]; then
     echo "Example:"
     echo -e "\t docker run --rm -it -v $(pwd):/output [docker image]"
     echo ""
+    cat /root/README.md
+    echo ""
     exit 0
 fi
 
@@ -50,18 +52,43 @@ fi
 # *content* of the html directory to '/output'
 ###
 
-cd /root
-mkdir build-netcdf-dox
-cd build-netcdf-dox
-cmake /root/netcdf-c -DENABLE_TESTS=OFF -DENABLE_DOXYGEN=ON
-make -j 4
+###
+# If DEVDOX=ON, we want to generate developer documentation.
+# otherwise we'll generate user documentation.
+###
+DOCTYPE="user"
+if [ "x$DEVDOX" == "xON" ]; then
+    cd /root/netcdf-c
+    doxygen Doxyfile.developer
+    DOCTYPE="developer"
+else
+    cd /root
+    mkdir build-netcdf-dox
+    cd build-netcdf-dox
+    cmake /root/netcdf-c -DENABLE_TESTS=OFF -DENABLE_DOXYGEN=ON $COPTS
+    make -j 4
+    cd docs
+    DOCTYPE="user"
+fi
 
-if [ ! -d $(pwd)/docs/html ]; then
-    echo "Error: No directory $(pwd)/docs/html!"
+TARGDIR=/output/$DOCTYPE-docs-$CBRANCH-html
+
+if [ ! -d $(pwd)/html ]; then
+    echo "Error: No directory $(pwd)/html!"
     exit 1
 else
-    echo "Copying html directory."
-    cp -R $(pwd)/docs/html /output
+    if [ -d $TARGDIR ]; then
+        TMPDIR=$(date +%s)
+        echo "$TARGDIR exists. Moving to $TARGDIR.$TMPDIR"
+        mv $TARGDIR $TARGDIR.$TMPDIR
+    fi
+
+    echo "Copying html directory to $TARGDIR"
+    if [ "x$DEVDOX" == "xON" ]; then
+        echo "*** This may take a while. ***"
+    fi
+
+    cp -R $(pwd)/html $TARGDIR
 fi
 
 echo "Finished"
