@@ -28,7 +28,7 @@ RUN apt-get install -y -qq graphviz
 ###
 
 COPY README.md /root/
-COPY Dockerfile.ncdox /root/
+COPY Dockerfile.ncdox32 /root/
 COPY run_doxygen.sh /root/
 
 ###
