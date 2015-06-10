@@ -77,18 +77,24 @@ if [ ! -d $(pwd)/html ]; then
     echo "Error: No directory $(pwd)/html!"
     exit 1
 else
+    echo "Copying html directory to $TARGDIR"
+
     if [ -d $TARGDIR ]; then
-        TMPDIR=$(date +%s)
-        echo "$TARGDIR exists. Moving to $TARGDIR.$TMPDIR"
-        mv $TARGDIR $TARGDIR.$TMPDIR
+        echo "$TARGDIR exists. Updating Changed Files"
     fi
 
-    echo "Copying html directory to $TARGDIR"
     if [ "x$DEVDOX" == "xON" ]; then
         echo "*** This may take a while. ***"
     fi
 
-    cp -R $(pwd)/html $TARGDIR
+    ## Get a count of the number of files to be copied.
+    FILENUM=$(rsync -r -u --dry-run --stats --human-readable $(pwd)/html $TARGDIR --stats | grep "regular files" | grep -o -E '[0-9]+')
+    let FILENUM+=5
+
+
+    #cp -R $(pwd)/html $TARGDIR
+    #rsync -av --info=progress1 $(pwd)/html $TARGDIR
+    rsync -vrltD -u --stats --human-readable $(pwd)/html $TARGDIR | pv -pteabl -s $FILENUM > /dev/null
 fi
 
 echo "Finished"

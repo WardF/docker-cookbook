@@ -18,10 +18,14 @@ ENV DEVDOX OFF
 
 ###
 # Install doxygen, graphviz.
+# also install 'pv' so that we can,
+# combined with rsync, have a nice progress
+# bar when copying files over.
 ###
 
 RUN apt-get install -y -qq doxygen
 RUN apt-get install -y -qq graphviz
+RUN apt-get install -y -qq pv
 
 ###
 # Copy over the dockerfile, scripts and README.
@@ -30,6 +34,13 @@ RUN apt-get install -y -qq graphviz
 COPY README.md /root/
 COPY Dockerfile.ncdox /root/
 COPY run_doxygen.sh /root/
+
+###
+# Delete file coped by
+# image we inherit from.
+###
+
+RUN rm /root/run_serial_tests.sh
 
 ###
 # Run script on launch.
