@@ -1,4 +1,4 @@
-FROM wardf/idv-base
+FROM wardf/idv:base
 
 USER root
 
@@ -33,7 +33,7 @@ RUN echo "/usr/bin/startfluxbox" >> ~/.xinitrc
 # just for ease of use.
 ###
 
-COPY Dockerfile /home/idv/
+COPY Dockerfile.idv-gui /home/idv/
 COPY run_idv.sh /home/idv/
 ###
 # Configure fluxbox.
@@ -59,3 +59,4 @@ ENV CDEPTH 24
 
 COPY startidv.sh /home/idv/
 #CMD ["xinit", "--", "/usr/bin/Xvfb", ":1", "-screen", "0", "1024x768x24"]
+CMD /home/idv/startidv.sh

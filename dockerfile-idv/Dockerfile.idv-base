@@ -47,4 +47,4 @@ RUN tar xvfj ~/IDV.tar.bz2
 # just for ease of use.
 ###
 
-COPY Dockerfile /home/idv/
+COPY Dockerfile.idv-base /home/idv/
