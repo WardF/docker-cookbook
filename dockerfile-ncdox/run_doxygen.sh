@@ -87,14 +87,8 @@ else
         echo "*** This may take a while. ***"
     fi
 
-    ## Get a count of the number of files to be copied.
-    FILENUM=$(rsync -r -u --dry-run --stats --human-readable $(pwd)/html $TARGDIR --stats | grep "regular files" | grep -o -E '[0-9]+')
-    let FILENUM+=5
+    cp -R $(pwd)/html $TARGDIR
 
-
-    #cp -R $(pwd)/html $TARGDIR
-    #rsync -av --info=progress1 $(pwd)/html $TARGDIR
-    rsync -vrltD -u --stats --human-readable $(pwd)/html $TARGDIR | pv -pteabl -s $FILENUM > /dev/null
 fi
 
 echo "Finished"
