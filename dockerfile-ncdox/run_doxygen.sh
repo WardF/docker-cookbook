@@ -80,7 +80,8 @@ else
     echo "Copying html directory to $TARGDIR"
 
     if [ -d $TARGDIR ]; then
-        echo "$TARGDIR exists. Updating Changed Files"
+        echo "$TARGDIR exists. Moving to $TARGDIR.bak"
+        mv $TARGDIR $TARGDIR.bak
     fi
 
     if [ "x$DEVDOX" == "xON" ]; then
