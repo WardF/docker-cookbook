@@ -32,13 +32,10 @@ ENV HOME /home/idv
 WORKDIR /home/idv
 
 ###
-# Download IDV
+# Copy local IDV
 ###
 
-RUN curl -SL \
-  http://motherlode.ucar.edu/repository/entry/get/RAMADDA/IDV%20Community%20Resources/IDV%20Docker/IDV.tar.bz2?entryid=18e6168c-d715-4c41-8bbb-d202481c9559 \
-  -o ~/IDV.tar.bz2
-
+COPY IDV.tar.bz2 /home/idv/
 RUN tar xvfj ~/IDV.tar.bz2
 
 ###
@@ -47,4 +44,4 @@ RUN tar xvfj ~/IDV.tar.bz2
 # just for ease of use.
 ###
 
-COPY Dockerfile.idv-base /home/idv/
+COPY Dockerfile.idv-base.local /home/idv/
