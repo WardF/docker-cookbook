@@ -19,7 +19,7 @@ RUN apt-get -y upgrade
 ###
 
 RUN apt-get install -y man nano curl
-RUN apt-get install -y default-jre
+
 ###
 # Set up a non-root user account.
 ###
