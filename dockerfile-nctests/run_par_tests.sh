@@ -3,6 +3,12 @@
 set -e
 
 trap "echo TRAPed signal" HUP INT QUIT KILL TERM
+
+if [ "x$CMD" = "xhelp" ]; then
+    cat README.md
+    exit
+fi
+
 ###
 # Check out all the projects.
 #
