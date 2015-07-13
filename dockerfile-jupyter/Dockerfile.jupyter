@@ -43,7 +43,10 @@ COPY README.md /root/
 COPY Dockerfile.jupyter /root/
 COPY run_jupyter_notebook.sh /root/
 
-
+###
+# Open the port
+###
+EXPOSE 8888
 
 ###
 # Run test script on launch.

@@ -2,7 +2,7 @@
 
 set -e
 
-trap "echo TRAPed signal" HUP INT QUITE KILL TERM
+trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 
 if [ ! -d "/notebooks" ]; then
     cat README.md
@@ -11,4 +11,4 @@ fi
 
 source ~/.virtualenvs/notebook/bin/activate
 cd /notebooks
-jupyter notebook
+jupyter notebook --no-browser --ip=*
