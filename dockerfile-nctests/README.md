@@ -31,7 +31,7 @@ When the image runs, it will check for the existence of `/netcdf-c`, `/netcdf-fo
 ## Environmental Variables <A name="variables"></A>
 
 The following environmental variables can be used to control the behavior at runtime.
-
+* `CMD` - Run an alternative command. Options for this are `help`.
 * `CBRANCH` - Git branch for `netcdf-c`
 * `FBRANCH` - Git branch for `netcdf-fortran`
 * `CXXBRANCH` - Git branch for `netcdf-cxx4`
@@ -44,6 +44,7 @@ The following environmental variables can be used to control the behavior at run
 
 ## Examples <A name="examples"></A>
 
+* [Show the help file](#help)
 * [Run a docker container Interactively](#interactive)
 * [Run all tests (standard use case)](#standard)
 * [Run all tests against a particular netcdf-c branch.](#usebranch)
@@ -66,6 +67,12 @@ The following environmental variables can be used to control the behavior at run
 > The docker images/tags, `wardf/nctests:serial`, `wardf/nctests:mpich`, etc, do not matter here.  So we will simply use `wardf/nctests` (which defaults to `serial`); replace with your tag of choice, they should all work.
 
 See [the section on environmental variables](#variables) for a complete list of variables understood by `wardf/nctests`.
+
+### - Show the help file <A name="help"></A>
+	
+This will show you the help file for the docker image.
+
+    $ docker run --rm -it -e CMD=help wardf/nctests
 
 ### - Run a docker container *interactively* <A name="interactive"></A>
 
