@@ -19,21 +19,24 @@ RUN apt-get -y upgrade
 # Install some basics.
 ###
 RUN apt-get install -y git
-RUN apt-get install -y nodejs-legacy
-RUN apt-get install -y npm
-RUN apt-get install -y python-virtualenv
-RUN apt-get install -y python-dev
-RUN apt-get install -y libcurl4-openssl-dev
+
 ###
-# Run some python stuff. See
-#     https://github.com/jupyter/notebook
-#
-# for details.
+# Install Miniconda.  Assumes you have the Miniconda installer
+# in the local directory. If not, download from:
+# http://conda.pydata.org/miniconda.html
 ###
 
-RUN python2 -m virtualenv /root/.virtualenvs/notebook
+COPY Miniconda3-latest-Linux-x86_64.sh /root/
+RUN chmod 755 /root/Miniconda3-latest-Linux-x86_64.sh
+RUN /root/Miniconda3-latest-Linux-x86_64.sh -b
+RUN echo "PATH=/root/miniconda3/bin:$PATH" >> /root/.bashrc
 
-RUN bash -c "source /root/.virtualenvs/notebook/bin/activate && pip install pycurl && pip install --upgrade setuptools pip && git clone https://github.com/jupyter/notebook.git && cd notebook && pip install -r requirements.txt -e ."
+###
+# Configure Miniconda for the Unidata workshop.
+###
+
+RUN /root/miniconda3/bin/conda config --add channels http://conda.binstar.org/unidata
+RUN /root/miniconda3/bin/conda create -n workshop2015 python=3 ipython numpy netcdf4 matplotlib cartopy OWSLib siphon MetPy xray pyzmq jinja2 tornado jsonschema -y
 
 ###
 # Copy over some files.

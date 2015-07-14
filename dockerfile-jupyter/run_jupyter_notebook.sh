@@ -9,6 +9,6 @@ if [ ! -d "/notebooks" ]; then
     exit 0
 fi
 
-source ~/.virtualenvs/notebook/bin/activate
 cd /notebooks
-jupyter notebook --no-browser --ip=*
+source /root/miniconda3/bin/activate workshop2015
+ipython notebook --no-browser --ip=*
