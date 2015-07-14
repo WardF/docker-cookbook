@@ -27,6 +27,9 @@ RUN apt-get install -y git
 ###
 
 COPY Miniconda3-latest-Linux-x86_64.sh /root/
+
+ENV PATH /root/miniconda3/bin:$PATH
+
 RUN chmod 755 /root/Miniconda3-latest-Linux-x86_64.sh
 RUN /root/Miniconda3-latest-Linux-x86_64.sh -b
 RUN echo "PATH=/root/miniconda3/bin:$PATH" >> /root/.bashrc
@@ -35,8 +38,9 @@ RUN echo "PATH=/root/miniconda3/bin:$PATH" >> /root/.bashrc
 # Configure Miniconda for the Unidata workshop.
 ###
 
+RUN /root/miniconda3/bin/conda update--yes --quiet conda
 RUN /root/miniconda3/bin/conda config --add channels http://conda.binstar.org/unidata
-RUN /root/miniconda3/bin/conda create -n workshop2015 python=3 ipython numpy netcdf4 matplotlib cartopy OWSLib siphon MetPy xray pyzmq jinja2 tornado jsonschema -y
+RUN /root/miniconda3/bin/conda create -n workshop2015 python=3 ipython numpy netcdf4 matplotlib cartopy OWSLib siphon MetPy xray pyzmq jinja2 tornado jsonschema networkx -y
 
 ###
 # Copy over some files.
