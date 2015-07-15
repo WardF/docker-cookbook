@@ -19,7 +19,7 @@ RUN apt-get -y upgrade
 # Install some basics.
 ###
 RUN apt-get install -y git
-
+RUN apt-get install -y libzmq3-dev
 ###
 # Install Miniconda.  Assumes you have the Miniconda installer
 # in the local directory. If not, download from:
