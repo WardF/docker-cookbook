@@ -19,7 +19,7 @@ RUN apt-get -y upgrade
 # Install some basics.
 ###
 RUN apt-get install -y git
-RUN apt-get install -y libzmq3-dev
+
 ###
 # Install Miniconda.  Assumes you have the Miniconda installer
 # in the local directory. If not, download from:
@@ -40,7 +40,9 @@ RUN echo "PATH=/root/miniconda3/bin:$PATH" >> /root/.bashrc
 
 RUN /root/miniconda3/bin/conda update --yes --quiet conda
 RUN /root/miniconda3/bin/conda config --add channels http://conda.binstar.org/unidata
-RUN /root/miniconda3/bin/conda create -n workshop2015 python=3 ipython numpy netcdf4 matplotlib cartopy OWSLib siphon MetPy xray pyzmq jinja2 tornado jsonschema networkx -y
+RUN /root/miniconda3/bin/conda config --add channels http://conda.binstar.org/r
+
+RUN /root/miniconda3/bin/conda create -n workshop2015 python=3 ipython numpy netcdf4 matplotlib cartopy OWSLib siphon MetPy xray pyzmq jinja2 tornado jsonschema networkx r-irkernel -y
 
 ###
 # Copy over some files.
