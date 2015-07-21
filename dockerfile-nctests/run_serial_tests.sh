@@ -29,11 +29,8 @@ if [ -d "/netcdf-c" ]; then
     git clone /netcdf-c /root/netcdf-c
 else
     echo "Using remote netcdf-c repository"
-    git clone http://www.github.com/Unidata/netcdf-c
-    cd netcdf-c
-    git fetch
-    git checkout $CBRANCH
-    cd /root
+    git clone http://www.github.com/Unidata/netcdf-c --single-branch $CBRANCH --depth=1
+    mv $CBRANCH netcdf-c
 fi
 
 if [ "x$RUNF" == "xTRUE" ]; then
@@ -43,11 +40,8 @@ if [ "x$RUNF" == "xTRUE" ]; then
         git clone /netcdf-fortran /root/netcdf-fortran
     else
         echo "Using remote netcdf-fortran repository"
-        git clone http://www.github.com/Unidata/netcdf-fortran
-        cd netcdf-fortran
-        git fetch
-        git checkout $FBRANCH
-        cd /root
+        git clone http://www.github.com/Unidata/netcdf-fortran --single-branch $FBRANCH --depth=1
+        mv $FBRANCH netcdf-fortran
     fi
 else
     echo "Skipping Fortran"
@@ -61,11 +55,8 @@ if [ "x$RUNCXX" == "xTRUE" ]; then
         git clone /netcdf-cxx4 /root/netcdf-cxx4
     else
         echo "Using remote netcdf-cxx4 repository"
-        git clone http://www.github.com/Unidata/netcdf-cxx4
-        cd netcdf-cxx4
-        git fetch
-        git checkout $CXXBRANCH
-        cd /root
+        git clone http://www.github.com/Unidata/netcdf-cxx4 --single-branch $CXXBRANCH --depth=1
+        mv $CXXBRANCH netcdf-cxx4
     fi
 else
     echo "Skipping CXX"
