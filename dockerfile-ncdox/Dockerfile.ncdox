@@ -13,7 +13,7 @@
 # that will override the one from wardf/nctests:serial.
 ###
 
-FROM wardf/nctests:serial
+FROM unidata/nctests:serial
 ENV DEVDOX OFF
 
 ###
