@@ -28,14 +28,6 @@ RUN echo '/usr/bin/x11vnc -usepw -display :1 -autoport $APORT -forever &' >> ~/.
 RUN echo "/usr/bin/startfluxbox" >> ~/.xinitrc
 
 ###
-# Include Dockerfile,
-# utility script to run the IDV
-# just for ease of use.
-###
-
-COPY Dockerfile /home/idv/
-COPY run_idv.sh /home/idv/
-###
 # Configure fluxbox.
 ###
 
@@ -58,4 +50,8 @@ ENV SIZEW 768
 ENV CDEPTH 24
 
 COPY startidv.sh /home/idv/
-#CMD ["xinit", "--", "/usr/bin/Xvfb", ":1", "-screen", "0", "1024x768x24"]
+COPY run_idv.sh /home/idv/
+COPY Dockerfile.gui /home/idv/
+COPY README.md /home/idv/
+
+CMD /home/idv/startidv.sh
