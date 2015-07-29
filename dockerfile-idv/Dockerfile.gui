@@ -36,7 +36,7 @@ RUN bash -c 'echo "xterm &" >> ~/.fluxbox/startup'
 RUN echo "/usr/bin/fluxbox -log ~/.fluxbox/log" >> ~/.fluxbox/startup
 
 ENV APORT 5901
-EXPOSE 5901
+EXPOSE ${APORT}
 
 ##
 # We can parameterize screen dimensions
@@ -48,6 +48,10 @@ EXPOSE 5901
 ENV SIZEH 1024
 ENV SIZEW 768
 ENV CDEPTH 24
+
+###
+# Add the default Unidata bundle.
+###
 
 COPY startidv.sh /home/idv/
 COPY run_idv.sh /home/idv/
