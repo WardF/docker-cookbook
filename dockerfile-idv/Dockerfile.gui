@@ -2,7 +2,7 @@ FROM unidata/idv-base
 
 USER root
 
-RUN apt-get install -y x11vnc xvfb xinit fluxbox
+RUN apt-get install -y x11vnc xvfb xinit fluxbox wmctrl
 
 USER idv
 ENV HOME /home/idv
