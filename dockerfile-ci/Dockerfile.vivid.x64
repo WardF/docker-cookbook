@@ -29,6 +29,7 @@ RUN apt-get -y install zip
 RUN apt-get -y install cmake
 RUN apt-get -y install cron
 RUN apt-get -y install bzip2
+RUN apt-get -y install autoconf
 ###
 # Create a non-root user for running things this.
 ###
