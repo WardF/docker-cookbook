@@ -1,0 +1,45 @@
+#####
+# Used to generate NetCDF CI docker container.
+#####
+
+FROM ubuntu:vivid
+MAINTAINER Ward Fisher <wfisher@ucar.edu>
+
+###
+# Install Requirements
+###
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get -y install ubuntu-dev-tools m4 git libjpeg-dev libcurl4-openssl-dev wget htop libtool bison flex autoconf curl g++ gfortran zlib1g-dev zip cmake libhdf5-dev libhdf4-dev
+
+###
+# Create a non-root user for this.
+###
+RUN useradd -ms /bin/bash ciuser
+RUN echo 'ciuser:ciuser' | chpasswd
+USER ciuser
+ENV HOME /home/ciuser
+
+###
+# Copy over some files.
+###
+ADD crontab.in.serial /home/ciuser/
+RUN mv /home/ciuser/crontab.in.serial /home/ciuser/crontab.in
+
+ADD shell-scripts/run_nightly_tests.sh /home/ciuser/
+
+ADD cmake-scripts/CI.cmake /home/ciuser/
+ADD cmake-scripts/CTestConfig.cmake /home/ciuser/
+ADD cmake-scripts/FCI.cmake /home/ciuser/
+ADD cmake-scripts/CXX4I.cmake /home/ciuser/
+ADD cmake-scripts/FPARCI.cmake /home/ciuser/
+ADD cmake-scripts/PARCI.cmake /home/ciuser/
+ADD cmake-scripts/ctest_service.serial.sh /home/ciuser/
+ADD cmake-scripts/ctest_service.parallel.sh /home/ciuser/
+###
+# Install crontab
+###
+RUN crontab < /home/ciuser/crontab.in
+RUN mv /home/ciuser/crontab.in /home/ciuser/.cron.lock
+
+CMD /home/ciuser/ctest_service.serial.sh

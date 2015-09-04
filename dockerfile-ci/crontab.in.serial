@@ -1,0 +1,4 @@
+CRON_TZ="America/Denver"
+LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:/home/ciuser/local
+
+01 3 * * * cd /home/ciuser && /home/ciuser/run_nightly_test.sh -l netcdf-c > nightly_log_c.txt
