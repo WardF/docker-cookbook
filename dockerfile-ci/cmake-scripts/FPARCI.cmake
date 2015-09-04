@@ -56,7 +56,7 @@ set (CTEST_START_WITH_EMPTY_BINARY_DIRECTORY TRUE)
 
 
 ## Set CTest Options
-set(OPTIONS -DCMAKE_PREFIX_PATH=/home/vagrant/local2 -DNC_CTEST_DROP_SITE=${CTEST_DROP_SITE} -DTEST_PARALLEL=ON -DCMAKE_C_COMPILER=${CC_MPI} -DCMAKE_Fortran_COMPILER=${FC_MPI})
+set(OPTIONS -DCMAKE_PREFIX_PATH=/home/home/ciuser/local2 -DNC_CTEST_DROP_SITE=${CTEST_DROP_SITE} -DTEST_PARALLEL=ON -DCMAKE_C_COMPILER=${CC_MPI} -DCMAKE_Fortran_COMPILER=${FC_MPI})
 
 ## Kick off the test
 SET (CTEST_START_WITH_EMPTY_BINARY_DIRECTORY_ONCE 1)
@@ -68,7 +68,7 @@ while (${CTEST_ELAPSED_TIME} GREATER -1)
   set (START_TIME ${CTEST_ELAPSED_TIME})
   ctest_update(RETURN_VALUE count)
   message("Count: ${count}")
-  IF(NOT EXISTS "/vagrant/NOTEST" AND NOT EXISTS "/vagrant/NOTESTF")
+  IF(NOT EXISTS "/home/ciuser/NOTEST" AND NOT EXISTS "/home/ciuser/NOTESTF")
     if (count GREATER 0 OR first_loop GREATER 0)
       SET(CTEST_BUILD_NAME	"${CTEST_BUILD_NAME}")
 
@@ -85,7 +85,7 @@ while (${CTEST_ELAPSED_TIME} GREATER -1)
       set(first_loop 0)
     endif()
   ELSE()
-    message("-- Lock file /vagrant/NOTEST or /vagrant/NOTESTF exists. Skipping tests.")
+    message("-- Lock file /home/ciuser/NOTEST or /home/ciuser/NOTESTF exists. Skipping tests.")
   ENDIF()
   ctest_sleep( ${START_TIME} 600 ${CTEST_ELAPSED_TIME})
 
