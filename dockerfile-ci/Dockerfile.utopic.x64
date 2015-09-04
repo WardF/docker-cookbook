@@ -2,7 +2,7 @@
 # Used to generate NetCDF CI docker container.
 #####
 
-FROM ubuntu:vivid
+FROM ubuntu:utopic
 MAINTAINER Ward Fisher <wfisher@ucar.edu>
 
 ENV DEBIAN_FRONTEND noninteractive
