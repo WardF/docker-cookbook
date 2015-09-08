@@ -3,27 +3,28 @@
 
 DOHELP()
 {
-    echo "Usage: $0 [base image name] [Dockerfile suffix]"
+    echo "Usage: $0 [template file] [base image name] [Dockerfile suffix]"
     echo ""
     echo "Example:"
-    echo -e "\t $0 ubuntu:trusty trusty.x64"
+    echo -e "\t $0 Dockerfile.ubuntu.generic ubuntu:trusty trusty.x64"
     echo ""
 }
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 3 ]; then
     DOHELP
     exit 1
 fi
 
-BASENAME="${1}"
-SUFF="${2}"
-INFILE="Dockerfile.ubuntu.generic"
+
+INFILE="${1}"
+BASENAME="${2}"
+SUFF="${3}"
+
 OUTFILE="Dockerfile.${SUFF}"
 
 cp "${INFILE}" "${OUTFILE}"
 sed -i .bak "s/GENERIC-CONTAINER/${BASENAME}/g" ${OUTFILE}
 rm -f "${OUTFILE}".bak
 
-echo ""
 echo "Created ${OUTFILE}"
 echo ""
