@@ -9,6 +9,9 @@ sleep 3
 xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Utopic: 64-bit]" -e "docker build -t unidata/ncci:utopic-x64 -f Dockerfile.utopic.x64 . ; echo '[Press Return to Close]' && read " &
 sleep 3
 
+xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Utopic: 32-bit]" -e "docker build -t unidata/ncci:utopic-x86 -f Dockerfile.utopic.x86 . ; echo '[Press Return to Close]' && read " &
+sleep 3
+
 xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Trusty: 64-bit]" -e "docker build -t unidata/ncci:trusty-x64 -f Dockerfile.trusty.x64 . ; echo '[Press Return to Close]' && read " &
 sleep 3
 
