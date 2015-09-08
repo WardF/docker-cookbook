@@ -8,6 +8,13 @@ echo "Generating unique identifier: $RSTRING"
 echo "Using unique hostname suffix: $RSHORT"
 echo ""
 
+# Kludge for the time being.
+# Lets us see the random string/identifier without
+# actually kicking off all of the stuff.
+if [ $# -gt 0 ]; then
+    exit 0
+fi
+
 xterm -bg black -fg white -T "[Ubuntu Vivid: 64-bit]" -geometry 100x10 -e "docker run --rm -it -h vivid-x64-$RSHORT unidata/ncci:vivid-x64"&
 sleep 3
 
