@@ -2,7 +2,7 @@
 # Used to generate NetCDF CI docker container.
 #####
 
-FROM f69m/ubuntu32:utopic
+FROM f69m/ubuntu32:14.10
 MAINTAINER Ward Fisher <wfisher@ucar.edu>
 
 ENV DEBIAN_FRONTEND noninteractive
