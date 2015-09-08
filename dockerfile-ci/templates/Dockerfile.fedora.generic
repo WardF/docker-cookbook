@@ -29,6 +29,7 @@ RUN yum -y install bzip2 && yum -y clean all
 RUN yum -y install flex && yum -y clean all
 RUN yum -y install make && yum -y clean all
 RUN yum -y install sudo && yum -y clean all
+RUN yum -y install hostname && yum -y clean all
 
 ###
 # Create a non-root user for running things this.
