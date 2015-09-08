@@ -12,24 +12,25 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install apt-utils
-RUN apt-get -y install m4
-RUN apt-get -y install git
-RUN apt-get -y install libjpeg-dev
-RUN apt-get -y install libcurl4-openssl-dev
-RUN apt-get -y install wget
-RUN apt-get -y install libtool
-RUN apt-get -y install bison
-RUN apt-get -y install flex
-RUN apt-get -y install curl
-RUN apt-get -y install g++
-RUN apt-get -y install gfortran
-RUN apt-get -y install zlib1g-dev
-RUN apt-get -y install zip
-RUN apt-get -y install cmake
-RUN apt-get -y install cron
-RUN apt-get -y install bzip2
-RUN apt-get -y install autoconf
+RUN apt-get -y install apt-utils && apt-get -y autoclean
+RUN apt-get -y install m4 && apt-get -y autoclean
+RUN apt-get -y install git && apt-get -y autoclean
+RUN apt-get -y install libjpeg-dev && apt-get -y autoclean
+RUN apt-get -y install libcurl4-openssl-dev && apt-get -y autoclean
+RUN apt-get -y install wget && apt-get -y autoclean
+RUN apt-get -y install libtool && apt-get -y autoclean
+RUN apt-get -y install bison && apt-get -y autoclean
+RUN apt-get -y install flex && apt-get -y autoclean
+RUN apt-get -y install curl && apt-get -y autoclean
+RUN apt-get -y install g++ && apt-get -y autoclean
+RUN apt-get -y install gfortran && apt-get -y autoclean
+RUN apt-get -y install zlib1g-dev && apt-get -y autoclean
+RUN apt-get -y install zip && apt-get -y autoclean
+RUN apt-get -y install cmake && apt-get -y autoclean
+RUN apt-get -y install cron && apt-get -y autoclean
+RUN apt-get -y install bzip2 && apt-get -y autoclean
+RUN apt-get -y install autoconf && apt-get -y autoclean
+RUN apt-get -y install sudo && apt-get -y autoclean
 
 ###
 # Create a non-root user for running things this.
