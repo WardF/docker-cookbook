@@ -24,6 +24,9 @@ sleep 3
 xterm -bg black -fg white -T "[Ubuntu Utopic: 64-bit]" -geometry 100x10 -e "docker run --rm -it -h utopic-x64-$RSHORT unidata/ncci:utopic-x64"&
 sleep 3
 
+xterm -bg black -fg white -T "[Ubuntu Utopic: 32-bit]" -geometry 100x10 -e "docker run --rm -it -h utopic-x64-$RSHORT unidata/ncci:utopic-x86"&
+sleep 3
+
 xterm -bg black -fg white -T "[Ubuntu Trusty: 64-bit]" -geometry 100x10 -e "docker run --rm -it -h trusty-x64-$RSHORT unidata/ncci:trusty-x64"&
 sleep 3
 
