@@ -9,30 +9,34 @@ MAINTAINER Ward Fisher <wfisher@ucar.edu>
 # Install Requirements
 ###
 RUN yum -y update
-RUN yum -y install m4
-RUN yum -y install git
-RUN yum -y install libjpeg-turbo-devel
-RUN yum -y install libcurl-devel
-RUN yum -y install wget
-RUN yum -y install nano
-RUN yum -y install libtool
-RUN yum -y install bison
-RUN yum -y install autoconf
-RUN yum -y install curl
-RUN yum -y install zlib-devel
-RUN yum -y install zip
-RUN yum -y install gcc-gfortran
-RUN yum -y install gcc-c++
-RUN yum -y install byacc
-RUN yum -y install crontabs
-RUN yum -y install cmake
+RUN yum -y install m4 && yum -y clean all
+RUN yum -y install git && yum -y clean all
+RUN yum -y install libjpeg-turbo-devel && yum -y clean all
+RUN yum -y install libcurl-devel && yum -y clean all
+RUN yum -y install wget && yum -y clean all
+RUN yum -y install nano && yum -y clean all
+RUN yum -y install libtool && yum -y clean all
+RUN yum -y install bison && yum -y clean all
+RUN yum -y install autoconf && yum -y clean all
+RUN yum -y install curl && yum -y clean all
+RUN yum -y install zlib-devel && yum -y clean all
+RUN yum -y install zip && yum -y clean all
+RUN yum -y install gcc-gfortran && yum -y clean all
+RUN yum -y install gcc-c++ && yum -y clean all
+RUN yum -y install byacc && yum -y clean all
+RUN yum -y install crontabs && yum -y clean all
+RUN yum -y install cmake && yum -y clean all
+RUN yum -y install bzip2 && yum -y clean all
+RUN yum -y install flex && yum -y clean all
+RUN yum -y install make && yum -y clean all
+RUN yum -y install sudo && yum -y clean all
 
 ###
 # Create a non-root user for running things this.
 ###
 RUN useradd -ms /bin/bash ciuser
 RUN echo 'ciuser:ciuser' | chpasswd
-RUN adduser ciuser sudo
+RUN echo "ciuser ALL=(ALL) ALL" >> /etc/sudoers
 USER ciuser
 ENV HOME /home/ciuser
 WORKDIR /home/ciuser
@@ -97,7 +101,7 @@ USER ciuser
 ###
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
-RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
+RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
 
