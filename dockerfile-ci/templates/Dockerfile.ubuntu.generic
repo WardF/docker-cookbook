@@ -26,12 +26,11 @@ RUN apt-get -y install g++ && apt-get -y autoclean
 RUN apt-get -y install gfortran && apt-get -y autoclean
 RUN apt-get -y install zlib1g-dev && apt-get -y autoclean
 RUN apt-get -y install zip && apt-get -y autoclean
-RUN apt-get -y install cmake && apt-get -y autoclean
 RUN apt-get -y install cron && apt-get -y autoclean
 RUN apt-get -y install bzip2 && apt-get -y autoclean
 RUN apt-get -y install autoconf && apt-get -y autoclean
 RUN apt-get -y install sudo && apt-get -y autoclean
-
+RUN apt-get -y install make && apt-get -y autoclean
 ###
 # Create a non-root user for running things this.
 ###
@@ -64,9 +63,23 @@ RUN crontab < /home/ciuser/crontab.in
 RUN mv /home/ciuser/crontab.in /home/ciuser/.cron.lock
 
 ###
-# Build and install hdf4/hdf5.
+# Build and install cmake, hdf4/hdf5.
 ###
 
+###
+# CMake stuff, to ensure we have an
+# appropriate version.
+###
+ENV CMAKE_VER cmake-3.2.1
+ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
+RUN wget http://www.cmake.org/files/v3.2/${CMAKE_FILE}
+RUN tar -zxf ${CMAKE_FILE}
+
+USER root
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 2 && ldconfig
+RUN rm -rf ${CMAKE_VER}
+
+USER ciuser
 ##
 # HDF4
 ##
@@ -105,7 +118,6 @@ USER root
 RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
-
 
 ###
 # Do some final cleanup

@@ -25,7 +25,6 @@ RUN yum -y install gcc-gfortran && yum -y clean all
 RUN yum -y install gcc-c++ && yum -y clean all
 RUN yum -y install byacc && yum -y clean all
 RUN yum -y install crontabs && yum -y clean all
-RUN yum -y install cmake && yum -y clean all
 RUN yum -y install bzip2 && yum -y clean all
 RUN yum -y install flex && yum -y clean all
 RUN yum -y install make && yum -y clean all
@@ -63,9 +62,23 @@ RUN crontab < /home/ciuser/crontab.in
 RUN mv /home/ciuser/crontab.in /home/ciuser/.cron.lock
 
 ###
-# Build and install hdf4/hdf5.
+# Build and install cmake, hdf4/hdf5.
 ###
 
+###
+# CMake stuff, to ensure we have an
+# appropriate version.
+###
+ENV CMAKE_VER cmake-3.2.1
+ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
+RUN wget http://www.cmake.org/files/v3.2/${CMAKE_FILE}
+RUN tar -zxf ${CMAKE_FILE}
+
+USER root
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 2 && ldconfig
+RUN rm -rf ${CMAKE_VER}
+
+USER ciuser
 ##
 # HDF4
 ##
