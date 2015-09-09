@@ -22,8 +22,16 @@ SUFF="${3}"
 
 OUTFILE="Dockerfile.${SUFF}"
 
+OS=$(uname)
+
+SEDARGS=""
+
+if [ "x$OS" == "xDarwin" ]; then
+    SEDARGS=".bak"
+fi
+
 cp "${INFILE}" "${OUTFILE}"
-sed -i "s/GENERIC-CONTAINER/${BASENAME}/g" ${OUTFILE}
+sed -i ${SEDARGS} "s/GENERIC-CONTAINER/${BASENAME}/g" ${OUTFILE}
 rm -f "${OUTFILE}".bak
 
 echo "Created ${OUTFILE}"
