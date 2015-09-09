@@ -42,7 +42,6 @@ RUN yum -y install hostname && yum -y clean all
 ###
 # Add ciuser to sudoers.
 ###
-RUN adduser ciuser sudo
 RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 USER ciuser
