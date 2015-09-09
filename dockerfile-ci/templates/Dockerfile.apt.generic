@@ -12,6 +12,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 RUN useradd -ms /bin/bash ciuser
 RUN echo 'ciuser:ciuser' | chpasswd
+ENV HOME /home/ciuser
+WORKDIR /home/ciuser
 
 ###
 # Install Requirements
@@ -37,6 +39,16 @@ RUN apt-get -y install bzip2 && apt-get -y autoclean
 RUN apt-get -y install autoconf && apt-get -y autoclean
 RUN apt-get -y install sudo && apt-get -y autoclean
 RUN apt-get -y install make && apt-get -y autoclean
+
+###
+# Add ciuser to sudoers.
+###
+RUN adduser ciuser sudo
+RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+USER ciuser
+
+
 ###
 # Build and install cmake, hdf4/hdf5.
 ###
@@ -90,6 +102,7 @@ USER ciuser
 ###
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
+RUN ldconfig
 RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
@@ -111,14 +124,6 @@ ENV TZ America/Denver
 RUN ln -snf /usr/share/timezone/$TZ /etc/localtime && echo $TZ > /etc/timezone
 USER ciuser
 
-###
-# Add ciuser to sudoers.
-###
-RUN adduser ciuser sudo
-RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
-USER ciuser
-ENV HOME /home/ciuser
-WORKDIR /home/ciuser
 ###
 # Copy over some files.
 ###
