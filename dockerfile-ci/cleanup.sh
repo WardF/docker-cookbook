@@ -1,3 +1,3 @@
 #!/bin/bash
-rm Dockerfile.*.x64
-rm Dockerfile.*.x86
+rm Dockerfile*-x64
+rm Dockerfile*-x86

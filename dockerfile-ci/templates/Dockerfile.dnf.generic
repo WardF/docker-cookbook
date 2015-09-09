@@ -5,32 +5,38 @@
 FROM GENERIC-CONTAINER
 MAINTAINER Ward Fisher <wfisher@ucar.edu>
 
-ENV DEBIAN_FRONTEND noninteractive
+###
+# Create a non-root user for running things this.
+###
+RUN useradd -ms /bin/bash ciuser
+RUN echo 'ciuser:ciuser' | chpasswd
 
 ###
 # Install Requirements
 ###
-RUN apt-get update
-RUN apt-get -y upgrade
-RUN apt-get -y install apt-utils && apt-get -y autoclean
-RUN apt-get -y install m4 && apt-get -y autoclean
-RUN apt-get -y install git && apt-get -y autoclean
-RUN apt-get -y install libjpeg-dev && apt-get -y autoclean
-RUN apt-get -y install libcurl4-openssl-dev && apt-get -y autoclean
-RUN apt-get -y install wget && apt-get -y autoclean
-RUN apt-get -y install libtool && apt-get -y autoclean
-RUN apt-get -y install bison && apt-get -y autoclean
-RUN apt-get -y install flex && apt-get -y autoclean
-RUN apt-get -y install curl && apt-get -y autoclean
-RUN apt-get -y install g++ && apt-get -y autoclean
-RUN apt-get -y install gfortran && apt-get -y autoclean
-RUN apt-get -y install zlib1g-dev && apt-get -y autoclean
-RUN apt-get -y install zip && apt-get -y autoclean
-RUN apt-get -y install cron && apt-get -y autoclean
-RUN apt-get -y install bzip2 && apt-get -y autoclean
-RUN apt-get -y install autoconf && apt-get -y autoclean
-RUN apt-get -y install sudo && apt-get -y autoclean
-RUN apt-get -y install make && apt-get -y autoclean
+RUN dnf -y update
+RUN dnf -y install m4 && dnf -y clean all
+RUN dnf -y install git && dnf -y clean all
+RUN dnf -y install libjpeg-turbo-devel && dnf -y clean all
+RUN dnf -y install libcurl-devel && dnf -y clean all
+RUN dnf -y install wget && dnf -y clean all
+RUN dnf -y install nano && dnf -y clean all
+RUN dnf -y install libtool && dnf -y clean all
+RUN dnf -y install bison && dnf -y clean all
+RUN dnf -y install autoconf && dnf -y clean all
+RUN dnf -y install curl && dnf -y clean all
+RUN dnf -y install zlib-devel && dnf -y clean all
+RUN dnf -y install zip && dnf -y clean all
+RUN dnf -y install gcc-gfortran && dnf -y clean all
+RUN dnf -y install gcc-c++ && dnf -y clean all
+RUN dnf -y install byacc && dnf -y clean all
+RUN dnf -y install crontabs && dnf -y clean all
+RUN dnf -y install bzip2 && dnf -y clean all
+RUN dnf -y install flex && dnf -y clean all
+RUN dnf -y install make && dnf -y clean all
+RUN dnf -y install sudo && dnf -y clean all
+RUN dnf -y install hostname && dnf -y clean all
+
 ###
 # Build and install cmake, hdf4/hdf5.
 ###
@@ -84,17 +90,17 @@ USER ciuser
 ###
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
+RUN ldconfig
 RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
+
 
 ###
 # Do some final cleanup
 ###
 USER root
-RUN apt-get -y clean
-RUN apt-get -y autoclean
-RUN apt-get -y purge
+RUN dnf clean all
 USER ciuser
 
 ###
@@ -106,11 +112,8 @@ RUN ln -snf /usr/share/timezone/$TZ /etc/localtime && echo $TZ > /etc/timezone
 USER ciuser
 
 ###
-# Create a non-root user for running things this.
+# Add ciuser to sudoers
 ###
-RUN useradd -ms /bin/bash ciuser
-RUN echo 'ciuser:ciuser' | chpasswd
-RUN adduser ciuser sudo
 RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER ciuser
 ENV HOME /home/ciuser

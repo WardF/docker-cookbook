@@ -5,32 +5,38 @@
 FROM GENERIC-CONTAINER
 MAINTAINER Ward Fisher <wfisher@ucar.edu>
 
+ENV DEBIAN_FRONTEND noninteractive
+
+###
+# Create a non-root user for running things this.
+###
+RUN useradd -ms /bin/bash ciuser
+RUN echo 'ciuser:ciuser' | chpasswd
+
 ###
 # Install Requirements
 ###
-RUN yum -y update
-RUN yum -y install m4 && yum -y clean all
-RUN yum -y install git && yum -y clean all
-RUN yum -y install libjpeg-turbo-devel && yum -y clean all
-RUN yum -y install libcurl-devel && yum -y clean all
-RUN yum -y install wget && yum -y clean all
-RUN yum -y install nano && yum -y clean all
-RUN yum -y install libtool && yum -y clean all
-RUN yum -y install bison && yum -y clean all
-RUN yum -y install autoconf && yum -y clean all
-RUN yum -y install curl && yum -y clean all
-RUN yum -y install zlib-devel && yum -y clean all
-RUN yum -y install zip && yum -y clean all
-RUN yum -y install gcc-gfortran && yum -y clean all
-RUN yum -y install gcc-c++ && yum -y clean all
-RUN yum -y install byacc && yum -y clean all
-RUN yum -y install crontabs && yum -y clean all
-RUN yum -y install bzip2 && yum -y clean all
-RUN yum -y install flex && yum -y clean all
-RUN yum -y install make && yum -y clean all
-RUN yum -y install sudo && yum -y clean all
-RUN yum -y install hostname && yum -y clean all
-
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get -y install apt-utils && apt-get -y autoclean
+RUN apt-get -y install m4 && apt-get -y autoclean
+RUN apt-get -y install git && apt-get -y autoclean
+RUN apt-get -y install libjpeg-dev && apt-get -y autoclean
+RUN apt-get -y install libcurl4-openssl-dev && apt-get -y autoclean
+RUN apt-get -y install wget && apt-get -y autoclean
+RUN apt-get -y install libtool && apt-get -y autoclean
+RUN apt-get -y install bison && apt-get -y autoclean
+RUN apt-get -y install flex && apt-get -y autoclean
+RUN apt-get -y install curl && apt-get -y autoclean
+RUN apt-get -y install g++ && apt-get -y autoclean
+RUN apt-get -y install gfortran && apt-get -y autoclean
+RUN apt-get -y install zlib1g-dev && apt-get -y autoclean
+RUN apt-get -y install zip && apt-get -y autoclean
+RUN apt-get -y install cron && apt-get -y autoclean
+RUN apt-get -y install bzip2 && apt-get -y autoclean
+RUN apt-get -y install autoconf && apt-get -y autoclean
+RUN apt-get -y install sudo && apt-get -y autoclean
+RUN apt-get -y install make && apt-get -y autoclean
 ###
 # Build and install cmake, hdf4/hdf5.
 ###
@@ -84,17 +90,17 @@ USER ciuser
 ###
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
-RUN ldconfig
 RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
-
 
 ###
 # Do some final cleanup
 ###
 USER root
-RUN yum clean all
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
 USER ciuser
 
 ###
@@ -106,11 +112,9 @@ RUN ln -snf /usr/share/timezone/$TZ /etc/localtime && echo $TZ > /etc/timezone
 USER ciuser
 
 ###
-# Create a non-root user for running things this.
+# Add ciuser to sudoers.
 ###
-RUN useradd -ms /bin/bash ciuser
-RUN echo 'ciuser:ciuser' | chpasswd
-#RUN echo "ciuser ALL=(ALL) ALL" >> /etc/sudoers
+RUN adduser ciuser sudo
 RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER ciuser
 ENV HOME /home/ciuser
@@ -140,4 +144,4 @@ RUN mv /home/ciuser/crontab.in /home/ciuser/.cron.lock
 ###
 # Final Command
 ###
-CMD /usr/bin/sudo cron && /home/ciuser/ctest_service.serial.sh
+CMD /home/ciuser/ctest_service.serial.sh

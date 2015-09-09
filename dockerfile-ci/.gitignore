@@ -1,2 +1,2 @@
-Dockerfile.*.x64
-Dockerfile.*.x86
+Dockerfile*-x64
+Dockerfile*-x86
