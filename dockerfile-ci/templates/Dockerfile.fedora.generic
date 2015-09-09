@@ -36,7 +36,8 @@ RUN yum -y install hostname && yum -y clean all
 ###
 RUN useradd -ms /bin/bash ciuser
 RUN echo 'ciuser:ciuser' | chpasswd
-RUN echo "ciuser ALL=(ALL) ALL" >> /etc/sudoers
+#RUN echo "ciuser ALL=(ALL) ALL" >> /etc/sudoers
+RUN echo "ciuser ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER ciuser
 ENV HOME /home/ciuser
 WORKDIR /home/ciuser
@@ -139,4 +140,4 @@ USER ciuser
 ###
 # Final Command
 ###
-CMD /home/ciuser/ctest_service.serial.sh
+CMD "sudo cron && /home/ciuser/ctest_service.serial.sh"
