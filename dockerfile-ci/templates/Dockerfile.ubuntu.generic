@@ -129,6 +129,14 @@ RUN apt-get -y purge
 USER ciuser
 
 ###
+# Set Timezone
+###
+USER root
+ENV TZ America/Denver
+RUN ln -snf /usr/share/timezone/$TZ /etc/localtime && echo $TZ > /etc/timezone
+USER ciuser
+
+###
 # Final Command
 ###
 CMD /home/ciuser/ctest_service.serial.sh

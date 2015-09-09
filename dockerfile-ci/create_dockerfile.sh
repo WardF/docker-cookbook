@@ -23,7 +23,7 @@ SUFF="${3}"
 OUTFILE="Dockerfile.${SUFF}"
 
 cp "${INFILE}" "${OUTFILE}"
-sed -i .bak "s/GENERIC-CONTAINER/${BASENAME}/g" ${OUTFILE}
+sed -i "s/GENERIC-CONTAINER/${BASENAME}/g" ${OUTFILE}
 rm -f "${OUTFILE}".bak
 
 echo "Created ${OUTFILE}"
