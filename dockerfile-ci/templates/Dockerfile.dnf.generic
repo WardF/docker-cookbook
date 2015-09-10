@@ -38,6 +38,7 @@ RUN dnf -y install flex && dnf -y clean all
 RUN dnf -y install make && dnf -y clean all
 RUN dnf -y install sudo && dnf -y clean all
 RUN dnf -y install hostname && dnf -y clean all
+RUN dnf -y install which && dnf -y clean all
 
 ###
 # Add ciuser to sudoers.
