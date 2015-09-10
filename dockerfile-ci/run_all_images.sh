@@ -33,6 +33,9 @@ sleep 3
 xterm -bg black -fg white -T "[Ubuntu Trusty: 32-bit]" -geometry 100x10 -e "docker run --rm -it -h trusty-x86-$RSHORT unidata/ncci:trusty-x86"&
 sleep 3
 
+xterm -bg black -fg white -T "[Fedora 22: 64-bit]" -geometry 100x10 -e "docker run --rm -it -h fedora22-x64-$RSHORT unidata/ncci:fedora22-x64"&
+sleep 3
+
 xterm -bg black -fg white -T "[Fedora 21: 64-bit]" -geometry 100x10 -e "docker run --rm -it -h fedora21-x64-$RSHORT unidata/ncci:fedora21-x64"&
 sleep 3
 
