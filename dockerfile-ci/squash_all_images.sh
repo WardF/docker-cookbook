@@ -24,6 +24,8 @@ unidata/ncci:centos7-x64"
 for X in $IMGS; do
     echo $X
     set -x
-    docker save $X | sudo TMPDIR=/sandbox/tmp docker-squash -verbose -t $X | docker load
+    OUTNAME="$(echo $X | sed "s/:/-/g" | sed "s/\//_/g")".tar
+    docker save $X | sudo docker-squash -verbose -t $X -o ${OUTNAME}
+    docker load -i $OUTNAME
     set +x
 done
