@@ -24,6 +24,6 @@ unidata/ncci:centos7-x64"
 for X in $IMGS; do
     echo $X
     set -x
-    docker save $X | sudo TMPDIR=/sandbox/tmp docker-squash -verbose -t $X-squashed | docker load
+    docker save $X | sudo TMPDIR=/sandbox/tmp docker-squash -verbose -t $X | docker load
     set +x
 done
