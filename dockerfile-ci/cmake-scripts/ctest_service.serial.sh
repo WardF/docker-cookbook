@@ -13,7 +13,10 @@ else
     sudo cron
 fi
 
-ps aux | grep cron
+if [ -f /usr/bin/ps ]; then
+  ps aux | grep cron
+fi
+
 echo "Starting Tests"
 
 ctest -V -S CI.cmake > ccontinuous_test.out 2>&1 &
