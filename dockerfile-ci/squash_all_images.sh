@@ -54,6 +54,8 @@ for X in $IMGS; do
 
 done
 
+chmod 755 ${OUTSCRIPT}
+
 echo "echo Finished" >> ${OUTSCRIPT}
 
 echo ""
