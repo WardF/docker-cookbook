@@ -21,24 +21,7 @@ WORKDIR /home/ciuser
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get -y install apt-utils && apt-get -y autoclean
-RUN apt-get -y install m4 && apt-get -y autoclean
-RUN apt-get -y install git && apt-get -y autoclean
-RUN apt-get -y install libjpeg-dev && apt-get -y autoclean
-RUN apt-get -y install libcurl4-openssl-dev && apt-get -y autoclean
-RUN apt-get -y install wget && apt-get -y autoclean
-RUN apt-get -y install libtool && apt-get -y autoclean
-RUN apt-get -y install bison && apt-get -y autoclean
-RUN apt-get -y install flex && apt-get -y autoclean
-RUN apt-get -y install curl && apt-get -y autoclean
-RUN apt-get -y install g++ && apt-get -y autoclean
-RUN apt-get -y install gfortran && apt-get -y autoclean
-RUN apt-get -y install zlib1g-dev && apt-get -y autoclean
-RUN apt-get -y install zip && apt-get -y autoclean
-RUN apt-get -y install cron && apt-get -y autoclean
-RUN apt-get -y install bzip2 && apt-get -y autoclean
-RUN apt-get -y install autoconf && apt-get -y autoclean
-RUN apt-get -y install sudo && apt-get -y autoclean
-RUN apt-get -y install make && apt-get -y autoclean
+RUN apt-get -y install m4 git libjpeg-dev libcurl4-openssl-dev wget libtool bison flex curl g++ gfortran zlib1g-dev zip cron bzip2 autoconf sudo make && apt-get -y autoclean
 
 ###
 # Add ciuser to sudoers.

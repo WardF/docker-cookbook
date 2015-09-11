@@ -17,27 +17,7 @@ WORKDIR /home/ciuser
 # Install Requirements
 ###
 RUN yum -y update
-RUN yum -y install m4 && yum -y clean all
-RUN yum -y install git && yum -y clean all
-RUN yum -y install libjpeg-turbo-devel && yum -y clean all
-RUN yum -y install libcurl-devel && yum -y clean all
-RUN yum -y install wget && yum -y clean all
-RUN yum -y install nano && yum -y clean all
-RUN yum -y install libtool && yum -y clean all
-RUN yum -y install bison && yum -y clean all
-RUN yum -y install autoconf && yum -y clean all
-RUN yum -y install curl && yum -y clean all
-RUN yum -y install zlib-devel && yum -y clean all
-RUN yum -y install zip && yum -y clean all
-RUN yum -y install gcc-gfortran && yum -y clean all
-RUN yum -y install gcc-c++ && yum -y clean all
-RUN yum -y install byacc && yum -y clean all
-RUN yum -y install crontabs && yum -y clean all
-RUN yum -y install bzip2 && yum -y clean all
-RUN yum -y install flex && yum -y clean all
-RUN yum -y install make && yum -y clean all
-RUN yum -y install sudo && yum -y clean all
-RUN yum -y install hostname && yum -y clean all
+RUN yum -y install m4 git libjpeg-turbo-devel libcurl-devel wget nano libtool bison autoconf curl zlib-devel zip gcc-gfortran gcc-c++ byacc crontabs bzip2 flex make sudo hostname && yum -y clean all
 
 ###
 # Add ciuser to sudoers.

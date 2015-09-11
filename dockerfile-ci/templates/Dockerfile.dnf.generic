@@ -17,28 +17,7 @@ WORKDIR /home/ciuser
 # Install Requirements
 ###
 RUN dnf -y update
-RUN dnf -y install m4 && dnf -y clean all
-RUN dnf -y install git && dnf -y clean all
-RUN dnf -y install libjpeg-turbo-devel && dnf -y clean all
-RUN dnf -y install libcurl-devel && dnf -y clean all
-RUN dnf -y install wget && dnf -y clean all
-RUN dnf -y install nano && dnf -y clean all
-RUN dnf -y install libtool && dnf -y clean all
-RUN dnf -y install bison && dnf -y clean all
-RUN dnf -y install autoconf && dnf -y clean all
-RUN dnf -y install curl && dnf -y clean all
-RUN dnf -y install zlib-devel && dnf -y clean all
-RUN dnf -y install zip && dnf -y clean all
-RUN dnf -y install gcc-gfortran && dnf -y clean all
-RUN dnf -y install gcc-c++ && dnf -y clean all
-RUN dnf -y install byacc && dnf -y clean all
-RUN dnf -y install crontabs && dnf -y clean all
-RUN dnf -y install bzip2 && dnf -y clean all
-RUN dnf -y install flex && dnf -y clean all
-RUN dnf -y install make && dnf -y clean all
-RUN dnf -y install sudo && dnf -y clean all
-RUN dnf -y install hostname && dnf -y clean all
-RUN dnf -y install which && dnf -y clean all
+RUN dnf -y install m4 git libjpeg-turbo-devel libcurl-devel wget nano libtool bison autoconf curl zlib-devel zip gcc-gfortran gcc-c++ byacc crontabs bzip2 flex make sudo hostname which && dnf -y clean all
 
 ###
 # Add ciuser to sudoers.
