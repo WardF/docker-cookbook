@@ -22,7 +22,7 @@ echo "Starting Tests"
 ctest -V -S CI.cmake > ccontinuous_test.out 2>&1 &
 ctest -V -S FCI.cmake > fcontinuous_test.out 2>&1 &
 ctest -V -S CXX4I.cmake > cxx4continuous_test.out 2>&1 &
-
+sleep 5
 tail -f ccontinuous_test.out
 
 #echo "[Continuous Integration Tests in Progress. Press Enter 3x to Exit]"
