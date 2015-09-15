@@ -86,7 +86,7 @@ USER ciuser
 ENV PNET_VER parallel-netcdf-1.6.1
 ENV PNET_FILE ${PNET_VER}.tar.bz2
 USER root
-RUN wget http://cucis.ece.northwester.edu/projects/PnetCDF/Release/${PNET_FILE}
+RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/${PNET_FILE}
 RUN tar -jxf ${PNET_FILE}
 RUN cd ${PNET_VER} && CPPFLAGS="-fPIC" CC=$(which mpicc) ./configure --prefix=/usr && make -k -j 2 install
 
@@ -99,7 +99,7 @@ USER ciuser
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
 RUN ldconfig
-RUN cd netcdf-c && autoreconf -if && CC=$(which mpicc) CFLAGS="-02" ./configure --prefix=/home/ciuser/local2 && make install -j 2
+RUN cd netcdf-c && autoreconf -if && CC=mpicc ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
 
