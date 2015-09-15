@@ -21,7 +21,7 @@ WORKDIR /home/ciuser
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get -y install apt-utils && apt-get -y autoclean
-RUN apt-get -y install m4 git libjpeg-dev libcurl4-openssl-dev wget libtool bison flex curl g++ gfortran zlib1g-dev zip cron bzip2 autoconf sudo make && apt-get -y autoclean
+RUN apt-get -y install m4 git libjpeg-dev libcurl4-openssl-dev wget libtool bison flex curl g++ gfortran zlib1g-dev zip cron bzip2 autoconf sudo make openmpi-bin libopenmpi-dev && apt-get -y autoclean
 
 ###
 # Add ciuser to sudoers.
@@ -75,9 +75,22 @@ RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
 RUN tar -jxf ${HDF5_FILE}
 USER root
 
-RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
+RUN cd ${HDF5_VER} && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --enable-shared --disable-static --disable-fortran --enable-hl --enable-parallel --prefix=/usr && make install -j 2
 
 RUN rm -rf /home/ciuser/${HDF5_VER}
+USER ciuser
+
+##
+# PNetCDF
+##
+ENV PNET_VER parallel-netcdf-1.6.1
+ENV PNET_FILE ${PNET_VER}.tar.bz2
+USER root
+RUN wget http://cucis.ece.northwester.edu/projects/PnetCDF/Release/${PNET_FILE}
+RUN tar -jxf ${PNET_FILE}
+RUN cd ${PNET_VER} && CPPFLAGS="-fPIC" CC=$(which mpicc) ./configure --prefix=/usr && make -k -j 2 install
+
+RUN rm -rf /home/ciuser/${PNET_VER}
 USER ciuser
 
 ###
@@ -86,7 +99,7 @@ USER ciuser
 RUN git clone git://github.com/Unidata/netcdf-c
 USER root
 RUN ldconfig
-RUN cd netcdf-c && autoreconf -if && ./configure --prefix=/home/ciuser/local2 && make install -j 2
+RUN cd netcdf-c && autoreconf -if && CC=$(which mpicc) CFLAGS="-02" ./configure --prefix=/home/ciuser/local2 && make install -j 2
 RUN rm -rf /home/ciuser/netcdf-c
 USER ciuser
 
@@ -110,8 +123,8 @@ USER ciuser
 ###
 # Copy over some files.
 ###
-ADD crontab.in.serial /home/ciuser/
-RUN mv /home/ciuser/crontab.in.serial /home/ciuser/crontab.in
+ADD crontab.in.parallel /home/ciuser/
+RUN mv /home/ciuser/crontab.in.parallel /home/ciuser/crontab.in
 
 ADD shell-scripts/run_nightly_test.sh /home/ciuser/
 
@@ -132,4 +145,4 @@ RUN mv /home/ciuser/crontab.in /home/ciuser/.cron.lock
 ###
 # Final Command
 ###
-CMD /home/ciuser/ctest_service.serial.sh
+CMD /home/ciuser/ctest_service.parallel.sh
