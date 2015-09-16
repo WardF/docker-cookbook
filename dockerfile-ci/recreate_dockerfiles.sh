@@ -6,14 +6,30 @@
 ###
 # Create Ubuntu Dockerfiles.
 ###
+
+###
+# Vivid
+###
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:vivid" vivid-x64
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:vivid" vivid-x86
 
+###
+# Utopic
+###
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:utopic" utopic-x64
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:14.10" utopic-x86
 
+###
+# Trusty
+###
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:trusty" trusty-x64
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:trusty" trusty-x86
+
+###
+# Trusty - Parallel
+###
+./create_dockerfile.sh templates/Dockerfile.apt.openmpi.generic "ubuntu:trusty" trusty-openmpi-x64
+./create_dockerfile.sh templates/Dockerfile.apt.mpich.generic "ubuntu:trusty" trusty-mpich-x64
 
 ###
 # Create Fedora and Centos Dockerfiles
