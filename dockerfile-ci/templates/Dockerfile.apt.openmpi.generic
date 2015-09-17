@@ -123,6 +123,7 @@ USER ciuser
 ###
 # Copy over some files.
 ###
+ADD run_all_ci_images.sh /home/ciuser/
 ADD crontab.in.parallel /home/ciuser/
 RUN mv /home/ciuser/crontab.in.parallel /home/ciuser/crontab.in
 

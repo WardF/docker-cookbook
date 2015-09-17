@@ -103,6 +103,7 @@ USER ciuser
 ###
 # Copy over some files.
 ###
+ADD run_all_ci_images.sh /home/ciuser/
 ADD crontab.in.serial /home/ciuser/
 RUN mv /home/ciuser/crontab.in.serial /home/ciuser/crontab.in
 
