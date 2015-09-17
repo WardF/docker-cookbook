@@ -112,7 +112,7 @@ RUN_IMG "unidata/ncci:fedora21-x64" "fedora21-x64" "${DOX}" ; sleep 3
 # Centos
 ###
 
-RUN_IMG "unidata/ncci:centos7-x64" "centos7-x64" "${DOX}" ; sleep3
+RUN_IMG "unidata/ncci:centos7-x64" "centos7-x64" "${DOX}" ; sleep 3
 
 echo "Finished"
 echo ""
