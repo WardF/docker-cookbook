@@ -46,8 +46,8 @@ for X in $IMGS; do
     echo "Squashing ${X} to ${OUTNAME}"
     docker save $X | sudo docker-squash -verbose -t $X -o ${OUTNAME}
     sudo chown wfisher:wfisher ${OUTNAME}
-    echo "Loading ${OUTNAME}"
-    docker load -i ${OUTNAME}
+    #echo "Loading ${OUTNAME}"
+    #docker load -i ${OUTNAME}
     echo ""
 
     # Add to loading script.
