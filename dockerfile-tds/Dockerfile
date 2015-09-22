@@ -23,31 +23,35 @@ RUN apt-get install -y wget
 # this with downstream changes.
 ###
 
-RUN wget http://download.nextag.com/apache/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz
+ENV TC_VERSION 8.0.26
+ENV TC_NAME apache-tomcat-${TC_VERSION}
+ENV TC_FILENAME ${TC_NAME}.tar.gz
 
+RUN wget http://download.nextag.com/apache/tomcat/tomcat-8/v${TC_VERSION}/bin/${TC_FILENAME}
 RUN wget ftp://ftp.unidata.ucar.edu/pub/thredds/4.3/current/thredds.war
 
 ###
 # Download/install tomcat
 ###
 
-RUN mv apache-tomcat-8.0.22.tar.gz /usr/local
-RUN cd /usr/local && tar -zxf apache-tomcat-8.0.22.tar.gz
+RUN mv ${TC_FILENAME} /usr/local
+RUN cd /usr/local && tar -zxf ${TC_FILENAME}
+
 
 ###
 # Copy over configuration files.
 ###
 
 # Tomcat setenv.sh
-COPY setenv.sh /usr/local/apache-tomcat-8.0.22/bin/
-RUN chmod 755 /usr/local/apache-tomcat-8.0.22/bin/setenv.sh
+COPY setenv.sh /usr/local/${TC_NAME}/bin/
+RUN chmod 755 /usr/local/${TC_NAME}/bin/setenv.sh
 
 # Tomcat users configuration.
-COPY tomcat-users.xml /usr/local/apache-tomcat-8.0.22/conf/
+COPY tomcat-users.xml /usr/local/${TC_NAME}/conf/
 
 # Set up the tomcat user
 RUN useradd tomcat
-RUN chown -R tomcat /usr/local/apache-tomcat-8.0.22
+RUN chown -R tomcat /usr/local/${TC_NAME}
 
 # Tomcat init script.
 COPY tomcat /etc/init.d/
@@ -62,11 +66,11 @@ RUN /etc/init.d/tomcat start
 ###
 
 RUN chown tomcat thredds.war
-RUN mv thredds.war /usr/local/apache-tomcat-8.0.22/webapps
+RUN mv thredds.war /usr/local/${TC_NAME}/webapps
 
-RUN mkdir -p /usr/local/apache-tomcat-8.0.22/content
-COPY thredds.tar.bz2 /usr/local/apache-tomcat-8.0.22/content/
-RUN cd /usr/local/apache-tomcat-8.0.22/content && tar -jxf thredds.tar.bz2
+RUN mkdir -p /usr/local/${TC_NAME}/content
+COPY thredds.tar.bz2 /usr/local/${TC_NAME}/content/
+RUN cd /usr/local/${TC_NAME}/content && tar -jxf thredds.tar.bz2
 
 ###
 # Final Items

@@ -8,7 +8,7 @@
 # chkconfig:
 # description: 	Start up the Tomcat servlet engine.
 
-CATALINA_HOME="/usr/local/apache-tomcat-8.0.22"
+CATALINA_HOME="/usr/local/${TC_NAME}"
 case "$1" in
  start)
         if [ -f $CATALINA_HOME/bin/startup.sh ];
