@@ -4,22 +4,22 @@
 # shared layers that docker provides.
 #####
 #FROM besn0847/ubuntu32
-FROM ubuntu:14.04
+FROM ubuntu:utopic
 USER root
 ENV HOME /root
 WORKDIR /root
 
 RUN apt-get update
-#RUN apt-get -y upgrade
+RUN apt-get -y upgrade
 
 ###
 # Install some basics.
 ###
 
-RUN apt-get install -y man nano
-RUN apt-get install -y x11-utils x11-common
-RUN apt-get install -y linkchecker
-RUN apt-get install -y linkchecker-gui
+RUN apt-get install -y man nano x11-utils x11-common linkchecker linkchecker-gui
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
 
 ###
 # Copy over the utility run script, usage doc, so that we can
@@ -30,6 +30,7 @@ RUN apt-get install -y linkchecker-gui
 COPY run_linkchecker.sh /root/
 COPY run_socat.sh /root/
 COPY USAGE.md /root/
+COPY runlinkchecker.sh /root/
 
 RUN mkdir -p /root/.linkchecker
 COPY linkcheckerrc /root/.linkchecker/
@@ -37,4 +38,4 @@ COPY linkcheckerrc /root/.linkchecker/
 ##
 # Run dia on launch.
 ##
-CMD /usr/bin/linkchecker-gui
+CMD /root/runlinkchecker.sh
