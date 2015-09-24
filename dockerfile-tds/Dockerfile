@@ -27,7 +27,7 @@ ENV TC_VERSION 8.0.26
 ENV TC_NAME apache-tomcat-${TC_VERSION}
 ENV TC_FILENAME ${TC_NAME}.tar.gz
 
-RUN wget http://download.nextag.com/apache/tomcat/tomcat-8/v${TC_VERSION}/bin/${TC_FILENAME}
+RUN wget http://apache.mirrors.tds.net/tomcat/tomcat-8/v${TC_VERSION}/bin/${TC_FILENAME}
 RUN wget ftp://ftp.unidata.ucar.edu/pub/thredds/4.3/current/thredds.war
 
 ###
