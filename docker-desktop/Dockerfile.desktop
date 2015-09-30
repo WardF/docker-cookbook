@@ -75,6 +75,9 @@ RUN echo '/etc/init.d/lxdm start' >>
 # ports, etc.
 #####
 
+EXPOSE 5901
+EXPOSE 6080
+
 ###
 # If not true, noVNC will not run.
 ###
@@ -103,7 +106,7 @@ RUN chmod 755 /home/${CUSER}/local/bin/startdesktop.sh
 
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
-COPY self.pem /home/${CUSER}/docs/
+COPY self_unsigned.pem /home/${CUSER}/docs/
 
 #####
 # Kick off the session with the following
