@@ -27,7 +27,7 @@ RUN apt-get install -y man nano curl git emacs wget
 ###
 # Install developer tools
 ###
-RUN apt-get install -y gcc g++ fortran clang gdb
+RUN apt-get install -y gcc g++ gfortran clang gdb
 RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev cmake libcurl4-openssl-dev
 
 ###
@@ -56,6 +56,13 @@ ENV HOME /home/${CUSER}
 WORKDIR /home/${CUSER}
 
 #####
+# Grab the noVNC project.
+#####
+
+RUN git clone git://github.com/kanaka/noVNC
+RUN ln -s /home/${CUSER}/noVNC/vnc_auto.hml /home/${CUSER}/noVNC/index.html
+
+#####
 # Configure vnc, xvfb.
 # Taken from https://docs.docker.com/reference/builder/#entrypoint
 #####
@@ -68,7 +75,7 @@ WORKDIR /home/${CUSER}
 
 RUN mkdir ~/.vnc
 RUN echo '/usr/bin/x11vnc -display :1 -autoport 5901 -forever &' > ~/.xinitrc
-RUN echo '/etc/init.d/lxdm start' >>
+RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 
 #####
 # Initialize environmental variables, expose
@@ -91,26 +98,57 @@ ENV SIZEW 800
 ENV CDEPTH 24
 
 #####
+# Do some user configuration.
+#
+# * Configure git
+# * Configure emacs
+# * configure .bashrc with aliases
+#####
+
+RUN git config --global user.email "wfisher@ucar.edu"
+RUN git config --global user.name "Ward Fisher"
+RUN git config --global push.default simple
+RUN git config --global credential.helper 'cache --timeout=3600'
+
+RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
+
+
+#####
 # Copy over scripts, configuration files, readme, etc.
 #####
 
 ###
-# Make some utilities.
+# Make some directories.
 ###
 
 RUN mkdir -p /home/${CUSER}/local/bin
 RUN mkdir -p /home/${CUSER}/docs
 
-COPY startdesktop.sh /home/${CUSER}/local/bin/
-RUN chmod 755 /home/${CUSER}/local/bin/startdesktop.sh
+###
+# Copy over files.
+###
+
+COPY startdesktop.sh /home/${CUSER}/
+#RUN chmod 755 /home/${CUSER}/local/bin/startdesktop.sh
 
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
 COPY self_unsigned.pem /home/${CUSER}/docs/
+COPY emacs-small.el /home/${CUSER}/
+RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
+
+#####
+# Cleanup
+#####
+USER root
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
+RUN chown -R ${CUSER} /home/${CUSER}/
 
 #####
 # Kick off the session with the following
 # script.
 #####
-
-CMD /home/${CUSER}/local/bin/startdesktop.sh
+USER ${CUSER}
+CMD /home/${CUSER}/startdesktop.sh
