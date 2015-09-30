@@ -1,0 +1,113 @@
+#####
+# Used to generate the 'wardf/desktop' docker container.
+# This is accessed either via a VNC client or a web browser,
+# thanks to 'noVNC'.
+#####
+
+#####
+# Common stuff at front.
+#####
+
+FROM ubuntu:utopic
+MAINTAINER Ward Fisher <ward.fisher@gmail.com>
+ENV DEBIAN_FRONTEND noninteractive
+
+#####
+# Install packages and update the system.
+#####
+
+RUN apt-get update
+RUN apt-get -y upgrade
+
+###
+# Install some utilities
+###
+RUN apt-get install -y man nano curl git emacs wget
+
+###
+# Install developer tools
+###
+RUN apt-get install -y gcc g++ fortran clang gdb
+RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev cmake libcurl4-openssl-dev
+
+###
+# Install Desktop, VNC, noVNC stuff.
+###
+RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
+
+#####
+# Add a non-root user, but allow that user
+# unfettered sudo access.
+#####
+ENV CUSER ubuntu
+
+RUN useradd -ms /bin/bash ${CUSER}
+RUN adduser ${CUSER} sudo
+RUN echo "${CUSER}:password.1234" | chpasswd
+
+RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+#####
+# Switch over to non-root user,
+# configure system and environment.
+#####
+USER ${CUSER}
+ENV HOME /home/${CUSER}
+WORKDIR /home/${CUSER}
+
+#####
+# Configure vnc, xvfb.
+# Taken from https://docs.docker.com/reference/builder/#entrypoint
+#####
+
+###
+# Create the .xinitrc file.
+# This will be invoked when xinit is called from the initial
+# command script.
+###
+
+RUN mkdir ~/.vnc
+RUN echo '/usr/bin/x11vnc -display :1 -autoport 5901 -forever &' > ~/.xinitrc
+RUN echo '/etc/init.d/lxdm start' >>
+
+#####
+# Initialize environmental variables, expose
+# ports, etc.
+#####
+
+###
+# If not true, noVNC will not run.
+###
+ENV USENOVNC TRUE
+
+###
+# Variables to dictate windows session geometry and color depth.
+###
+ENV SIZEH 1280
+ENV SIZEW 800
+ENV CDEPTH 24
+
+#####
+# Copy over scripts, configuration files, readme, etc.
+#####
+
+###
+# Make some utilities.
+###
+
+RUN mkdir -p /home/${CUSER}/local/bin
+RUN mkdir -p /home/${CUSER}/docs
+
+COPY startdesktop.sh /home/${CUSER}/local/bin/
+RUN chmod 755 /home/${CUSER}/local/bin/startdesktop.sh
+
+COPY README.md /home/${CUSER}/docs/
+COPY Dockerfile.desktop /home/${CUSER}/docs/
+COPY self.pem /home/${CUSER}/docs/
+
+#####
+# Kick off the session with the following
+# script.
+#####
+
+CMD /home/${CUSER}/local/bin/startdesktop.sh
