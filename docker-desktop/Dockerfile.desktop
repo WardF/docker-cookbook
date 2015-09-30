@@ -35,6 +35,50 @@ RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev l
 ###
 RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 
+
+###
+# Install HDF4, HDF5
+###
+
+##
+# HDF4
+##
+ENV HDF4_VER hdf-4.2.11
+ENV HDF4_FILE ${HDF4_VER}.tar.bz2
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}
+
+RUN tar -jxf ${HDF4_FILE}
+USER root
+
+RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+RUN rm -rf /home/${CUSER}/${HDF4_VER}
+
+USER ${CUSER}
+##
+# HDF5
+##
+ENV HDF5VER 1.8.15-patch1
+ENV HDF5_VER hdf5-${HDF5VER}
+ENV HDF5_FILE ${HDF5_VER}.tar.bz2
+
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
+RUN tar -jxf ${HDF5_FILE}
+USER root
+
+RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
+
+RUN rm -rf /home/${CUSER}/${HDF5_VER}
+USER ${CUSER}
+
+
+###
+# Cleanup
+###
+USER root
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
+
 #####
 # Add a non-root user, but allow that user
 # unfettered sudo access.
@@ -60,7 +104,7 @@ WORKDIR /home/${CUSER}
 #####
 
 RUN git clone git://github.com/kanaka/noVNC
-RUN ln -s /home/${CUSER}/noVNC/vnc_auto.hml /home/${CUSER}/noVNC/index.html
+RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 
 #####
 # Configure vnc, xvfb.
@@ -138,17 +182,10 @@ COPY emacs-small.el /home/${CUSER}/
 RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 
 #####
-# Cleanup
-#####
-USER root
-RUN apt-get -y clean
-RUN apt-get -y autoclean
-RUN apt-get -y purge
-RUN chown -R ${CUSER} /home/${CUSER}/
-
-#####
 # Kick off the session with the following
 # script.
 #####
+USER root
+RUN chown -R ${CUSER} /home/${CUSER}/
 USER ${CUSER}
 CMD /home/${CUSER}/startdesktop.sh
