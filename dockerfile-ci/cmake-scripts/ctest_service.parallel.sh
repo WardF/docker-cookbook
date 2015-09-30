@@ -17,6 +17,10 @@ if [ -f /usr/bin/ps ]; then
   ps aux | grep cron
 fi
 
+# Give docker time to start all jobs before hammering the CPU.
+echo "Sleeping 30 seconds before starting."
+sleep 30
+
 echo "Starting Tests"
 
 ctest -V -S PARCI.cmake > ccontinuous_test.out 2>&1 &
