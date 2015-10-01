@@ -70,11 +70,16 @@ RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-for
 RUN rm -rf /home/${CUSER}/${HDF5_VER}
 USER ${CUSER}
 
+###
+# Install some final packages I forgot about.
+###
+USER root
+RUN apt-get -y install htop
 
 ###
 # Cleanup
 ###
-USER root
+
 RUN apt-get -y clean
 RUN apt-get -y autoclean
 RUN apt-get -y purge
@@ -118,7 +123,12 @@ RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 ###
 
 RUN mkdir ~/.vnc
-RUN echo '/usr/bin/x11vnc -display :1 -autoport 5901 -forever &' > ~/.xinitrc
+#RUN echo 'if [ "x${SHARED}" == "x$TRUE" ]; then' > ~/.xinitrc
+#RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever -shared &' >> ~/.xinitrc
+#RUN echo 'else' >> ~/.xinitrc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever &' >> ~/.xinitrc
+#RUN echo 'fi' >> ~/.xinitrc
+#RUN echo '' >> ~/.xinitrc
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 
 #####
@@ -137,8 +147,8 @@ ENV USENOVNC TRUE
 ###
 # Variables to dictate windows session geometry and color depth.
 ###
-ENV SIZEH 1280
-ENV SIZEW 800
+ENV SIZEH 1440
+ENV SIZEW 900
 ENV CDEPTH 24
 
 #####
@@ -156,7 +166,6 @@ RUN git config --global credential.helper 'cache --timeout=3600'
 
 RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 
-
 #####
 # Copy over scripts, configuration files, readme, etc.
 #####
@@ -173,7 +182,6 @@ RUN mkdir -p /home/${CUSER}/docs
 ###
 
 COPY startdesktop.sh /home/${CUSER}/
-#RUN chmod 755 /home/${CUSER}/local/bin/startdesktop.sh
 
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
