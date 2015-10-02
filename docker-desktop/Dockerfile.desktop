@@ -126,20 +126,14 @@ RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 
 RUN mkdir ~/.vnc
 RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever &' >> ~/.xinitrc
-RUN echo ' /usr/bin/x11vnc -display :1 -autoport 5901 -shared -viewonly -forever &' >> ~/.xinitrc
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 
 #####
 # Initialize environmental variables, expose
 # ports, etc.
 #####
-
 EXPOSE 5901
-EXPOSE 5902
-EXPOSE 5903
-EXPOSE 5904
 EXPOSE 6080
-
 
 ###
 # If not true, noVNC will not run.
