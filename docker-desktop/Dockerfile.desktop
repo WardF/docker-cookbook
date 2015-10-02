@@ -12,6 +12,9 @@ FROM ubuntu:utopic
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV HOME /root
+ENV WORKDIR /root
+
 #####
 # Install packages and update the system.
 #####
@@ -46,14 +49,11 @@ RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 ENV HDF4_VER hdf-4.2.11
 ENV HDF4_FILE ${HDF4_VER}.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}
-
 RUN tar -jxf ${HDF4_FILE}
-USER root
 
 RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
-RUN rm -rf /home/${CUSER}/${HDF4_VER}
+RUN rm -rf ${HDF4_VER}
 
-USER ${CUSER}
 ##
 # HDF5
 ##
@@ -63,18 +63,21 @@ ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
 RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
 RUN tar -jxf ${HDF5_FILE}
-USER root
 
 RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
-
-RUN rm -rf /home/${CUSER}/${HDF5_VER}
-USER ${CUSER}
+RUN rm -rf ${HDF5_VER}
 
 ###
 # Install some final packages I forgot about.
 ###
-USER root
 RUN apt-get -y install htop
+
+###
+# Install docker-machine
+###
+USER root
+RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-adm64 > /usr/local/bin/docker-machine
+RUN chmod 755 /usr/local/bin/docker-machine
 
 ###
 # Cleanup
@@ -93,7 +96,6 @@ ENV CUSER ubuntu
 RUN useradd -ms /bin/bash ${CUSER}
 RUN adduser ${CUSER} sudo
 RUN echo "${CUSER}:password.1234" | chpasswd
-
 RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 #####
@@ -104,10 +106,18 @@ USER ${CUSER}
 ENV HOME /home/${CUSER}
 WORKDIR /home/${CUSER}
 
+###
+# Create install docker script (for use with remote daemons)
+###
+ENV DINST /home/${CUSER}/install_docker.sh
+RUN echo '#!/bin/bash' > ${DINST}
+RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
+RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
+RUN chmod 755 ${DINST}
+
 #####
 # Grab the noVNC project.
 #####
-
 RUN git clone git://github.com/kanaka/noVNC
 RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 
@@ -123,12 +133,8 @@ RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 ###
 
 RUN mkdir ~/.vnc
-#RUN echo 'if [ "x${SHARED}" == "x$TRUE" ]; then' > ~/.xinitrc
-#RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever -shared &' >> ~/.xinitrc
-#RUN echo 'else' >> ~/.xinitrc
 RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever &' >> ~/.xinitrc
-#RUN echo 'fi' >> ~/.xinitrc
-#RUN echo '' >> ~/.xinitrc
+RUN echo ' /usr/bin/x11vnc -display :1 -autoport 5901 -shared -viewonly -forever &' >> ~/.xinitrc
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 
 #####
@@ -137,7 +143,11 @@ RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 #####
 
 EXPOSE 5901
+EXPOSE 5902
+EXPOSE 5903
+EXPOSE 5904
 EXPOSE 6080
+
 
 ###
 # If not true, noVNC will not run.
