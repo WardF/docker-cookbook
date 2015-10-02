@@ -77,42 +77,42 @@ echo ""
 ###
 
 
-RUN_IMG "unidata/ncci:vivid-x64" "vivid-x64" "${DOX}" ; sleep 3
-RUN_IMG "unidata/ncci:vivid-x86" "vivid-x86" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:vivid-x64" "vivid-x64" "${DOX}" ; sleep 1
+RUN_IMG "unidata/ncci:vivid-x86" "vivid-x86" "${DOX}" ; sleep 1
 
 ###
 # Utopic
 ###
 
-RUN_IMG "unidata/ncci:utopic-x64" "utopic-x64" "${DOX}" ; sleep 3
-RUN_IMG "unidata/ncci:utopic-x86" "utopic-x86" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:utopic-x64" "utopic-x64" "${DOX}" ; sleep 1
+RUN_IMG "unidata/ncci:utopic-x86" "utopic-x86" "${DOX}" ; sleep 1
 
 ###
 # Trusty
 ###
 
-RUN_IMG "unidata/ncci:trusty-x64" "trusty-x64" "${DOX}" ; sleep 3
-RUN_IMG "unidata/ncci:trusty-x86" "trusty-x86" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:trusty-x64" "trusty-x64" "${DOX}" ; sleep 1
+RUN_IMG "unidata/ncci:trusty-x86" "trusty-x86" "${DOX}" ; sleep 1
 
 ###
 # Trusty - Parallel
 ###
 
-RUN_IMG "unidata/ncci:trusty-openmpi-x64" "trusty-openmpi-x64" "${DOX}" ; sleep 3
-RUN_IMG "unidata/ncci:trusty-mpich-x64" "trusty-mpich-x64" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:trusty-openmpi-x64" "trusty-openmpi-x64" "${DOX}" ; sleep 1
+RUN_IMG "unidata/ncci:trusty-mpich-x64" "trusty-mpich-x64" "${DOX}" ; sleep 1
 
 ###
 # Fedora
 ###
 
-RUN_IMG "unidata/ncci:fedora22-x64" "fedora22-x64" "${DOX}" ; sleep 3
-RUN_IMG "unidata/ncci:fedora21-x64" "fedora21-x64" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:fedora22-x64" "fedora22-x64" "${DOX}" ; sleep 1
+RUN_IMG "unidata/ncci:fedora21-x64" "fedora21-x64" "${DOX}" ; sleep 1
 
 ###
 # Centos
 ###
 
-RUN_IMG "unidata/ncci:centos7-x64" "centos7-x64" "${DOX}" ; sleep 3
+RUN_IMG "unidata/ncci:centos7-x64" "centos7-x64" "${DOX}" ; sleep 1
 
 echo "Finished"
 echo ""

@@ -19,7 +19,7 @@ fi
 
 # Give docker time to start all jobs before hammering the CPU.
 echo "Sleeping 30 seconds before starting."
-sleep 30
+sleep 60
 
 echo "Starting Tests"
 
