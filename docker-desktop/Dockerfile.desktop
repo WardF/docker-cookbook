@@ -38,7 +38,6 @@ RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev l
 ###
 RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 
-
 ###
 # Install HDF4, HDF5
 ###
@@ -76,16 +75,8 @@ RUN apt-get -y install htop
 # Install docker-machine
 ###
 USER root
-RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-adm64 > /usr/local/bin/docker-machine
+RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
 RUN chmod 755 /usr/local/bin/docker-machine
-
-###
-# Cleanup
-###
-
-RUN apt-get -y clean
-RUN apt-get -y autoclean
-RUN apt-get -y purge
 
 #####
 # Add a non-root user, but allow that user
@@ -114,7 +105,8 @@ RUN echo '#!/bin/bash' > ${DINST}
 RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
 RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
 RUN chmod 755 ${DINST}
-
+USER root
+RUN ${DINST}
 #####
 # Grab the noVNC project.
 #####
@@ -168,7 +160,6 @@ ENV CDEPTH 24
 # * Configure emacs
 # * configure .bashrc with aliases
 #####
-
 RUN git config --global user.email "wfisher@ucar.edu"
 RUN git config --global user.name "Ward Fisher"
 RUN git config --global push.default simple
@@ -183,27 +174,31 @@ RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 ###
 # Make some directories.
 ###
-
 RUN mkdir -p /home/${CUSER}/local/bin
 RUN mkdir -p /home/${CUSER}/docs
 
 ###
 # Copy over files.
 ###
-
 COPY startdesktop.sh /home/${CUSER}/
-
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
 COPY self_unsigned.pem /home/${CUSER}/docs/
 COPY emacs-small.el /home/${CUSER}/
 RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 
+###
+# Cleanup
+###
+USER root
+RUN chown -R ${CUSER} /home/${CUSER}/
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
+
 #####
 # Kick off the session with the following
 # script.
 #####
-USER root
-RUN chown -R ${CUSER} /home/${CUSER}/
 USER ${CUSER}
 CMD /home/${CUSER}/startdesktop.sh
