@@ -180,8 +180,7 @@ COPY Dockerfile.desktop /home/${CUSER}/docs/
 COPY config/self_unsigned.pem /home/${CUSER}/docs/
 COPY config/emacs-small.el /home/${CUSER}/
 RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
-RUN mkdir -p /home/${CUSER}/.config/openbox
-COPY config/lxde-rc.xml /home/${CUSER}/.config/openbox/
+COPY config/dotconfig/ /home/${CUSER}/.config/
 ###
 # Cleanup
 ###
