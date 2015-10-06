@@ -41,16 +41,17 @@ RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev l
 RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 
 ###
+# Install some final packages I forgot about.
+###
+RUN apt-get -y install htop
+
+###
 # Install cmake, HDF4, HDF5
 ###
 
 ADD netcdf-deps.tar.bz2 /
-RUN tar -jxvf netcdf-deps.tar.bz2 && chmod -R 755 /usr/local
-
-###
-# Install some final packages I forgot about.
-###
-RUN apt-get -y install htop
+#RUN cd / && mv /root/netcdf-deps.tar.bz2 / && tar -jxvf netcdf-deps.tar.bz2 && chmod -R 755 /usr/local
+RUN chmod -R 755 /usr/local
 
 ###
 # Install docker-machine
