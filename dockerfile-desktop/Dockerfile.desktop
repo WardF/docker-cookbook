@@ -190,8 +190,13 @@ COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
 COPY config/self_unsigned.pem /home/${CUSER}/docs/
 COPY config/emacs-small.el /home/${CUSER}/
+
 RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 COPY config/dotconfig/ /home/${CUSER}/.config/
+
+COPY config/xscreensaver /home/${CUSER}/
+RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
+
 ###
 # Cleanup
 ###
