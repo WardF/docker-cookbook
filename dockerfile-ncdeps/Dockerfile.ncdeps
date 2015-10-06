@@ -1,0 +1,60 @@
+##########
+# Used to create a tarball containing netCDF dependencies.
+##########
+
+FROM ubuntu:utopic
+MAINTAINER Ward Fisher <wfisher@ucar.edu>
+ENV DEBIAN_FRONTEND noninteractive
+
+#####
+# Set up environment.
+#####
+
+USER root
+ENV HOME /root
+WORKDIR /root
+
+#####
+# Install requirements.
+#####
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get -y install apt-utils m4 git libjpeg-dev libcurl4-openssl-dev wget libtool bison flex curl g++ gfortran zlib1g-dev zip cron bzip2 autoconf sudo make
+RUN apt-get -y autoclean
+
+#####
+# Copy over the files.
+#####
+
+ADD Dockerfile.ncdeps /root/
+ADD README.md /root/
+ADD createdeps.sh /root/
+
+
+###
+# Environmental Variables
+###
+
+##
+# User-facing options.
+##
+ENV CMAKE_VER 3.3.2
+ENV HDF4_VER 4.2.11
+ENV HDF5_VER 1.8.15-patch1
+
+ENV TARGDIR /usr/local
+ENV BUILDCMAKE TRUE
+ENV BUILDHDF4 TRUE
+ENV BUILDHDF5 TRUE
+
+##
+# Internal Options
+##
+ENV OPSFILENAME netcdf-deps-options.txt
+ENV TARGFILE netcdf-deps.tar.bz2
+
+
+#####
+# Final Command
+#####
+CMD /root/createdeps.sh

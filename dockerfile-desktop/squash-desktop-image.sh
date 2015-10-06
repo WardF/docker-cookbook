@@ -13,6 +13,6 @@ echo "======"
 echo ""
 
 docker save wardf/desktop | sudo docker-squash -verbose -t wardf/desktop -o wardf_desktop.tar
-sudo chown wfisher:wfisher wardf_desktop.tar
+sudo chown wfisher wardf_desktop.tar
 
 echo "Finished."
