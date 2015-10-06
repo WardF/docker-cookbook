@@ -32,6 +32,7 @@ CREATEOPSFILE()
     echo "" >> $OPSFILE
     echo -e "* TARGDIR\t${TARGDIR}" >> $OPSFILE
     echo -e "* TARGFILE\t${TARGFILE}" >> $OPSFILE
+    echo -e "* CPUS\t\t${CPUS}" >> $OPSFILE
     echo "" >> $OPSFILE
     echo -e "* BUILDCMAKE:\t${BUILDCMAKE}" >> $OPSFILE
     echo -e "* BUILDHDF4:\t${BUILDHDF4}" >> $OPSFILE
