@@ -52,7 +52,7 @@ ENV BUILDHDF5 TRUE
 ##
 ENV OPSFILENAME netcdf-deps-options.txt
 ENV TARGFILE netcdf-deps.tar.bz2
-
+ENV CPUS 2
 
 #####
 # Final Command

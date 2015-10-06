@@ -67,7 +67,7 @@ if [ "x${BUILDCMAKE}" == "xTRUE" ]; then
     wget "http://www.cmake.org/files/${CMAKE_VDIR}/${CMAKE_FILE}"
     tar -zxf "${CMAKE_FILE}"
 
-    cd "${CMAKE_PREF}" && ./configure --prefix=${TARGDIR} && make install -j 2 && ldconfig
+    cd "${CMAKE_PREF}" && ./configure --prefix=${TARGDIR} && make install -j ${CPUS} && ldconfig
     cd /root
 fi
 
@@ -81,7 +81,7 @@ if [ "x${BUILDHDF4}" == "xTRUE" ]; then
     wget "http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}"
 
     tar -jxf "${HDF4_FILE}"
-    cd "${HDF4_PREF}" && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=${TARGDIR} && make install -j 2
+    cd "${HDF4_PREF}" && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=${TARGDIR} && make install -j ${CPUS}
     cd /root
 fi
 
@@ -96,7 +96,7 @@ if [ "x${BUILDHDF5}" == "xTRUE" ]; then
     wget "http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_PREF}/src/${HDF5_FILE}"
     tar -jxf "${HDF5_FILE}"
 
-    cd "${HDF5_PREF}" && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=${TARGDIR} && make install -j 2
+    cd "${HDF5_PREF}" && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=${TARGDIR} && make install -j ${CPUS}
     cd /root
 fi
 
