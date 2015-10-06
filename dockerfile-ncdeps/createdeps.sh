@@ -111,8 +111,10 @@ CREATEOPSFILE
 # Tar up the results.
 ###
 tar -jcvf "${TARGFILE}" --exclude=*python* "${OPSFILENAME}" "${TARGDIR}/include" "${TARGDIR}/lib" "${TARGDIR}/bin" "${TARGDIR}/man" "${TARGDIR}/share"
-cp "${TARGFILE}" "/working"
 
+set -x
+cp "${TARGFILE}" "/working"
+set +x
 
 
 
