@@ -31,7 +31,7 @@ RUN apt-get install -y man nano curl git emacs wget
 # Install developer tools
 ###
 RUN apt-get install -y gcc g++ gfortran clang gdb
-RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev cmake libcurl4-openssl-dev
+RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev
 
 ###
 # Install Desktop, VNC, noVNC stuff.
@@ -39,8 +39,19 @@ RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev l
 RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 
 ###
-# Install HDF4, HDF5
+# Install cmake, HDF4, HDF5
 ###
+
+###
+# CMake
+###
+ENV CMAKE_VER cmake-3.3.3
+ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
+RUN wget http://www.cmake.org/files/v3.3/${CMAKE_FILE}
+RUN tar -zxf ${CMAKE_FILE}
+
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 2 && ldconfig
+RUN rm -rf ${CMAKE_VER}
 
 ##
 # HDF4
