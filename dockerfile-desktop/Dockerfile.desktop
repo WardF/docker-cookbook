@@ -136,7 +136,7 @@ RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 ###
 
 RUN mkdir ~/.vnc
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -forever &' >> ~/.xinitrc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' >> ~/.xinitrc
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc
 
 #####
