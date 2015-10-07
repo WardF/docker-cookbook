@@ -80,7 +80,7 @@ RUN rm -rf ${HDF5_VER}
 ###
 # Install some final packages I forgot about.
 ###
-RUN apt-get -y install htop
+RUN apt-get -y install htop meld
 
 ###
 # Install docker-machine
