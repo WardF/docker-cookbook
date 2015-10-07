@@ -8,6 +8,14 @@ set -e
 
 trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 
+if [ "x${USEPASS}" == "x" ]; then
+    cp /home/${CUSER}/.xinitrc.nopassword /home/${CUSER}/.xinitrc
+else
+    mkdir -p /home/${CUSER}/.vnc
+    cp /home/${CUSER}/.xinitrc.password /home/${CUSER}/.xinitrc
+    x11vnc -storepasswd "${USEPASS}" /home/${CUSER}/.vnc/passwd
+fi
+
 xinit -- /usr/bin/Xvfb :1 -screen 0 $SIZEH\x$SIZEW\x$CDEPTH &
 sleep 5
 
