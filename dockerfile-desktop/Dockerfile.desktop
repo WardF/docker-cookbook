@@ -39,6 +39,11 @@ RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev l
 RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 
 ###
+# Install an SSH Server
+###
+RUN apt-get install -y openssh-server
+
+###
 # Install cmake, HDF4, HDF5
 ###
 
@@ -94,10 +99,11 @@ RUN chmod 755 /usr/local/bin/docker-machine
 # unfettered sudo access.
 #####
 ENV CUSER ubuntu
+ENV CUSERPWORD "password.1234"
 
 RUN useradd -ms /bin/bash ${CUSER}
 RUN adduser ${CUSER} sudo
-RUN echo "${CUSER}:password.1234" | chpasswd
+RUN echo "${CUSER}:${CUSERPWORD}" | chpasswd
 RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 #####
@@ -147,6 +153,7 @@ RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
 # Initialize environmental variables, expose
 # ports, etc.
 #####
+EXPOSE 22
 EXPOSE 5901
 EXPOSE 6080
 
@@ -190,6 +197,8 @@ RUN mkdir -p /home/${CUSER}/docs
 # Copy over files.
 ###
 COPY startdesktop.sh /home/${CUSER}/
+COPY startsshd.sh /home/${CUSER}/
+
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
 COPY config/self_unsigned.pem /home/${CUSER}/docs/
@@ -201,10 +210,37 @@ COPY config/dotconfig/ /home/${CUSER}/.config/
 COPY config/xscreensaver /home/${CUSER}/
 RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
 
+##
+# SSH stuff
+##
+USER root
+COPY ssh /home/${CUSER}/.ssh/
+RUN chown -R ${CUSER} /home/${CUSER}/.ssh
+RUN chmod 600 /home/${CUSER}/.ssh/*
+RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
+
+#
+# Create a utility ssh script we can use.
+# assume that the key is in the correct (same) directory.
+#
+RUN echo '#!/bin/bash' > dockssh.sh
+RUN echo 'echo "What IP is the ssh server running on? [192.168.99.100]"' >> dockssh.sh
+RUN echo 'read SSHIP' >> dockssh.sh
+RUN echo 'echo "What Port is the ssh server running on [22]?"' >> dockssh.sh
+RUN echo 'read SSHPORT' >> dockssh.sh
+RUN echo 'if [ "x$SSHIP" == "x" ]; then' >> dockssh.sh
+RUN echo '    SSHIP="192.168.99.100"' >> dockssh.sh
+RUN echo 'fi' >> dockssh.sh
+RUN echo 'if [ "x$SSHPORT" == "x" ]; then' >> dockssh.sh
+RUN echo '    SSHPORT="22"' >> dockssh.sh
+RUN echo 'fi' >> dockssh.sh
+RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> dockssh.sh
+RUN chmod 755 dockssh.sh
+
 ###
 # Cleanup
 ###
-USER root
+
 RUN chown -R ${CUSER} /home/${CUSER}/
 RUN apt-get -y clean
 RUN apt-get -y autoclean
