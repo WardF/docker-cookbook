@@ -58,7 +58,7 @@ ENV CPUS 2
 ##
 # Copy over a file to package stuff up.
 ##
-COPY package_travis_deps.sh ${WORKDIR}/
+COPY package_travis_deps.sh /root/
 
 #####
 # Final Command
