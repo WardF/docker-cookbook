@@ -108,9 +108,8 @@ if [ "x${BUILDNC}" == "xTRUE" ]; then
 
     git clone http://github.com/Unidata/netcdf-c
     cd netcdf-c
-    mkdir build
-    cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=${TARGDIR} -DENABLE_TESTS=OFF
+    autoreconf -if
+    ./configure --prefix=${TARGDIR}
     make -j ${CPUS}
     make install
     cd /root
