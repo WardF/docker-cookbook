@@ -16,7 +16,7 @@ else
     x11vnc -storepasswd "${USEPASS}" /home/${CUSER}/.vnc/passwd
 fi
 
-xinit -- /usr/bin/Xvfb :1 -screen 0 $SIZEH\x$SIZEW\x$CDEPTH &
+xinit -- /usr/bin/Xvfb :1 -screen 0 $SIZEW\x$SIZEH\x$CDEPTH &
 sleep 5
 
 export DISPLAY=localhost:1
