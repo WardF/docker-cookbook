@@ -11,6 +11,7 @@ The following dependencies are created when the image is run.
 * CMake
 * hdf4
 * hdf5
+* netcdf
 
 ## Running wardf/ncdeps
 
@@ -36,3 +37,4 @@ You will need to provide a volume mapping to save the resultant tarball in.
 * BUILDCMAKE - `TRUE` by default
 * BUILDHDF4 - `TRUE` by default
 * BUILDHDF5 - `TRUE` by default
+* BUILDNC - `FALSE` by default

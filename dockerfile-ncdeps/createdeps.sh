@@ -102,6 +102,20 @@ if [ "x${BUILDHDF5}" == "xTRUE" ]; then
 fi
 
 ###
+# Build netCDF, if requested.
+###
+if [ "x${BUILDNC}" == "xTRUE" ]; then
+
+    git clone http://github.com/Unidata/netcdf-c
+    cd netcdf-c
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=${TARGDIR} -DENABLE_TESTS=OFF
+    make -j ${CPUS}
+    make install
+    cd /root
+fi
+###
 # Create the options file
 ###
 echo "Creating Options file: ${OPSFILE}"
@@ -110,7 +124,7 @@ CREATEOPSFILE
 ###
 # Tar up the results.
 ###
-tar -jcvf "${TARGFILE}" --exclude=*python* "${OPSFILENAME}" "${TARGDIR}/include" "${TARGDIR}/lib" "${TARGDIR}/bin" "${TARGDIR}/man" "${TARGDIR}/share"
+/root/package_travis_deps.sh
 
 set -x
 cp "${TARGFILE}" "/working"

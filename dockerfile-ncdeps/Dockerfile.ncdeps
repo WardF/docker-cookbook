@@ -42,10 +42,11 @@ ENV CMAKE_VER 3.3.2
 ENV HDF4_VER 4.2.11
 ENV HDF5_VER 1.8.15-patch1
 
-ENV TARGDIR /usr/local
+ENV TARGDIR /usr
 ENV BUILDCMAKE TRUE
 ENV BUILDHDF4 TRUE
 ENV BUILDHDF5 TRUE
+ENV BUILDNC FALSE
 
 ##
 # Internal Options
@@ -53,6 +54,11 @@ ENV BUILDHDF5 TRUE
 ENV OPSFILENAME netcdf-deps-options.txt
 ENV TARGFILE netcdf-deps.tar.bz2
 ENV CPUS 2
+
+##
+# Copy over a file to package stuff up.
+##
+COPY package_travis_deps.sh ${WORKDIR}/
 
 #####
 # Final Command
