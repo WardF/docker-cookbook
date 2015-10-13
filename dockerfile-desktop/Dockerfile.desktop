@@ -8,7 +8,7 @@
 # Common stuff at front.
 #####
 
-FROM ubuntu:utopic
+FROM ubuntu:trusty
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
