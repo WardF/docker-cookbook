@@ -13,7 +13,8 @@
 # Once created, copy to /web/content/downloads/netcdf/ftp
 #####
 
-TARBALL="travisdeps.tar.bz2"
+#TARBALL="travisdeps.tar.bz2"
+TARBALL=${TARGFILE}
 rm -f $TARBALL
 
 set -x
