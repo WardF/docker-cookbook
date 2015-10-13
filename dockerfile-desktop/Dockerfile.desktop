@@ -116,8 +116,8 @@ RUN echo '#!/bin/bash' > ${DINST}
 RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
 RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
 RUN chmod 755 ${DINST}
-USER root
-RUN ${DINST}
+#USER root
+#RUN ${DINST}
 #####
 # Grab the noVNC project.
 #####
