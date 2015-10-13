@@ -165,8 +165,8 @@ ENV USENOVNC TRUE
 ###
 # Variables to dictate windows session geometry and color depth.
 ###
-ENV SIZEH 1440
-ENV SIZEW 900
+ENV SIZEW 1600
+ENV SIZEH 1000
 ENV CDEPTH 24
 
 #####
