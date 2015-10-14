@@ -30,7 +30,11 @@ HDFFILES="/usr/lib/libhdf4.settings /usr/lib/libdf* /usr/lib/libmfhdf* /usr/incl
 
 HDF5FILES="/usr/lib/libhdf5.settings /usr/lib/libhdf5* /usr/include/hdf5.h /usr/include/hdf5_hl.h /usr/include/H5*.h"
 
-NCFILES="/usr/lib/libnetcdf* /usr/include/netcdf*"
+if [ "x$BUILDNC" == "xTRUE" ]; then
+    NCFILES="/usr/lib/libnetcdf* /usr/include/netcdf*"
+else
+    NCFILES=""
+fi
 
 tar -jcvf $TARBALL $CMAKEFILES $HDFFILES $HDF5FILES $NCFILES
 
