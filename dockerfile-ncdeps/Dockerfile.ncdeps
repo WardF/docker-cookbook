@@ -2,7 +2,7 @@
 # Used to create a tarball containing netCDF dependencies.
 ##########
 
-FROM ubuntu:trusty
+FROM ubuntu:precise
 MAINTAINER Ward Fisher <wfisher@ucar.edu>
 ENV DEBIAN_FRONTEND noninteractive
 
