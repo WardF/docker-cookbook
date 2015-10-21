@@ -44,6 +44,11 @@ RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
 RUN apt-get install -y openssh-server
 
 ###
+# Set CPUs for compilation.
+###
+ENV CCPUS 2
+
+###
 # Install cmake, HDF4, HDF5
 ###
 
@@ -55,7 +60,7 @@ ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
 RUN wget http://www.cmake.org/files/v3.3/${CMAKE_FILE}
 RUN tar -zxf ${CMAKE_FILE}
 
-RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 2 && ldconfig
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j ${CCPUS} && ldconfig
 RUN rm -rf ${CMAKE_VER}
 
 ##
@@ -66,7 +71,7 @@ ENV HDF4_FILE ${HDF4_VER}.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}
 RUN tar -jxf ${HDF4_FILE}
 
-RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 2
+RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j ${CCPUS}
 RUN rm -rf ${HDF4_VER}
 
 ##
@@ -79,7 +84,7 @@ ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
 RUN tar -jxf ${HDF5_FILE}
 
-RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 2
+RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j ${CCPUS}
 RUN rm -rf ${HDF5_VER}
 
 ###
