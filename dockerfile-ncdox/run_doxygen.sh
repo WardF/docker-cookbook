@@ -11,6 +11,11 @@ set -e
 
 trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 
+if [ "x$HELP" != "x" ]; then
+    cat README.md
+    exit
+fi
+
 ###
 # Ensure that an output directory has been
 # mapped. If not, send a message and exit.

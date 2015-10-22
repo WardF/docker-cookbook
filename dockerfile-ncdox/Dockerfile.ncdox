@@ -14,7 +14,6 @@
 ###
 
 FROM unidata/nctests:serial
-ENV DEVDOX OFF
 
 ###
 # Install doxygen, graphviz.
@@ -29,6 +28,17 @@ RUN apt-get install -y -qq pv
 
 ###
 # Copy over the dockerfile, scripts and README.
+###
+
+###
+# Some environmental variables
+###
+
+ENV DEVDOX OFF
+ENV HELP ""
+
+###
+# Copy over some files.
 ###
 
 COPY README.md /root/
