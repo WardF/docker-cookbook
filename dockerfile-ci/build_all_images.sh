@@ -10,15 +10,6 @@ xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Vivid: 32-bit]" -e "docke
 sleep 1
 
 ###
-# Utopic
-###
-xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Utopic: 64-bit]" -e "docker build -t unidata/ncci:utopic-x64 -f Dockerfile.utopic-x64 . ; echo "" && echo '[Press Return to Close]' && read " &
-sleep 1
-
-xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Utopic: 32-bit]" -e "docker build -t unidata/ncci:utopic-x86 -f Dockerfile.utopic-x86 . ; echo "" && echo '[Press Return to Close]' && read " &
-sleep 1
-
-###
 # Trusty
 ###
 xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Trusty: 64-bit]" -e "docker build -t unidata/ncci:trusty-x64 -f Dockerfile.trusty-x64 . ; echo "" && echo '[Press Return to Close]' && read " &

@@ -4,8 +4,6 @@ set -e
 
 docker push unidata/ncci:vivid-x64
 docker push unidata/ncci:vivid-x86
-docker push unidata/ncci:utopic-x64
-docker push unidata/ncci:utopic-x86
 docker push unidata/ncci:trusty-x64
 docker push unidata/ncci:trusty-x86
 docker push unidata/ncci:fedora22-x64

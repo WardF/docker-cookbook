@@ -81,13 +81,6 @@ RUN_IMG "unidata/ncci:vivid-x64" "vivid-x64" "${DOX}" ; sleep 1
 RUN_IMG "unidata/ncci:vivid-x86" "vivid-x86" "${DOX}" ; sleep 1
 
 ###
-# Utopic
-###
-
-RUN_IMG "unidata/ncci:utopic-x64" "utopic-x64" "${DOX}" ; sleep 1
-RUN_IMG "unidata/ncci:utopic-x86" "utopic-x86" "${DOX}" ; sleep 1
-
-###
 # Trusty
 ###
 

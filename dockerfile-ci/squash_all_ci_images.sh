@@ -27,8 +27,6 @@ PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
 IMGS="unidata/ncci:vivid-x64 \
 unidata/ncci:vivid-x86 \
-unidata/ncci:utopic-x64 \
-unidata/ncci:utopic-x86 \
 unidata/ncci:trusty-x64 \
 unidata/ncci:trusty-x86 \
 unidata/ncci:trusty-openmpi-x64 \
