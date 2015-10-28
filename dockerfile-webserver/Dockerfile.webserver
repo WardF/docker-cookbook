@@ -39,6 +39,7 @@ EXPOSE 80
 ###
 # Copy over some files
 ###
+COPY Dockerfile.webserver /root/
 COPY README.md /root/
 COPY startwww.sh /root/
 COPY default.sites-available /root/
