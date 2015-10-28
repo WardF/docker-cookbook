@@ -1,0 +1,45 @@
+#####
+# Used to generate the 'wardf/webserver' docker container.
+#####
+
+####
+# Common stuff at front.
+####
+
+FROM ubuntu:trusty
+MAINTAINER Ward Fisher <ward.fisher@gmail.com>
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV HOME /root
+ENV WORKDIR /root
+
+####
+# Install packages and update the system.
+####
+RUN apt-get update
+RUN apt-get -y upgrade
+RUN apt-get -y install nginx
+
+###
+# Set up a symbolic link for nginx
+###
+mv /usr/share/nginx/html /usr/share/nginx/html.old
+ln -s /www /usr/share/nginx/html
+
+###
+# Set environmental variables.
+###
+EXPOSE 80
+
+###
+# Copy over some files
+###
+
+COPY README.md /root/
+COPY startwww.sh /root/
+
+###
+# Final Command.
+###
+
+CMD /root/startwww.sh
