@@ -17,7 +17,13 @@ if [ ! -d /www ]; then
     exit
 fi
 
+echo ""
+echo "Restarting php5-fpm"
+service php5-fpm restart
+sleep 1
+echo "Starting nginx"
 service nginx start
-
+echo ""
+sleep 1
 echo "Webserver running. Press [RETURN] to exit."
 read
