@@ -19,20 +19,13 @@ ENV WORKDIR /root
 # Install packages and update the system.
 #####
 
-RUN apt-get update
-RUN apt-get -y upgrade
-
-###
-# Install Desktop, VNC, noVNC stuff.
-###
-RUN apt-get install -y htop meld git emacs wget openssh-server x11vnc xvfb xinit lxde wmctrl python firefox
+RUN apt-get update && apt-get -y upgrade && apt-get install -y htop meld git emacs wget openssh-server x11vnc xvfb xinit lxde wmctrl python firefox
 
 ###
 # Install docker-machine
 ###
 USER root
-RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
-RUN chmod 755 /usr/local/bin/docker-machine
+RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine && chmod 755 /usr/local/bin/docker-machine
 
 #####
 # Add a non-root user, but allow that user
@@ -41,10 +34,7 @@ RUN chmod 755 /usr/local/bin/docker-machine
 ENV CUSER ubuntu
 ENV CUSERPWORD "password.1234"
 
-RUN useradd -ms /bin/bash ${CUSER}
-RUN adduser ${CUSER} sudo
-RUN echo "${CUSER}:${CUSERPWORD}" | chpasswd
-RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
+RUN useradd -ms /bin/bash ${CUSER} && adduser ${CUSER} sudo && echo "${CUSER}:${CUSERPWORD}" | chpasswd && echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 #####
 # Switch over to non-root user,
@@ -58,17 +48,12 @@ WORKDIR /home/${CUSER}
 # Create install docker script (for use with remote daemons)
 ###
 ENV DINST /home/${CUSER}/install_docker.sh
-RUN echo '#!/bin/bash' > ${DINST}
-RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
-RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
-RUN chmod 755 ${DINST}
-#USER root
-#RUN ${DINST}
+RUN echo '#!/bin/bash' > ${DINST} && echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST} && echo 'sudo usermod -aG docker ubuntu' >> ${DINST} && chmod 755 ${DINST}
+
 #####
 # Grab the noVNC project.
 #####
-RUN git clone git://github.com/kanaka/noVNC
-RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
+RUN git clone git://github.com/kanaka/noVNC && ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 
 #####
 # Configure vnc, xvfb.
@@ -81,12 +66,7 @@ RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 # command script.
 ###
 
-RUN mkdir ~/.vnc
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' >> ~/.xinitrc.nopassword
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
-
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' >> ~/.xinitrc.password
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
+RUN mkdir ~/.vnn && echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' >> ~/.xinitrc.nopassword && echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword && echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' >> ~/.xinitrc.password && echo '/usr/bin/startlxde' >> ~/.xinitrc.password
 
 
 #####
@@ -116,12 +96,7 @@ ENV CDEPTH 24
 # * Configure emacs
 # * configure .bashrc with aliases
 #####
-RUN git config --global user.email "wfisher@ucar.edu"
-RUN git config --global user.name "Ward Fisher"
-RUN git config --global push.default simple
-RUN git config --global credential.helper 'cache --timeout=3600'
-
-RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
+RUN git config --global user.email "wfisher@ucar.edu" && git config --global user.name "Ward Fisher" && git config --global push.default simple && git config --global credential.helper 'cache --timeout=3600' && echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 
 #####
 # Copy over scripts, configuration files, readme, etc.
@@ -130,8 +105,7 @@ RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 ###
 # Make some directories.
 ###
-RUN mkdir -p /home/${CUSER}/local/bin
-RUN mkdir -p /home/${CUSER}/docs
+RUN mkdir -p /home/${CUSER}/local/bin /home/${CUSER}/docs
 
 ###
 # Copy over files.
@@ -144,11 +118,11 @@ COPY Dockerfile.desktop-openmpi /home/${CUSER}/docs/
 COPY config/self_unsigned.pem /home/${CUSER}/docs/
 COPY config/emacs-small.el /home/${CUSER}/
 
-RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 COPY config/dotconfig/ /home/${CUSER}/.config/
 
 COPY config/xscreensaver /home/${CUSER}/
-RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
+
+RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver && mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 
 ##
 # SSH stuff
