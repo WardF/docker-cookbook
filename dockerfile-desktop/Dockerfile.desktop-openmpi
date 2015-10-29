@@ -170,7 +170,7 @@ COPY startdesktop.sh /home/${CUSER}/
 COPY startsshd.sh /home/${CUSER}/
 
 COPY README.md /home/${CUSER}/docs/
-COPY Dockerfile.desktop /home/${CUSER}/docs/
+COPY Dockerfile.desktop-openmpi /home/${CUSER}/docs/
 COPY config/self_unsigned.pem /home/${CUSER}/docs/
 COPY config/emacs-small.el /home/${CUSER}/
 
