@@ -129,9 +129,7 @@ RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver && mv /home/${CU
 ##
 USER root
 COPY ssh /home/${CUSER}/.ssh/
-RUN chown -R ${CUSER} /home/${CUSER}/.ssh
-RUN chmod 600 /home/${CUSER}/.ssh/*
-RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
+RUN chown -R ${CUSER} /home/${CUSER}/.ssh && chmod 600 /home/${CUSER}/.ssh/* && mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
 
 #
 # Create a utility ssh script we can use.
@@ -155,10 +153,7 @@ RUN chmod 755 dockssh.sh
 # Cleanup
 ###
 
-RUN chown -R ${CUSER} /home/${CUSER}/
-RUN apt-get -y clean
-RUN apt-get -y autoclean
-RUN apt-get -y purge
+RUN chown -R ${CUSER} /home/${CUSER}/ && apt-get -y clean && apt-get -y autoclean && apt-get -y purge
 
 #####
 # Kick off the session with the following
