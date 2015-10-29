@@ -150,10 +150,17 @@ RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> doc
 RUN chmod 755 dockssh.sh
 
 ###
+# Since this is based on one of the nctests scripts,
+# copy all of those scripts out of /root/ into the user directory.
+###
+RUN mkdir -p /home/${CUSER}/nctest-scripts && cp /root/*.bz2 /root/*.sh /root/*.gz /root/README.md /home/${CUSER}/nctest-scripts
+
+
+###
 # Cleanup
 ###
 
-RUN chown -R ${CUSER} /home/${CUSER}/ && apt-get -y clean && apt-get -y autoclean && apt-get -y purge
+RUN chown -R ${CUSER} /home/${CUSER}/ && apt-get -y clean && apt-get -y autoclean && apt-get -y purge && ln -s /usr/share/cmake-2.8/ /usr/local/share/cmake
 
 #####
 # Kick off the session with the following
