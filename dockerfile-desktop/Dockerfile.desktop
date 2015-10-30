@@ -246,6 +246,7 @@ RUN chmod 755 dockssh.sh
 # Cleanup
 ###
 
+RUN rm -f /usr/bin/ncdump /usr/bin/ncgen
 RUN chown -R ${CUSER} /home/${CUSER}/
 RUN apt-get -y clean
 RUN apt-get -y autoclean

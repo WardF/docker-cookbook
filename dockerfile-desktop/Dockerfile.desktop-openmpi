@@ -159,8 +159,7 @@ RUN mkdir -p /home/${CUSER}/nctest-scripts && cp /root/*.bz2 /root/*.sh /root/*.
 ###
 # Cleanup
 ###
-
-RUN chown -R ${CUSER} /home/${CUSER}/ && apt-get -y clean && apt-get -y autoclean && apt-get -y purge && ln -s /usr/share/cmake-2.8/ /usr/local/share/cmake
+RUN rm -f /usr/bin/ncdump /usr/bin/ncgen && chown -R ${CUSER} /home/${CUSER}/ && apt-get -y clean && apt-get -y autoclean && apt-get -y purge && ln -s /usr/share/cmake-2.8/ /usr/local/share/cmake
 
 #####
 # Kick off the session with the following
