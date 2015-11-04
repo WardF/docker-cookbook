@@ -23,30 +23,9 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 ###
-# Install some utilities
+# Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
-RUN apt-get install -y man nano curl git emacs wget
-
-###
-# Install developer tools
-###
-RUN apt-get install -y gcc g++ gfortran clang gdb
-RUN apt-get install -y autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev
-
-###
-# Install Desktop, VNC, noVNC stuff.
-###
-RUN apt-get install -y x11vnc xvfb xinit lxde wmctrl python firefox
-
-###
-# Install an SSH Server
-###
-RUN apt-get install -y openssh-server
-
-###
-# Install Doxygen, Graphviz
-###
-RUN apt-get install -y doxygen graphviz
+RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip
 
 ###
 # Install cmake, HDF4, HDF5
