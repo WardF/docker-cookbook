@@ -1,0 +1,239 @@
+#####
+# Used to generate the 'wardf/desktop' docker container.
+# This is accessed either via a VNC client or a web browser,
+# thanks to 'noVNC'.
+#####
+
+#####
+# Common stuff at front.
+#####
+
+FROM ggrandes/ubuntu32:14.04
+MAINTAINER Ward Fisher <ward.fisher@gmail.com>
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV HOME /root
+ENV WORKDIR /root
+
+#####
+# Install packages and update the system.
+#####
+
+RUN apt-get update
+RUN apt-get -y upgrade
+
+###
+# Install developer tools, utilities, vnc/novnc, ssh, other stuff.
+###
+RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip
+
+###
+# Install cmake, HDF4, HDF5
+###
+
+###
+# CMake
+###
+ENV CMAKE_VER cmake-3.3.2
+ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
+RUN wget http://www.cmake.org/files/v3.3/${CMAKE_FILE}
+RUN tar -zxf ${CMAKE_FILE}
+
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 4 && ldconfig
+RUN rm -rf ${CMAKE_VER}
+
+##
+# HDF4
+##
+ENV HDF4_VER hdf-4.2.11
+ENV HDF4_FILE ${HDF4_VER}.tar.bz2
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}
+RUN tar -jxf ${HDF4_FILE}
+
+RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4
+RUN rm -rf ${HDF4_VER}
+
+##
+# HDF5
+##
+ENV HDF5VER 1.8.15-patch1
+ENV HDF5_VER hdf5-${HDF5VER}
+ENV HDF5_FILE ${HDF5_VER}.tar.bz2
+
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
+RUN tar -jxf ${HDF5_FILE}
+
+RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4
+RUN rm -rf ${HDF5_VER}
+
+###
+# Install some final packages I forgot about.
+###
+RUN apt-get -y install htop meld
+
+###
+# Install docker-machine
+###
+USER root
+RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
+RUN chmod 755 /usr/local/bin/docker-machine
+
+#####
+# Add a non-root user, but allow that user
+# unfettered sudo access.
+#####
+ENV CUSER ubuntu
+ENV CUSERPWORD "password.1234"
+
+RUN useradd -ms /bin/bash ${CUSER}
+RUN adduser ${CUSER} sudo
+RUN echo "${CUSER}:${CUSERPWORD}" | chpasswd
+RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+#####
+# Switch over to non-root user,
+# configure system and environment.
+#####
+USER ${CUSER}
+ENV HOME /home/${CUSER}
+WORKDIR /home/${CUSER}
+
+###
+# Create install docker script (for use with remote daemons)
+###
+ENV DINST /home/${CUSER}/install_docker.sh
+RUN echo '#!/bin/bash' > ${DINST}
+RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
+RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
+RUN chmod 755 ${DINST}
+#USER root
+#RUN ${DINST}
+#####
+# Grab the noVNC project.
+#####
+RUN git clone git://github.com/kanaka/noVNC
+RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
+
+#####
+# Configure vnc, xvfb.
+# Taken from https://docs.docker.com/reference/builder/#entrypoint
+#####
+
+###
+# Create the .xinitrc file.
+# This will be invoked when xinit is called from the initial
+# command script.
+###
+
+RUN mkdir ~/.vnc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' >> ~/.xinitrc.nopassword
+RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
+
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' >> ~/.xinitrc.password
+RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
+
+
+#####
+# Initialize environmental variables, expose
+# ports, etc.
+#####
+EXPOSE 22
+EXPOSE 5901
+EXPOSE 6080
+
+###
+# If not true, noVNC will not run.
+###
+ENV USENOVNC TRUE
+
+###
+# Variables to dictate windows session geometry and color depth.
+###
+ENV SIZEW 1600
+ENV SIZEH 1000
+ENV CDEPTH 24
+
+#####
+# Do some user configuration.
+#
+# * Configure git
+# * Configure emacs
+# * configure .bashrc with aliases
+#####
+RUN git config --global user.email "wfisher@ucar.edu"
+RUN git config --global user.name "Ward Fisher"
+RUN git config --global push.default simple
+RUN git config --global credential.helper 'cache --timeout=3600'
+
+RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
+
+#####
+# Copy over scripts, configuration files, readme, etc.
+#####
+
+###
+# Make some directories.
+###
+RUN mkdir -p /home/${CUSER}/local/bin
+RUN mkdir -p /home/${CUSER}/docs
+
+###
+# Copy over files.
+###
+COPY startdesktop.sh /home/${CUSER}/
+COPY startsshd.sh /home/${CUSER}/
+
+COPY README.md /home/${CUSER}/docs/
+COPY Dockerfile.desktop /home/${CUSER}/docs/
+COPY config/self_unsigned.pem /home/${CUSER}/docs/
+COPY config/emacs-small.el /home/${CUSER}/
+
+RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
+COPY config/dotconfig/ /home/${CUSER}/.config/
+
+COPY config/xscreensaver /home/${CUSER}/
+RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
+
+##
+# SSH stuff
+##
+USER root
+COPY ssh /home/${CUSER}/.ssh/
+RUN chown -R ${CUSER} /home/${CUSER}/.ssh
+RUN chmod 600 /home/${CUSER}/.ssh/*
+RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
+
+#
+# Create a utility ssh script we can use.
+# assume that the key is in the correct (same) directory.
+#
+RUN echo '#!/bin/bash' > dockssh.sh
+RUN echo 'echo "What IP is the ssh server running on? [192.168.99.100]"' >> dockssh.sh
+RUN echo 'read SSHIP' >> dockssh.sh
+RUN echo 'echo "What Port is the ssh server running on [22]?"' >> dockssh.sh
+RUN echo 'read SSHPORT' >> dockssh.sh
+RUN echo 'if [ "x$SSHIP" == "x" ]; then' >> dockssh.sh
+RUN echo '    SSHIP="192.168.99.100"' >> dockssh.sh
+RUN echo 'fi' >> dockssh.sh
+RUN echo 'if [ "x$SSHPORT" == "x" ]; then' >> dockssh.sh
+RUN echo '    SSHPORT="22"' >> dockssh.sh
+RUN echo 'fi' >> dockssh.sh
+RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> dockssh.sh
+RUN chmod 755 dockssh.sh
+
+###
+# Cleanup
+###
+
+RUN rm -f /usr/bin/ncdump /usr/bin/ncgen
+RUN chown -R ${CUSER} /home/${CUSER}/
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
+
+#####
+# Kick off the session with the following
+# script.
+#####
+USER ${CUSER}
+CMD /home/${CUSER}/startdesktop.sh
