@@ -41,7 +41,7 @@ RUN_IMG()
     if [ "x$USEX" == "xTRUE" ]; then
         xterm -bg black -fg white -T "[$IMG]" -geometry 100x10 -e "docker run --rm -it -h $TAG-$RSHORT $IMG"&
     else
-        docker run -d -it -h "${TAG}-${RSHORT}" "${IMG}"
+        docker run --name "${TAG}" -d -it -h "${TAG}-${RSHORT}" "${IMG}"
     fi
 }
 
