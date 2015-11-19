@@ -25,7 +25,7 @@ RUN apt-get -y upgrade
 ###
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
-RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip
+RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
 
 ###
 # Install cmake, HDF4, HDF5
@@ -164,6 +164,7 @@ RUN git config --global user.email "wfisher@ucar.edu"
 RUN git config --global user.name "Ward Fisher"
 RUN git config --global push.default simple
 RUN git config --global credential.helper 'cache --timeout=3600'
+RUN git config --global editor 'pico'
 
 RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 
