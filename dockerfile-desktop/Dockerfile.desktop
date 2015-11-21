@@ -164,7 +164,6 @@ RUN git config --global user.email "wfisher@ucar.edu"
 RUN git config --global user.name "Ward Fisher"
 RUN git config --global push.default simple
 RUN git config --global credential.helper 'cache --timeout=3600'
-RUN git config --global editor 'pico'
 
 RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 
