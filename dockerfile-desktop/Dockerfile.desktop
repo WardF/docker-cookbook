@@ -26,7 +26,7 @@ RUN apt-get -y upgrade
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
 RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
-RUN apt-get install -y texlive libboost-all-dev qt5-default r-base libqt5webkit5-dev libqt5svg5-dev libqt5xml-dev libqt5xmlpatterns5-dev
+
 
 ###
 # Install cmake, HDF4, HDF5
