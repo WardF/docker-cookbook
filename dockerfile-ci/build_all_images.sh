@@ -1,6 +1,15 @@
 #!/bin/bash
 
 ###
+# Wily
+###
+xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Wily: 64-bit]" -e "docker build -t unidata/ncci:wily-x64 -f Dockerfile.wily-x64 . ; echo "" && echo '[Press Return to Close]' && read " &
+sleep 1
+
+xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Wily: 32-bit]" -e "docker build -t unidata/ncci:wily-x86 -f Dockerfile.wily-x86 . ; echo "" &&  echo '[Press Return to Close]' && read " &
+sleep 1
+
+###
 # Vivid
 ###
 xterm -geometry 100x10 -bg black -fg white -T "[Ubuntu Vivid: 64-bit]" -e "docker build -t unidata/ncci:vivid-x64 -f Dockerfile.vivid-x64 . ; echo "" && echo '[Press Return to Close]' && read " &

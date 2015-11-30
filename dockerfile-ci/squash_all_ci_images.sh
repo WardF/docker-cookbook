@@ -25,7 +25,9 @@ OUTSCRIPT="load-docker-images-${1}.sh"
 
 PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
-IMGS="unidata/ncci:vivid-x64 \
+IMGS="unidata/ncci:wily-x64 \
+unidata/ncci:wily-x86 \
+unidata/ncci:vivid-x64 \
 unidata/ncci:vivid-x86 \
 unidata/ncci:trusty-x64 \
 unidata/ncci:trusty-x86 \

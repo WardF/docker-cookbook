@@ -8,6 +8,12 @@
 ###
 
 ###
+# Wily
+###
+./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:wily" wily-x64
+./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:wily" wily-x86
+
+###
 # Vivid
 ###
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:vivid" vivid-x64
