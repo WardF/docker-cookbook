@@ -45,6 +45,9 @@ sleep 1
 xterm -geometry 100x10 -bg black -fg white -T "[Fedora 22: 64-bit]" -e "docker build -t unidata/ncci:fedora22-x64 -f Dockerfile.fedora22-x64 . ; echo "" &&  echo '[Press Return to Close]' && read " &
 sleep 1
 
+xterm -geometry 100x10 -bg black -fg white -T "[Fedora 23: 64-bit]" -e "docker build -t unidata/ncci:fedora23-x64 -f Dockerfile.fedora23-x64 . ; echo "" &&  echo '[Press Return to Close]' && read " &
+sleep 1
+
 ###
 # Centos
 ###

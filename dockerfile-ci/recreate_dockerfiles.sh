@@ -34,6 +34,7 @@
 ###
 # Create Fedora and Centos Dockerfiles
 ###
+./create_dockerfile.sh templates/Dockerfile.dnf.generic "fedora:23" fedora23-x64
 ./create_dockerfile.sh templates/Dockerfile.dnf.generic "fedora:22" fedora22-x64
 
 ./create_dockerfile.sh templates/Dockerfile.yum.generic "fedora:21" fedora21-x64

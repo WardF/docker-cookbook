@@ -33,6 +33,7 @@ unidata/ncci:trusty-x64 \
 unidata/ncci:trusty-x86 \
 unidata/ncci:trusty-openmpi-x64 \
 unidata/ncci:trusty-mpich-x64 \
+unidata/ncci:fedora23-x64 \
 unidata/ncci:fedora22-x64 \
 unidata/ncci:fedora21-x64 \
 unidata/ncci:centos7-x64"

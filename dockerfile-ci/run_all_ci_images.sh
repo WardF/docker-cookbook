@@ -102,6 +102,7 @@ RUN_IMG "unidata/ncci:trusty-mpich-x64" "trusty-mpich-x64" "${DOX}" ; sleep 1
 # Fedora
 ###
 
+RUN_IMG "unidata/ncci:fedora22-x64" "fedora23-x64" "${DOX}" ; sleep 1
 RUN_IMG "unidata/ncci:fedora22-x64" "fedora22-x64" "${DOX}" ; sleep 1
 RUN_IMG "unidata/ncci:fedora21-x64" "fedora21-x64" "${DOX}" ; sleep 1
 
