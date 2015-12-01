@@ -1,0 +1,3 @@
+webserver:
+  build: dockerfile-webserver/
+  dockerfile: Dockerfile.webserver
