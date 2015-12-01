@@ -1,3 +1,5 @@
 webserver:
   build: dockerfile-webserver/
   dockerfile: Dockerfile.webserver
+  environment:
+    - COMPOSE_PROJECT_NAME="wardf"
