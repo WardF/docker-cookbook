@@ -15,7 +15,7 @@ vivid32:
   dockerfile: Dockerfile.vivid-x86
 
 trusty64:
-  build: ..
+  build: .
   dockerfile: Dockerfile.trusty-x64
 
 trusty32:
