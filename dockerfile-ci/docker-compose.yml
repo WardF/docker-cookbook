@@ -1,0 +1,47 @@
+wily64:
+  build: .
+  dockerfile: Dockerfile.wily-x64
+
+wily32:
+  build: .
+  dockerfile: Dockerfile.wily-x86
+
+vivid64:
+  build: .
+  dockerfile: Dockerfile.vivid-x64
+
+vivid32:
+  build: .
+  dockerfile: Dockerfile.vivid-x86
+
+trusty64:
+  build: ..
+  dockerfile: Dockerfile.trusty-x64
+
+trusty32:
+  build: .
+  dockerfile: Dockerfile.trusty-x32
+
+trusty-openmpi:
+  build: .
+  dockerfile: Dockerfile.trusty-openmpi-x64
+
+trusty-mpich:
+  build: .
+  dockerfile: Dockerfile.trusty-mpich-x64
+
+fedora21:
+  build: .
+  dockerfile: Dockerfile.fedora21-x64
+
+fedora22:
+  build: .
+  dockerfile: Dockerfile.fedora22-x64
+
+fedora23:
+  build: .
+  dockerfile: Dockerfile.fedora23-x64
+
+centos7:
+  build: .
+  dockerfile: Dockerfile.centos7-x64
