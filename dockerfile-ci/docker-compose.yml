@@ -20,7 +20,7 @@ trusty64:
 
 trusty32:
   build: .
-  dockerfile: Dockerfile.trusty-x32
+  dockerfile: Dockerfile.trusty-x86
 
 trusty-openmpi:
   build: .
