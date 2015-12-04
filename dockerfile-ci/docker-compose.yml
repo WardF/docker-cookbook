@@ -56,4 +56,4 @@ fedora23:
 centos7:
   build: .
   dockerfile: Dockerfile.centos7-x64
-    hostname: centos7-x64
+  hostname: centos7-x64
