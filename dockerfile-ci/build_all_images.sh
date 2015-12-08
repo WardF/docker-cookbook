@@ -10,15 +10,6 @@ xterm -geometry 150x20 -bg black -fg white -T "[Ubuntu Wily: 32-bit]" -e "docker
 sleep 1
 
 ###
-# Vivid
-###
-xterm -geometry 150x20 -bg black -fg white -T "[Ubuntu Vivid: 64-bit]" -e "docker build -t unidata/ncci:vivid-x64 -f Dockerfile.vivid-x64 . ; echo "" && echo '[Press Return to Close]' && read " &
-sleep 1
-
-xterm -geometry 150x20 -bg black -fg white -T "[Ubuntu Vivid: 32-bit]" -e "docker build -t unidata/ncci:vivid-x86 -f Dockerfile.vivid-x86 . ; echo "" &&  echo '[Press Return to Close]' && read " &
-sleep 1
-
-###
 # Trusty
 ###
 xterm -geometry 150x20 -bg black -fg white -T "[Ubuntu Trusty: 64-bit]" -e "docker build -t unidata/ncci:trusty-x64 -f Dockerfile.trusty-x64 . ; echo "" && echo '[Press Return to Close]' && read " &

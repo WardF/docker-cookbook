@@ -14,12 +14,6 @@
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:wily" wily-x86
 
 ###
-# Vivid
-###
-./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:vivid" vivid-x64
-./create_dockerfile.sh templates/Dockerfile.apt.generic "f69m\/ubuntu32:vivid" vivid-x86
-
-###
 # Trusty
 ###
 ./create_dockerfile.sh templates/Dockerfile.apt.generic "ubuntu:trusty" trusty-x64

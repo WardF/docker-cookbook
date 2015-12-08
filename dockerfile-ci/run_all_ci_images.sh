@@ -78,13 +78,6 @@ RUN_IMG "unidata/ncci:wily-x64" "wily-x64" "${DOX}" ; sleep 1
 RUN_IMG "unidata/ncci:wily-x86" "wily-x86" "${DOX}" ; sleep 1
 
 ###
-# Vivid
-###
-
-RUN_IMG "unidata/ncci:vivid-x64" "vivid-x64" "${DOX}" ; sleep 1
-RUN_IMG "unidata/ncci:vivid-x86" "vivid-x86" "${DOX}" ; sleep 1
-
-###
 # Trusty
 ###
 

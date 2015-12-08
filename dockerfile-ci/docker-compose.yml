@@ -8,16 +8,6 @@ wily32:
   dockerfile: Dockerfile.wily-x86
   hostname: wily-x86
 
-vivid64:
-  build: .
-  dockerfile: Dockerfile.vivid-x64
-  hostname: vivid-x64
-
-vivid32:
-  build: .
-  dockerfile: Dockerfile.vivid-x86
-  hostname: vivid-x86
-
 trusty64:
   build: .
   dockerfile: Dockerfile.trusty-x64

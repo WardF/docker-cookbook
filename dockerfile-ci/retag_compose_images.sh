@@ -15,7 +15,5 @@ docker tag dockerfileci_trusty-openmpi unidata/ncci:trusty-openmpi-x64
 docker tag dockerfileci_trusty-mpich   unidata/ncci:trusty-mpich-x64
 docker tag dockerfileci_trusty64       unidata/ncci:trusty-x64
 docker tag dockerfileci_trusty32       unidata/ncci:trusty-x86
-docker tag dockerfileci_vivid64        unidata/ncci:vivid-x64
-docker tag dockerfileci_vivid32        unidata/ncci:vivid-x86
 docker tag dockerfileci_wily64         unidata/ncci:wily-x64
 docker tag dockerfileci_wily32         unidata/ncci:wily-x86
