@@ -8,24 +8,17 @@
 # Common stuff at front.
 #####
 
-FROM ubuntu:trusty
+FROM unidata/cloudstream
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
-ENV DEBIAN_FRONTEND noninteractive
-
-ENV HOME /root
-ENV WORKDIR /root
 
 #####
 # Install packages and update the system.
 #####
 
-RUN apt-get update
-RUN apt-get -y upgrade
-
 ###
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
-RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
+RUN sudo apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
 
 ###
 # Install cmake, HDF4, HDF5
@@ -71,25 +64,6 @@ RUN rm -rf ${HDF5_VER}
 ###
 RUN apt-get -y install htop meld
 
-###
-# Install docker-machine
-###
-USER root
-RUN curl -L https://github.com/docker/machine/releases/download/v0.4.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
-RUN chmod 755 /usr/local/bin/docker-machine
-
-#####
-# Add a non-root user, but allow that user
-# unfettered sudo access.
-#####
-ENV CUSER ubuntu
-ENV CUSERPWORD "password.1234"
-
-RUN useradd -ms /bin/bash ${CUSER}
-RUN adduser ${CUSER} sudo
-RUN echo "${CUSER}:${CUSERPWORD}" | chpasswd
-RUN echo "${CUSER} ALL=NOPASSWD: ALL" >> /etc/sudoers
-
 #####
 # Switch over to non-root user,
 # configure system and environment.
@@ -98,16 +72,6 @@ USER ${CUSER}
 ENV HOME /home/${CUSER}
 WORKDIR /home/${CUSER}
 
-###
-# Create install docker script (for use with remote daemons)
-###
-ENV DINST /home/${CUSER}/install_docker.sh
-RUN echo '#!/bin/bash' > ${DINST}
-RUN echo 'curl -sSL https://get.docker.com/ | sh ' >> ${DINST}
-RUN echo 'sudo usermod -aG docker ubuntu' >> ${DINST}
-RUN chmod 755 ${DINST}
-#USER root
-#RUN ${DINST}
 #####
 # Grab the noVNC project.
 #####
@@ -115,10 +79,11 @@ RUN git clone git://github.com/kanaka/noVNC
 RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
 RUN cd /home/${CUSER}/noVNC/utils && git clone https://github.com/kanaka/websockify
 
-#####
-# Configure vnc, xvfb.
-# Taken from https://docs.docker.com/reference/builder/#entrypoint
-#####
+#################
+# This is an example of overriding the
+# default window manager used by
+# unidata/cloudidv
+#################
 
 ###
 # Create the .xinitrc file.
@@ -126,11 +91,11 @@ RUN cd /home/${CUSER}/noVNC/utils && git clone https://github.com/kanaka/websock
 # command script.
 ###
 
-RUN mkdir ~/.vnc
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' >> ~/.xinitrc.nopassword
+RUN mkdir -p ~/.vnc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
 
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' >> ~/.xinitrc.password
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password
 RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
 
 
@@ -147,9 +112,9 @@ EXPOSE 6080
 ###
 ENV USENOVNC TRUE
 
-###
-# Variables to dictate windows session geometry and color depth.
-###
+#############
+# Override default windows session geometry and color depth.
+#############
 ENV SIZEW 1600
 ENV SIZEH 1000
 ENV CDEPTH 24
@@ -181,14 +146,10 @@ RUN mkdir -p /home/${CUSER}/docs
 ###
 # Copy over files.
 ###
-COPY startdesktop.sh /home/${CUSER}/
-COPY startsshd.sh /home/${CUSER}/
-
 COPY README.md /home/${CUSER}/docs/
 COPY Dockerfile.desktop /home/${CUSER}/docs/
-COPY config/self_unsigned.pem /home/${CUSER}/docs/
-COPY config/emacs-small.el /home/${CUSER}/
 
+COPY config/emacs-small.el /home/${CUSER}/
 RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
 COPY config/dotconfig/ /home/${CUSER}/.config/
 
@@ -233,8 +194,9 @@ RUN apt-get -y autoclean
 RUN apt-get -y purge
 
 #####
-# Kick off the session with the following
-# script.
+# Kick off the session as the following user.
+#
+# Because there's no default program, we
+# don't have to copy over a start.sh file.
 #####
 USER ${CUSER}
-CMD /home/${CUSER}/startdesktop.sh

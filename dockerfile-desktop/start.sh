@@ -4,9 +4,7 @@
 # session. Not for internal use.
 #
 
-set -e
 
-trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 
 if [ "x${USEPASS}" == "x" ]; then
     cp /home/${CUSER}/.xinitrc.nopassword /home/${CUSER}/.xinitrc
