@@ -10,6 +10,7 @@
 
 FROM unidata/cloudstream
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
+ENV DEBIAN_FRONTEND noninteractive
 
 #####
 # Install packages and update the system.
@@ -18,6 +19,7 @@ MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 ###
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
+RUN sudo apt-get update
 RUN sudo apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
 
 ###
