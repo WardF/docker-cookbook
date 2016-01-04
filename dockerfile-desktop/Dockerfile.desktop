@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 RUN apt-get update
 RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
-USER ${CUSER}
+
 ###
 # Install cmake, HDF4, HDF5
 ###
@@ -75,45 +75,11 @@ USER ${CUSER}
 ENV HOME /home/${CUSER}
 WORKDIR /home/${CUSER}
 
-#####
-# Grab the noVNC project.
-#####
-RUN git clone git://github.com/kanaka/noVNC
-RUN ln -s /home/${CUSER}/noVNC/vnc_auto.html /home/${CUSER}/noVNC/index.html
-RUN cd /home/${CUSER}/noVNC/utils && git clone https://github.com/kanaka/websockify
-
 #################
 # This is an example of overriding the
 # default window manager used by
 # unidata/cloudidv
 #################
-
-###
-# Create the .xinitrc file.
-# This will be invoked when xinit is called from the initial
-# command script.
-###
-
-RUN mkdir -p ~/.vnc
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
-
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
-
-
-#####
-# Initialize environmental variables, expose
-# ports, etc.
-#####
-EXPOSE 22
-EXPOSE 5901
-EXPOSE 6080
-
-###
-# If not true, noVNC will not run.
-###
-ENV USENOVNC TRUE
 
 #############
 # Override default windows session geometry and color depth.
