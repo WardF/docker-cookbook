@@ -81,6 +81,33 @@ WORKDIR /home/${CUSER}
 # unidata/cloudidv
 #################
 
+###
+# Create the .xinitrc file.
+# This will be invoked when xinit is called from the initial
+# command script.
+###
+
+RUN mkdir -p ~/.vnc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword
+RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
+
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password
+RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
+
+
+#####
+# Initialize environmental variables, expose
+# ports, etc.
+#####
+EXPOSE 22
+EXPOSE 5901
+EXPOSE 6080
+
+###
+# If not true, noVNC will not run.
+###
+ENV USENOVNC TRUE
+
 #############
 # Override default windows session geometry and color depth.
 #############
