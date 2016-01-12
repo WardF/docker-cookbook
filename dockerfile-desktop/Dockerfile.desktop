@@ -22,6 +22,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 RUN apt-get update
 RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
+RUN apt-get install -y elfutils
 
 ###
 # Install cmake, HDF4, HDF5
@@ -178,6 +179,8 @@ RUN echo '    SSHPORT="22"' >> dockssh.sh
 RUN echo 'fi' >> dockssh.sh
 RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> dockssh.sh
 RUN chmod 755 dockssh.sh
+
+RUN git clone http://github.com/lvc/installer lvc-installer
 
 ###
 # Cleanup
