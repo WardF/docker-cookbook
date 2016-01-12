@@ -21,8 +21,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
 RUN apt-get update
-RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats
-RUN apt-get install -y elfutils
+RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld
 
 ###
 # Install cmake, HDF4, HDF5
@@ -62,11 +61,6 @@ RUN tar -jxf ${HDF5_FILE}
 
 RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4
 RUN rm -rf ${HDF5_VER}
-
-###
-# Install some final packages I forgot about.
-###
-RUN apt-get -y install htop meld
 
 #####
 # Switch over to non-root user,
@@ -180,7 +174,7 @@ RUN echo 'fi' >> dockssh.sh
 RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> dockssh.sh
 RUN chmod 755 dockssh.sh
 
-RUN git clone http://github.com/lvc/installer lvc-installer
+RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer && make install prefix=/usr target=abi-tracker
 
 ###
 # Cleanup
