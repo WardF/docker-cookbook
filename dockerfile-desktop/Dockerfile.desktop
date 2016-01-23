@@ -177,6 +177,12 @@ RUN chmod 755 dockssh.sh
 RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer && make install prefix=/usr target=abi-tracker
 
 ###
+# Add a version number.
+###
+ENV DESKTOP_VERSION 1.0.0 - development
+RUN echo "Desktop Version: \"$DESKTOP_VERSION\"\t\t$(date)" >> $VERSION_FILE
+
+###
 # Cleanup
 ###
 
