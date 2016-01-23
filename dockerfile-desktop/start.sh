@@ -5,6 +5,7 @@
 #
 
 
+sudo rm -rf /tmp/.X1-lock
 
 if [ "x${USEPASS}" == "x" ]; then
     cp /home/${CUSER}/.xinitrc.nopassword /home/${CUSER}/.xinitrc
