@@ -22,8 +22,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
-RUN apt-get update
-RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld
+RUN apt-get update && apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld
 
 ###
 # Install cmake, HDF4, HDF5
@@ -34,22 +33,16 @@ RUN apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb a
 ###
 ENV CMAKE_VER cmake-3.3.2
 ENV CMAKE_FILE ${CMAKE_VER}.tar.gz
-RUN wget http://www.cmake.org/files/v3.3/${CMAKE_FILE}
-RUN tar -zxf ${CMAKE_FILE}
+RUN wget http://www.cmake.org/files/v3.3/${CMAKE_FILE} && tar -zxf ${CMAKE_FILE}
 
-RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 4 && ldconfig
-RUN rm -rf ${CMAKE_VER}
+RUN cd ${CMAKE_VER} && ./configure --prefix=/usr && make install -j 4 && ldconfig && rm -rf ${CMAKE_VER}
 
 ##
 # HDF4
 ##
 ENV HDF4_VER hdf-4.2.11
 ENV HDF4_FILE ${HDF4_VER}.tar.bz2
-RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE}
-RUN tar -jxf ${HDF4_FILE}
-
-RUN cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4
-RUN rm -rf ${HDF4_VER}
+RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4 && rm -rf ${HDF4_VER}
 
 ##
 # HDF5
@@ -58,11 +51,7 @@ ENV HDF5VER 1.8.16
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
-RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE}
-RUN tar -jxf ${HDF5_FILE}
-
-RUN cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4
-RUN rm -rf ${HDF5_VER}
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4 && rm -rf ${HDF5_VER}
 
 #####
 # Switch over to non-root user,
@@ -85,11 +74,9 @@ WORKDIR /home/${CUSER}
 ###
 
 RUN mkdir -p ~/.vnc
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword && echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
 
-RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password
-RUN echo '/usr/bin/startlxde' >> ~/.xinitrc.password
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password && echo '/usr/bin/startlxde' >> ~/.xinitrc.password
 
 
 #####
@@ -133,8 +120,7 @@ RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
 ###
 # Make some directories.
 ###
-RUN mkdir -p /home/${CUSER}/local/bin
-RUN mkdir -p /home/${CUSER}/docs
+RUN mkdir -p /home/${CUSER}/local/bin && mkdir -p /home/${CUSER}/docs
 
 ###
 # Copy over files.
@@ -157,24 +143,6 @@ COPY ssh /home/${CUSER}/.ssh/
 RUN chown -R ${CUSER} /home/${CUSER}/.ssh
 RUN chmod 600 /home/${CUSER}/.ssh/*
 RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
-
-#
-# Create a utility ssh script we can use.
-# assume that the key is in the correct (same) directory.
-#
-RUN echo '#!/bin/bash' > dockssh.sh
-RUN echo 'echo "What IP is the ssh server running on? [192.168.99.100]"' >> dockssh.sh
-RUN echo 'read SSHIP' >> dockssh.sh
-RUN echo 'echo "What Port is the ssh server running on [22]?"' >> dockssh.sh
-RUN echo 'read SSHPORT' >> dockssh.sh
-RUN echo 'if [ "x$SSHIP" == "x" ]; then' >> dockssh.sh
-RUN echo '    SSHIP="192.168.99.100"' >> dockssh.sh
-RUN echo 'fi' >> dockssh.sh
-RUN echo 'if [ "x$SSHPORT" == "x" ]; then' >> dockssh.sh
-RUN echo '    SSHPORT="22"' >> dockssh.sh
-RUN echo 'fi' >> dockssh.sh
-RUN echo 'ssh -i ssh/id_rsa.docker.desktop -p ${SSHPORT} ubuntu@${SSHIP}' >> dockssh.sh
-RUN chmod 755 dockssh.sh
 
 RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer && make install prefix=/usr target=abi-tracker
 
