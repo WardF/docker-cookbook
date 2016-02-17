@@ -8,10 +8,10 @@
 # Common stuff at front.
 #####
 
-FROM unidata/cloudstream:1.0.0
+FROM unidata/cloudstream:1.1.0
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 USER root
-ENV DESKTOP_VERSION 1.0.0 - development
+ENV DESKTOP_VERSION development
 
 ENV DEBIAN_FRONTEND noninteractive
 
