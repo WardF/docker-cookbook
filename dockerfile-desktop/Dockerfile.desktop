@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 # Install developer tools, utilities, vnc/novnc, ssh, other stuff.
 ###
-RUN apt-get update && apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld
+RUN apt-get update && apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld openmpi-bin libopenmpi-dev
 
 ###
 # Install cmake, HDF4, HDF5
@@ -46,12 +46,19 @@ RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jx
 
 ##
 # HDF5
+#
+# Build serial first, and then build parallel.
+#
 ##
 ENV HDF5VER 1.8.16
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
-RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/usr && make install -j 4 && rm -rf ${HDF5_VER}
+# Install Serial
+RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4
+
+# Install Parallel and Clean Up
+RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/libs/par && make install -j 4 && make clean
 
 #####
 # Switch over to non-root user,
@@ -111,7 +118,8 @@ RUN git config --global user.name "Ward Fisher"
 RUN git config --global push.default simple
 RUN git config --global credential.helper 'cache --timeout=3600'
 
-RUN echo "alias desk='cd $HOME/Desktop'" >> $HOME/.bashrc
+COPY custom.bashrc /home/${CUSER}/
+RUN cat /home/${CUSER}/custom.bashrc >> /home/${CUSER}/.bashrc
 
 #####
 # Copy over scripts, configuration files, readme, etc.
@@ -135,12 +143,13 @@ COPY config/dotconfig/ /home/${CUSER}/.config/
 COPY config/xscreensaver /home/${CUSER}/
 RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
 
+COPY activate_env /home/${CUSER}/local/bin
+
 ##
 # SSH stuff
 ##
 USER root
 COPY ssh /home/${CUSER}/.ssh/
-RUN chown -R ${CUSER} /home/${CUSER}/.ssh
 RUN chmod 600 /home/${CUSER}/.ssh/*
 RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
 
