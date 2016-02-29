@@ -42,7 +42,7 @@ fi
 case $1 in
     serial)
         export CUR_ENV "serial"
-        CURPREF="/home/${CIUSER}/libs/par"
+        CURPREF="/home/${CUSER}/libs/par"
         export C_INCLUDE_PATH="${CURPREF}/include"
         export CPLUS_INCLUDE_PATH="${CURPREF}/include"
         export CPATH="${CURPREF}/include"
@@ -51,7 +51,7 @@ case $1 in
         ;;
     par)
         export CUR_ENV "par"
-        CURPREF="/home/${CIUSER}/libs/par"
+        CURPREF="/home/${CUSER}/libs/par"
         export C_INCLUDE_PATH="${CURPREF}/include"
         export CPLUS_INCLUDE_PATH="${CURPREF}/include"
         export CPATH="${CURPREF}/include"
@@ -67,7 +67,7 @@ case $1 in
         export LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
         ;;
     summary)
-        DOSUMMARY()
+        DOSUMMARY
         exit
         ;;
 esac

@@ -119,7 +119,7 @@ RUN git config --global push.default simple
 RUN git config --global credential.helper 'cache --timeout=3600'
 
 COPY custom.bashrc /home/${CUSER}/
-RUN mv /home/${CUSER}/custom.bashrc /home/${CUSER}/.bashrc
+RUN cat /home/${CUSER}/custom.bashrc >> /home/${CUSER}/.bashrc
 
 #####
 # Copy over scripts, configuration files, readme, etc.
