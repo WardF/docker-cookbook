@@ -47,7 +47,6 @@ case $1 in
     serial)
         export CUR_ENV "serial"
         CURPREF="/home/${CUSER}/libs/serial"
-        export PATH=
         export C_INCLUDE_PATH="${CURPREF}/include"
         export CPLUS_INCLUDE_PATH="${CURPREF}/include"
         export CPATH="${CURPREF}/include"
