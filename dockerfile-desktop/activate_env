@@ -8,7 +8,7 @@ set -e
 
 DOHELP() {
 
-    echo "Usage: $0 [par | serial | default | summary]"
+    echo "Usage: $0 [par | serial | summary]"
     echo ""
 
 }
@@ -16,24 +16,10 @@ DOHELP() {
 DOSUMMARY() {
 
     echo "Current Environment: $CUR_ENV"
-    echo "o C_INCLUDE_PATH: ${C_INCLUDE_PATH}"
-    echo "o CPLUS_INCLUDE_PATH: ${CPLUS_INCLUDE_PATH}"
-    echo "o CPATH: ${CPATH}"
-    echo "o LIBRARY_PATH: ${LIBRARY_PATH}"
-    echo "o LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
-    echo "o CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}"
-    echo ""
 
 }
 
-if [ "x$CUR_ENV" == "x" ]; then
-    export OLD_C_INCLUDE_PATH=$C_INCLUDE_PATH
-    export OLD_CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH
-    export OLD_CPATH=$CPATH
-    export OLD_LIBRARY_PATH=$LIBRARY_PATH
-    export OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-    export OLD_CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH
-fi
+
 
 if [ $# -lt 1 ]; then
     DOHELP
@@ -46,40 +32,18 @@ fi
 case $1 in
     serial)
         export CUR_ENV "serial"
-        CURPREF="/home/${CUSER}/libs/serial"
-        export C_INCLUDE_PATH="${CURPREF}/include"
-        export CPLUS_INCLUDE_PATH="${CURPREF}/include"
-        export CPATH="${CURPREF}/include"
-        export LIBRARY_PATH="${CURPREF}/lib"
-        export LD_LIBRARY_PATH="${CURPREF}/lib"
-        export CMAKE_PREFIX_PATH="${CURPREF}"
+        sudo cp -v -R /home/${CUSER}/libs/serial/* /usr
         ;;
     par)
         export CUR_ENV "par"
-        CURPREF="/home/${CUSER}/libs/par"
-        export C_INCLUDE_PATH="${CURPREF}/include"
-        export CPLUS_INCLUDE_PATH="${CURPREF}/include"
-        export CPATH="${CURPREF}/include"
-        export LIBRARY_PATH="${CURPREF}/lib"
-        export LD_LIBRARY_PATH="${CURPREF}/lib"
-        export CMAKE_PREFIX_PATH="${CURPREF}"
+        sudo cp -v -R /home/${CUSER}/libs/par/* /usr
         ;;
-    default)
-        export CUR_ENV ""
-        export C_INCLUDE_PATH=$OLD_C_INCLUDE_PATH
-        export CPLUS_INCLUDE_PATH=$OLD_CPLUS_INCLUDE_PATH
-        export CPATH=$OLD_CPATH
-        export LIBRARY_PATH=$OLD_LIBRARY_PATH
-        export LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
-        export CMAKE_PREFIX_PATH=$OLD_CMAKE_PREFIX_PATH
-        ;;
-    summary)
+    *)
         DOSUMMARY
         exit
         ;;
+
 esac
 
 echo "Setting environment to $1"
-echo ""
-DOSUMMARY
 echo ""
