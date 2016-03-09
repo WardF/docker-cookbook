@@ -156,6 +156,11 @@ RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
 RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer && make install prefix=/usr target=abi-tracker
 
 ###
+# Set up the initial development environment, 'serial'.
+###
+RUN cp -v -R /home/${CUSER}/libs/serial/* /usr
+
+###
 # Add a version number.
 ###
 RUN echo "Desktop Version: \"$DESKTOP_VERSION\"\t\t$(date)" >> $VERSION_FILE
