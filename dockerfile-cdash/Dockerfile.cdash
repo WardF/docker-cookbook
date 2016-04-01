@@ -60,8 +60,7 @@ WORKDIR /root
 RUN echo America/Denver > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 EXPOSE 80
-EXPOSE 8080
-EXPOSE 443
+
 ###
 # Copy over some files we'll use.
 ###
