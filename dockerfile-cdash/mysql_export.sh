@@ -1,5 +1,5 @@
 #!/bin/bash
 set -x
-mysqldump -u root cdash | gzip > /home/vagrant/default_cdash_database.sql.gz
-mv /home/vagrant/default_cdash_database.sql.gz /vagrant
+mysqldump -u root cdash | gzip > /root/default_cdash_database.sql.gz
+cp /root/default_cdash_database.sql.gz /working
 echo Finished.
