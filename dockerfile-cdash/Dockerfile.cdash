@@ -39,6 +39,7 @@ RUN apt-get install -y -qq nano
 
 WORKDIR /var/www/html
 RUN git clone https://github.com/Kitware/CDash.git CDash
+RUN cd CDash && git checkout Release-2-2-2
 RUN chmod -R 777 /var/www/html/CDash
 
 RUN /etc/init.d/mysql start
@@ -50,18 +51,6 @@ RUN /etc/init.d/mysql start && mysql -u root -e "create database cdash"
 WORKDIR /root
 
 ####
-# Copy over files that might change a lot; we'll
-# do this at the end of the dockerfile so that
-# when they change, we don't have to re-do a lot of
-# actions
-####
-
-COPY Dockerfile.cdash_base /root/
-COPY README.md /root/
-COPY run_cdash.sh /root/
-COPY bootstrap_services.sh /root/
-
-####
 # Take care of some networking stuff.
 ####
 
@@ -71,3 +60,35 @@ COPY bootstrap_services.sh /root/
 RUN echo America/Denver > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 EXPOSE 80
+
+###
+# Copy over some files we'll use.
+###
+COPY default_cdash_database.sql.gz /root/
+
+RUN /etc/init.d/mysql start && gunzip < /root/default_cdash_database.sql.gz | mysql -u root cdash
+
+####
+# Copy over files that might change a lot; we'll
+# do this at the end of the dockerfile so that
+# when they change, we don't have to re-do a lot of
+# actions
+####
+
+COPY mysql_export.sh /root/
+COPY Dockerfile.cdash /root/
+
+COPY README.md /root/
+COPY run_cdash.sh /root/
+COPY bootstrap_services.sh /root/
+
+
+
+
+####
+# Take care of some networking stuff.
+####
+
+EXPOSE 80
+
+CMD /root/bootstrap_services.sh
