@@ -36,7 +36,7 @@ WORKDIR /home/${CUSER}
 # Copy over and run the hdf5tune deps install script.
 ##
 COPY install_hdf5tune_deps.sh /home/${CUSER}/
-RUN /home/${CUSER}/install_hdf5tune.sh
+RUN /home/${CUSER}/install_hdf5tune_deps.sh
 COPY install_hdf5tune.sh /home/${CUSER}/
 
 #################
