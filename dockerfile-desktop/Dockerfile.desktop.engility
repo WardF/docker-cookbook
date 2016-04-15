@@ -1,0 +1,150 @@
+#####
+# Used to generate the 'wardf/desktop' docker container.
+# This is accessed either via a VNC client or a web browser,
+# thanks to 'noVNC'.
+#####
+
+#####
+# Common stuff at front.
+#####
+
+FROM unidata/cloudstream:1.1.0
+MAINTAINER Ward Fisher <ward.fisher@gmail.com>
+USER root
+ENV DESKTOP_VERSION development
+
+ENV DEBIAN_FRONTEND noninteractive
+
+#####
+# Install packages and update the system.
+#####
+
+###
+# Install developer tools, utilities, vnc/novnc, ssh, other stuff.
+###
+RUN apt-get update && apt-get install -y man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld mpich2 libmpich2-dev cmake
+
+#####
+# Switch over to non-root user,
+# configure system and environment.
+#####
+USER ${CUSER}
+ENV HOME /home/${CUSER}
+WORKDIR /home/${CUSER}
+
+##
+# Copy over and run the hdf5tune deps install script.
+##
+COPY install_hdf5tune_deps.sh /home/${CUSER}/
+RUN /home/${CUSER}/install_hdf5tune_deps.sh
+COPY install_hdf5tune.sh /home/${CUSER}/
+
+#################
+# This is an example of overriding the
+# default window manager used by
+# unidata/cloudidv
+#################
+
+###
+# Create the .xinitrc file.
+# This will be invoked when xinit is called from the initial
+# command script.
+###
+
+RUN mkdir -p ~/.vnc
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever &' > ~/.xinitrc.nopassword && echo '/usr/bin/startlxde' >> ~/.xinitrc.nopassword
+
+RUN echo '  /usr/bin/x11vnc -display :1 -autoport 5901 -repeat -forever -usepw &' > ~/.xinitrc.password && echo '/usr/bin/startlxde' >> ~/.xinitrc.password
+
+
+#####
+# Initialize environmental variables, expose
+# ports, etc.
+#####
+EXPOSE 22
+EXPOSE 5901
+EXPOSE 6080
+
+###
+# If not true, noVNC will not run.
+###
+ENV USENOVNC TRUE
+
+#############
+# Override default windows session geometry and color depth.
+#############
+ENV SIZEW 1600
+ENV SIZEH 1000
+ENV CDEPTH 24
+
+#####
+# Do some user configuration.
+#
+# * Configure git
+# * Configure emacs
+# * configure .bashrc with aliases
+#####
+RUN git config --global user.email "wfisher@ucar.edu"
+RUN git config --global user.name "Ward Fisher"
+RUN git config --global push.default simple
+RUN git config --global credential.helper 'cache --timeout=3600'
+
+COPY custom.bashrc /home/${CUSER}/
+RUN cat /home/${CUSER}/custom.bashrc >> /home/${CUSER}/.bashrc
+
+#####
+# Copy over scripts, configuration files, readme, etc.
+#####
+
+###
+# Make some directories.
+###
+RUN mkdir -p /home/${CUSER}/local/bin && mkdir -p /home/${CUSER}/docs
+
+###
+# Copy over files.
+###
+COPY README.md /home/${CUSER}/docs/
+COPY Dockerfile.desktop /home/${CUSER}/docs/
+
+COPY config/emacs-small.el /home/${CUSER}/
+RUN mv /home/${CUSER}/emacs-small.el /home/${CUSER}/.emacs
+COPY config/dotconfig/ /home/${CUSER}/.config/
+
+COPY config/xscreensaver /home/${CUSER}/
+RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
+
+COPY activate_env /home/${CUSER}/local/bin
+
+##
+# SSH stuff
+##
+USER root
+COPY ssh /home/${CUSER}/.ssh/
+RUN chmod 600 /home/${CUSER}/.ssh/*
+RUN mv /home/${CUSER}/.ssh/id_rsa.pub /home/${CUSER}/.ssh/authorized_keys
+
+RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer && make install prefix=/usr target=abi-tracker
+
+###
+# Add a version number.
+###
+RUN echo "Desktop Version: \"$DESKTOP_VERSION\"\t\t$(date)" >> $VERSION_FILE
+
+###
+# Cleanup
+###
+
+RUN rm -f /usr/bin/ncdump /usr/bin/ncgen
+RUN chown -R ${CUSER} /home/${CUSER}/
+RUN apt-get -y clean
+RUN apt-get -y autoclean
+RUN apt-get -y purge
+
+#####
+# Kick off the session as the following user.
+#
+# Because there's no default program, we
+# don't have to copy over a start.sh file.
+#####
+USER ${CUSER}
