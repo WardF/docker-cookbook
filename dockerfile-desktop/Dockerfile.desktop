@@ -60,6 +60,12 @@ RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE} 
 # Install Parallel and Clean Up
 RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/libs/par && make install -j 4 && make clean
 
+# Install pnetcdf and clean up
+RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/parallel-netcdf-1.7.0.tar.bz2 && tar -jxf parallel-netcdf-1.7.0.tar.bz2
+RUN cd parallel-netcdf-1.7.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install
+
+
+
 #####
 # Switch over to non-root user,
 # configure system and environment.
