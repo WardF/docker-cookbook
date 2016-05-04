@@ -12,7 +12,6 @@ FROM unidata/cloudstream:1.1.0
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 USER root
 ENV DESKTOP_VERSION development
-
 ENV DEBIAN_FRONTEND noninteractive
 
 #####
