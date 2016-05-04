@@ -37,7 +37,7 @@ WORKDIR /home/${CUSER}
 ##
 COPY install_hdf5tune_deps.sh /home/${CUSER}/
 RUN /home/${CUSER}/install_hdf5tune_deps.sh
-COPY install_hdf5tune.sh /home/${CUSER}/
+COPY install_hdf5tune.sh /home/${CUSER}/Desktop/
 
 #################
 # This is an example of overriding the

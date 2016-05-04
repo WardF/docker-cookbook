@@ -16,9 +16,9 @@ popd
 
 
 echo "Installing hdf5"
-wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.12/src/hdf5-1.8.12.tar.gz
-tar xvzf hdf5-1.8.12.tar.gz
-pushd hdf5-1.8.12
+wget http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.16/src/hdf5-1.8.16.tar.gz
+tar xvzf hdf5-1.8.16.tar.gz
+pushd hdf5-1.8.16
 CC=mpicc FC=mpif90 CXX=mpic++ ./configure --prefix=/usr --enable-parallel --with-zlib=/usr --enable-hl --enable-shared --disable-static
 make -j 4 && sudo make install
 popd
