@@ -64,7 +64,14 @@ RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpi
 RUN wget http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/parallel-netcdf-1.7.0.tar.bz2 && tar -jxf parallel-netcdf-1.7.0.tar.bz2
 RUN cd parallel-netcdf-1.7.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install
 
-
+###
+# Install google chrome via command line.
+# See http://askubuntu.com/questions/79280/how-to-install-chrome-browser-properly-via-command-line
+# for more info.
+###
+RUN echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+RUN sudo apt-get update && sudo apt-get install -y google-chrome-stable
 
 #####
 # Switch over to non-root user,
@@ -177,7 +184,7 @@ RUN echo "Desktop Version: \"$DESKTOP_VERSION\"\t\t$(date)" >> $VERSION_FILE
 
 RUN rm -f /usr/bin/ncdump /usr/bin/ncgen
 RUN chown -R ${CUSER} /home/${CUSER}/
-RUN apt-get -y clean
+RUN apt-get -y clean && apt-get -y autoremove
 RUN apt-get -y autoclean
 RUN apt-get -y purge
 
