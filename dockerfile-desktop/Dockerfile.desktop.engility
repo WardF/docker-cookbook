@@ -8,7 +8,7 @@
 # Common stuff at front.
 #####
 
-FROM unidata/cloudstream:1.1.0
+FROM unidata/cloudstream
 MAINTAINER Ward Fisher <ward.fisher@gmail.com>
 USER root
 ENV DESKTOP_VERSION development
