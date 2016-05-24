@@ -31,6 +31,6 @@ pushd mxml-2.9
 make -j 4 && sudo make install
 popd
 
-echo "Installing Pyevolve"
-wget http://pyevolve.sourceforge.net/distribution/0_6rc1/Pyevolve-0.6rc1.tar.gz
-tar xvzf Pyevolve-0.6rc1.tar.gz
+#echo "Installing Pyevolve"
+#wget http://pyevolve.sourceforge.net/distribution/0_6rc1/Pyevolve-0.6rc1.tar.gz
+#tar xvzf Pyevolve-0.6rc1.tar.gz
