@@ -32,7 +32,7 @@ RUN apt-get install -y linkchecker-gui
 ##
 # HDF4
 ##
-ENV HDF4_VER hdf-4.2.11
+ENV HDF4_VER hdf-4.2.12
 ENV HDF4_FILE ${HDF4_VER}.tar.bz2
 RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4 && rm -rf ${HDF4_VER}
 
