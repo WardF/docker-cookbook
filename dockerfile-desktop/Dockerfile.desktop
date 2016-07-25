@@ -42,7 +42,7 @@ RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jx
 # Build serial first, and then build parallel.
 #
 ##
-ENV HDF5VER 1.8.16
+ENV HDF5VER 1.8.17
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
