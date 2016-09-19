@@ -52,7 +52,7 @@ ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
 # Install Serial
-RUN wget http://www.hdfgroup.org/ftp/HDF5/releases/${HDF5_VER}/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4
+RUN wget https://support.hdfgroup.org/ftp/HDF5/current/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4
 
 # Install Parallel and Clean Up
 RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/libs/par && make install -j 4 && make clean
