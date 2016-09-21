@@ -1,4 +1,4 @@
 # Docker-Desktop
 
-A docker image which creates a VNC/noVNC desktop environment, as a replacement for a virtual machine.
+A docker image which creates a VNC/noVNC desktop environment, as a replacement for a virtual machine. Not suitable for all uses.
 
