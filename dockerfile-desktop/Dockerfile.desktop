@@ -24,7 +24,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ###
 # Delete sudoers to try to overcome a xenial issue.
 
-RUN mv /etc/sudoers /etc/sudoers.bak
+# RUN mv /etc/sudoers /etc/sudoers.bak
 # RUN rm -f /etc/sudoers
 
 
@@ -33,7 +33,7 @@ ENV install_packages man nano curl git emacs wget gcc g++ gfortran clang gdb aut
 RUN apt-get update && apt-get -d install -y ${install_packages}
 RUN apt-get install -y ${install_packages}
 
-RUN mv /etc/sudoers.bak /etc/sudoers
+# RUN mv /etc/sudoers.bak /etc/sudoers
 
 ###
 # Install HDF4, HDF5
