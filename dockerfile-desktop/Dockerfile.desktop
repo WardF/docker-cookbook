@@ -44,7 +44,7 @@ RUN apt-get install -y ${install_packages}
 ##
 ENV HDF4_VER hdf-4.2.12
 ENV HDF4_FILE ${HDF4_VER}.tar.bz2
-RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4 && rm -rf ${HDF4_VER}
+RUN wget https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.12/src/${HDF4_FILE} && tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4 && rm -rf ${HDF4_VER}
 
 ##
 # HDF5
@@ -52,12 +52,12 @@ RUN wget http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/${HDF4_FILE} && tar -jx
 # Build serial first, and then build parallel.
 #
 ##
-ENV HDF5VER 1.8.17
+ENV HDF5VER 1.8.18
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
 # Install Serial
-RUN wget https://support.hdfgroup.org/ftp/HDF5/current/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4
+RUN wget https://support.hdfgroup.org/ftp/HDF5/current18/src/${HDF5_FILE} && tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4
 
 # Install Parallel and Clean Up
 RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/libs/par && make install -j 4 && make clean
@@ -159,6 +159,7 @@ COPY config/xscreensaver /home/${CUSER}/
 RUN mv /home/${CUSER}/xscreensaver /home/${CUSER}/.xscreensaver
 
 COPY activate_env /home/${CUSER}/local/bin
+COPY convert_to_parallel.sh /home/${CUSER}/local/bin
 
 ##
 # SSH stuff
