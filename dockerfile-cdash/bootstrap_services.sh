@@ -2,6 +2,12 @@
 
 trap "echo TRAPed signal" HUP INT QUIT KILL TERM
 
+
+if [ "x$HELP" != "x" ]; then
+    cat README.md
+    exit 0
+fi
+
 ###
 # Set up timezone
 ###
