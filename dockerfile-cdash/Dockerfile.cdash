@@ -29,7 +29,7 @@ RUN apt-get install -y -qq apache2 mysql-server php5 php5-mysql php5-xsl php5-cu
 
 WORKDIR /var/www/html
 RUN git clone https://github.com/Kitware/CDash.git CDash
-RUN cd CDash && git checkout Release-2-2-0 && mkdir -p /var/www/html/CDash/rss
+RUN cd CDash && git checkout Release-2-2-2 && mkdir -p /var/www/html/CDash/rss
 RUN chmod -R 777 /var/www/html/CDash && mv /var/www/html/CDash/* /var/www/html/ && rm /var/www/html/index.html
 
 #RUN /etc/init.d/mysql start
