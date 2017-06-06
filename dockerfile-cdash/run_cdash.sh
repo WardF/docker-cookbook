@@ -1,6 +1,3 @@
 #!/bin/bash
-# Utility script for running a local cdash instance
 
-
-docker run --rm -it -P $1
-
+docker run -d -it -p 80:80 -v ${HOME}/cdash-data:/var/lib/mysql cdash 
