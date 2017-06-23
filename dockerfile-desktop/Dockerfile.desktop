@@ -32,7 +32,7 @@ ENV install_packages man nano curl git emacs wget gcc g++ gfortran clang gdb aut
 
 RUN apt-get update && apt-get -d install -y ${install_packages}
 RUN apt-get install -y ${install_packages}
-
+RUN apt-get remove -y clipit && apt-get -y autoremove
 # RUN mv /etc/sudoers.bak /etc/sudoers
 
 ###
@@ -52,7 +52,7 @@ RUN wget https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.12/src/${HDF4_FILE
 # Build serial first, and then build parallel.
 #
 ##
-ENV HDF5VER 1.8.18
+ENV HDF5VER 1.8.19
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
