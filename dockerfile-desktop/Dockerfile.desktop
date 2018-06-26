@@ -61,10 +61,10 @@ ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
 # Install Serial
-RUN tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/libs/serial && make install -j 4 && make clean && cd ..
+RUN tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/environments/serial && make install -j 4 && make clean && cd ..
 
 # Install Parallel and Clean Up
-RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/libs/par && make install -j 4 && make clean && cd ..
+RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/environments/parallel && make install -j 4 && make clean && cd ..
 
 # Install pnetcdf and clean up
 RUN tar -jxf parallel-netcdf-1.8.1.tar.bz2
@@ -179,14 +179,6 @@ RUN git clone http://github.com/lvc/installer lvc-installer && cd lvc-installer 
 # Set up the initial development environment, 'serial'.
 ###
 RUN cp -v -R /home/${CUSER}/libs/serial/* /usr
-
-###
-# Install a command-line speedtest tool.
-# See http://askubuntu.com/questions/104755/how-to-check-internet-speed-via-terminal
-###
-
-RUN wget -O /home/${CUSER}/local/bin/speedtest-cli https://raw.github.com/sivel/speedtest-cli/master/speedtest_cli.py && chmod +x /home/${CUSER}/local/bin/speedtest-cli
-
 
 ###
 # Add a version number.
