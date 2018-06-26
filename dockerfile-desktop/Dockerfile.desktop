@@ -39,9 +39,9 @@ RUN apt-get remove -y clipit && apt-get -y autoremove
 # Install HDF4, HDF5
 ###
 
-COPY hdf5-1.10.2.tar.bz2 /root/
-COPY hdf-4.2.13.tar.bz2 /root/
-copy parallel-netcdf-1.8.1.tar.bz2 /root/
+COPY hdf5-1.10.2.tar.bz2 /home/${CUSER}/
+COPY hdf-4.2.13.tar.bz2 //home/${CUSER}/
+copy parallel-netcdf-1.8.1.tar.bz2 /home/${CUSER}/
 
 ##
 # HDF4
@@ -68,7 +68,7 @@ RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpi
 
 # Install pnetcdf and clean up
 RUN tar -jxf parallel-netcdf-1.8.1.tar.bz2
-RUN cd parallel-netcdf-1.8.10 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install && cd ..
+RUN cd parallel-netcdf-1.8.1 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install && cd ..
 
 ###
 # Install google chrome via command line.
