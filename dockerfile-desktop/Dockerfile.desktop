@@ -39,16 +39,18 @@ RUN apt-get remove -y clipit && apt-get -y autoremove
 # Install HDF4, HDF5
 ###
 
-COPY hdf5-1.10.2.tar.bz2 /home/${CUSER}/
+COPY hdf5-1.10.3.tar.bz2 /home/${CUSER}/
 COPY hdf-4.2.13.tar.bz2 //home/${CUSER}/
-copy parallel-netcdf-1.8.1.tar.bz2 /home/${CUSER}/
+copy parallel-netcdf-1.9.0.tar.bz2 /home/${CUSER}/
 
 ##
 # HDF4
 ##
 ENV HDF4_VER hdf-4.2.13
 ENV HDF4_FILE ${HDF4_VER}.tar.bz2
-RUN tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/usr && make install -j 4 && rm -rf ${HDF4_VER}
+RUN tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/home/${CUSER}/environments/local-serial && make install -j 4 && make clean && cd ..
+RUN cd ${HDF4_VER} && CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-netcdf --disable-fortran --prefix=/home/${CUSER}/environments/local-par && make install -j 4 && cd ..
+
 
 ##
 # HDF5
@@ -56,19 +58,19 @@ RUN tar -jxf ${HDF4_FILE} && cd ${HDF4_VER} && ./configure --disable-static --en
 # Build serial first, and then build parallel.
 #
 ##
-ENV HDF5VER 1.10.2
+ENV HDF5VER 1.10.3
 ENV HDF5_VER hdf5-${HDF5VER}
 ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 
 # Install Serial
-RUN tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/environments/serial && make install -j 4 && make clean && cd ..
+RUN tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/environments/local-serial && make install -j 4 && make clean && cd ..
 
 # Install Parallel and Clean Up
-RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/environments/parallel && make install -j 4 && make clean && cd ..
+RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/environments/local-par && make install -j 4 && make clean && cd ..
 
 # Install pnetcdf and clean up
 RUN tar -jxf parallel-netcdf-1.8.1.tar.bz2
-RUN cd parallel-netcdf-1.8.1 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/usr --disable-fortran && make -j 4 -k install && cd ..
+RUN cd parallel-netcdf-1.8.1 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/home/${CUSER}/environments/local-par --disable-fortran && make -j 4 -k install && cd ..
 
 ###
 # Install google chrome via command line.
