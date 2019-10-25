@@ -28,7 +28,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # RUN rm -f /etc/sudoers
 
 
-ENV install_packages man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox epiphany-browser openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld openmpi-bin libopenmpi-dev python3-tk python3-pexpect cmake linkchecker linkchecker-gui
+ENV install_packages man nano curl git emacs wget gcc g++ gfortran clang gdb autoconf automake make libtool m4 bison flex zlib1g-dev libjpeg-dev libcurl4-openssl-dev x11vnc xvfb xinit lxde wmctrl python firefox epiphany-browser openssh-server doxygen graphviz zip valgrind kcachegrind gitstats elfutils libelf-dev htop meld openmpi-bin libopenmpi-dev python3-tk python3-pexpect cmake linkchecker linkchecker-gui libmpich-dev mpich
 
 RUN apt-get update && apt-get -d install -y ${install_packages}
 RUN apt-get install -y ${install_packages}
@@ -41,7 +41,7 @@ RUN apt-get remove -y clipit && apt-get -y autoremove
 
 COPY hdf5-1.10.3.tar.bz2 /home/${CUSER}/
 COPY hdf-4.2.13.tar.bz2 //home/${CUSER}/
-copy parallel-netcdf-1.9.0.tar.bz2 /home/${CUSER}/
+copy parallel-netcdf-1.9.0.tar.gz /home/${CUSER}/
 
 ##
 # HDF4
@@ -66,11 +66,11 @@ ENV HDF5_FILE ${HDF5_VER}.tar.bz2
 RUN tar -jxf ${HDF5_FILE} && cd ${HDF5_VER} && ./configure --disable-static --enable-shared --disable-fortran --enable-hl --prefix=/home/${CUSER}/environments/local-serial && make install -j 4 && make clean && cd ..
 
 # Install Parallel and Clean Up
-RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/environments/local-par && make install -j 4 && make clean && cd ..
+#RUN cd ${HDF5_VER} && make clean && CFLAGS="-Wno-format-security" CC=$(which mpicc) ./configure --disable-static --enable-shared --disable-fortran --enable-hl --enable-parallel --prefix=/home/${CUSER}/environments/local-par && make install -j 4 && make clean && cd ..
 
 # Install pnetcdf and clean up
-RUN tar -jxf parallel-netcdf-1.8.1.tar.bz2
-RUN cd parallel-netcdf-1.8.1 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/home/${CUSER}/environments/local-par --disable-fortran && make -j 4 -k install && cd ..
+#RUN tar -zxf parallel-netcdf-1.9.0.tar.gz
+#RUN cd parallel-netcdf-1.9.0 && CPPFLAGS="-fPIC" CC=`which mpicc` ./configure --prefix=/home/${CUSER}/environments/local-par --disable-fortran && make -j 4 -k install && cd ..
 
 ###
 # Install google chrome via command line.
